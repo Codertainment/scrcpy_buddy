@@ -1,5 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:scrcpy_buddy/service/adb_service.dart';
 import 'package:system_theme/system_theme.dart';
 
 import 'injector.dart';
@@ -22,9 +23,7 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.system,
       theme: ThemeData(
         useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: SystemTheme.accentColor.accent.toAccentColor(),
-        ),
+        colorScheme: ColorScheme.fromSeed(seedColor: SystemTheme.accentColor.accent.toAccentColor()),
       ),
       darkTheme: ThemeData(
         useMaterial3: true,
@@ -58,6 +57,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  late final _adbService = resolveDependency<AdbService>();
+
   int _counter = 0;
 
   void _incrementCounter() {
@@ -68,6 +69,20 @@ class _MyHomePageState extends State<MyHomePage> {
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
       _counter++;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _adbService.init().then((result) {
+      result.map((_) {
+        _adbService.devices().then((devices) {
+          devices.map((devices) {
+            print(devices);
+          });
+        });
+      });
     });
   }
 
@@ -109,10 +124,7 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
+            Text('$_counter', style: Theme.of(context).textTheme.headlineMedium),
           ],
         ),
       ),
