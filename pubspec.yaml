@@ -37,6 +37,7 @@ dependencies:
   # Core
   process: ^5.0.4
   fpdart: ^1.1.1
+  equatable: ^2.0.7
 
   # Testing
   mockito: ^5.4.5

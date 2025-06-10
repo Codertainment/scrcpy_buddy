@@ -1,7 +1,9 @@
 import 'dart:io';
 
 import 'package:fpdart/fpdart.dart';
+import 'package:parameterized_test/parameterized_test.dart';
 import 'package:scrcpy_buddy/application/adb_result_parser.dart';
+import 'package:scrcpy_buddy/application/model/adb/adb_device.dart';
 import 'package:scrcpy_buddy/application/model/adb/adb_error.dart';
 import 'package:test/test.dart';
 
@@ -10,6 +12,7 @@ import '../fixtures/process_result_fixture.dart';
 
 void main() {
   final AdbResultParser parser = AdbResultParser();
+
   group('parseInitResult', () {
     test('Success', () async {
       final processResult = ProcessResultFixture.create(exitCode: 0);
@@ -41,4 +44,61 @@ void main() {
       expect(resultError.runtimeType, UnknownAdbError);
     });
   });
+
+  group('parseDevicesResult', () {
+    test('Success', () async {
+      final processResult = ProcessResultFixture.create(
+        exitCode: 0,
+        stdout: """List of devices attached
+          192.168.179.14:5555    device product:shiba model:Pixel_8 device:shiba transport_id:1""",
+      );
+      final result = await parser.parseDevicesResult(Future.value(processResult));
+      expect(result.isRight(), true);
+      final devices = result.getRight().getOrElse(() => throw "Unknown Error");
+      expect(devices.length, 1);
+      expect(
+        devices[0],
+        AdbDevice(
+          serial: "192.168.179.14:5555",
+          status: AdbDeviceStatus.device,
+          metadata: {"product": "shiba", "model": "Pixel_8", "device": "shiba", "transport_id": "1"},
+        ),
+      );
+    });
+
+    test('Success with no devices', () async {
+      final processResult = ProcessResultFixture.create(exitCode: 0, stdout: "List of devices attached\n");
+      final result = await parser.parseDevicesResult(Future.value(processResult));
+      expect(result.isRight(), true);
+      final devices = result.getRight().getOrElse(() => throw "Unknown Error");
+      expect(devices.length, 0);
+    });
+
+    test('Failure', () async {
+      final processResult = ProcessExceptionFixture.create();
+      final result = await parser.parseDevicesResult(Future.error(processResult));
+      expect(result.isLeft(), true);
+      final resultError = result.getLeft().getOrElse(() => throw "Unknown error");
+      expect(resultError.runtimeType, UnknownAdbError);
+    });
+  });
+
+  parameterizedTest(
+    'parseMetadata',
+    [
+      [<String>[], <String, String>{}],
+      [
+        ['key1:value1', 'key2:value2'],
+        {'key1': 'value1', 'key2': 'value2'},
+      ],
+      [
+        ['key1:value1:value2', 'key2'],
+        {'key1': 'value1'},
+      ],
+    ],
+    (List<String> input, Map<String, String> expected) {
+      final result = parser.parseMetadata(input);
+      expect(result, expected);
+    },
+  );
 }

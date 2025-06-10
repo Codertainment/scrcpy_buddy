@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:scrcpy_buddy/application/model/adb/adb_device.dart';
 import 'package:scrcpy_buddy/application/model/adb/adb_result.dart';
 
@@ -26,20 +27,36 @@ class AdbResultParser {
   }
 
   Future<AdbDevicesResult> parseDevicesResult(Future<ProcessResult> process) async {
-    final result = await process;
-    final lines = result.stdout.toString().split("\n")
-      ..removeAt(0)
-      ..removeWhere((line) => line.trim().isEmpty);
+    try {
+      final result = await process;
+      final lines = result.stdout.toString().split("\n")
+        ..removeAt(0)
+        ..removeWhere((line) => line.trim().isEmpty);
 
-    final devices = lines.map((line) => _parseDevice(line)).toList(growable: false);
+      final devices = lines.map((line) => _parseDevice(line)).toList(growable: false);
 
-    return AdbDevicesResult.right(devices);
+      return AdbDevicesResult.right(devices);
+    } catch (e) {
+      return AdbDevicesResult.left(UnknownAdbError(exception: e));
+    }
   }
 
   AdbDevice _parseDevice(String line) {
-    print(line);
-    final parts = line.split(r"\\s+");
+    final parts = line.split(RegExp(r"\s+")).filter((part) => part.isNotEmpty).toList(growable: false);
+    return AdbDevice(
+      serial: parts[0],
+      status: AdbDeviceStatus.values.byName(parts[1]),
+      metadata: parseMetadata(parts.sublist(2)),
+    );
+  }
 
-    return AdbDevice(serial: parts[0], status: AdbDeviceStatus.values.byName(parts[1]), metadata: parts.sublist(2));
+  Map<String, String> parseMetadata(List<String> metadata) {
+    return metadata.fold(<String, String>{}, (acc, part) {
+      final parts = part.split(":");
+      if (parts.length >= 2) {
+        acc[parts[0]] = parts[1];
+      }
+      return acc;
+    });
   }
 }
