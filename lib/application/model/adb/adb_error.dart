@@ -8,6 +8,14 @@ class UnknownAdbError extends AdbError {
   const UnknownAdbError({this.exception});
 }
 
+// Init errors
 sealed class AdbInitError extends AdbError {}
 
 class AdbNotFoundError extends AdbInitError {}
+
+// Connect errors
+class AdbConnectError extends AdbError {
+  final String message;
+
+  const AdbConnectError(this.message);
+}

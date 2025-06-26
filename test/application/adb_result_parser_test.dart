@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:fpdart/fpdart.dart';
 import 'package:parameterized_test/parameterized_test.dart';
 import 'package:scrcpy_buddy/application/adb_result_parser.dart';
+import 'package:scrcpy_buddy/application/model/adb/adb_connect_result_status.dart';
 import 'package:scrcpy_buddy/application/model/adb/adb_device.dart';
 import 'package:scrcpy_buddy/application/model/adb/adb_error.dart';
 import 'package:test/test.dart';
@@ -101,4 +102,29 @@ void main() {
       expect(result, expected);
     },
   );
+
+  group('parseConnectResult', () {
+    test('Success', () async {
+      final processResult = ProcessResultFixture.create(exitCode: 0);
+      final result = await parser.parseConnectResult(Future.value(processResult));
+      expect(result.isRight(), true);
+      final connectResult = result.getRight().getOrElse(() => throw "Unknown Error");
+      expect(connectResult, AdbConnectResultStatus.success);
+    });
+    test('pendingAuthorization', () async {
+      final processResult = ProcessResultFixture.create(exitCode: 1, stdout: "failed to authenticate to");
+      final result = await parser.parseConnectResult(Future.value(processResult));
+      expect(result.isRight(), true);
+      final connectResult = result.getRight().getOrElse(() => throw "Unknown Error");
+      expect(connectResult, AdbConnectResultStatus.pendingAuthorization);
+    });
+    test('other connection error', () async {
+      final processResult = ProcessResultFixture.create(exitCode: 1, stderr: "Connection refused");
+      final result = await parser.parseConnectResult(Future.value(processResult));
+      expect(result.isLeft(), true);
+      final resultError = result.getLeft().getOrElse(() => throw "Unknown error");
+      expect(resultError.runtimeType, AdbConnectError);
+      expect((resultError as AdbConnectError).message, "Connection refused");
+    });
+  });
 }

@@ -5,6 +5,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:scrcpy_buddy/application/model/adb/adb_device.dart';
 import 'package:scrcpy_buddy/application/model/adb/adb_result.dart';
 
+import 'model/adb/adb_connect_result_status.dart';
 import 'model/adb/adb_error.dart';
 
 class AdbResultParser {
@@ -58,5 +59,20 @@ class AdbResultParser {
       }
       return acc;
     });
+  }
+
+  Future<AdbConnectResult> parseConnectResult(Future<ProcessResult> process) async {
+    try {
+      final result = await process;
+      if (result.exitCode == 0) {
+        return AdbConnectResult.right(AdbConnectResultStatus.success);
+      } else if (result.stdout.toString().contains("failed to authenticate")) {
+        return AdbConnectResult.right(AdbConnectResultStatus.pendingAuthorization);
+      } else {
+        return AdbConnectResult.left(AdbConnectError(result.stderr.toString()));
+      }
+    } catch (e) {
+      return AdbConnectResult.left(UnknownAdbError(exception: e));
+    }
   }
 }

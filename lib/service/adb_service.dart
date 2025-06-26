@@ -17,4 +17,6 @@ class AdbService {
   Future<AdbInitResult> init() => _resultParser.parseInitResult(_processManager.run(['adb', 'start-server']));
 
   Future<AdbDevicesResult> devices() => _resultParser.parseDevicesResult(_processManager.run(['adb', 'devices', '-l']));
+
+  Future<AdbConnectResult> connect(String ip) => _resultParser.parseConnectResult(_processManager.run(['adb', 'connect', ip]));
 }
