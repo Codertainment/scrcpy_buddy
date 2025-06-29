@@ -134,28 +134,50 @@ void main() {
     },
   );
 
-  group('parseConnectResult', () {
-    test('Success', () async {
-      final processResult = ProcessResultFixture.create(exitCode: 0);
-      final result = await parser.parseConnectResult(Future.value(processResult));
-      expect(result.isRight(), true);
-      final connectResult = result.getRight().getOrElse(() => throw "Unknown Error");
-      expect(connectResult, AdbConnectResultStatus.success);
-    });
-    test('pendingAuthorization', () async {
-      final processResult = ProcessResultFixture.create(exitCode: 1, stdout: "failed to authenticate to");
-      final result = await parser.parseConnectResult(Future.value(processResult));
-      expect(result.isRight(), true);
-      final connectResult = result.getRight().getOrElse(() => throw "Unknown Error");
-      expect(connectResult, AdbConnectResultStatus.pendingAuthorization);
-    });
-    test('other connection error', () async {
-      final processResult = ProcessResultFixture.create(exitCode: 1, stderr: "Connection refused");
-      final result = await parser.parseConnectResult(Future.value(processResult));
-      expect(result.isLeft(), true);
-      final resultError = result.getLeft().getOrElse(() => throw "Unknown error");
-      expect(resultError.runtimeType, AdbConnectError);
-      expect((resultError as AdbConnectError).message, "Connection refused");
-    });
-  });
+  descriptionParameterizedTest(
+    'parseConnectResult',
+    [
+      [
+        "Success",
+        () => Future<ProcessResult>.value(ProcessResultFixture.create(exitCode: 0)),
+        Either<AdbError, AdbConnectResultStatus>.right(AdbConnectResultStatus.success),
+        null,
+      ],
+      [
+        'pendingAuthorization',
+        () =>
+            Future<ProcessResult>.value(ProcessResultFixture.create(exitCode: 1, stdout: "failed to authenticate to")),
+        Either<AdbError, AdbConnectResultStatus>.right(AdbConnectResultStatus.pendingAuthorization),
+        null,
+      ],
+      [
+        'other connection error',
+        () => Future<ProcessResult>.value(ProcessResultFixture.create(exitCode: 1, stderr: "Connection refused")),
+        Either<AdbError, AdbConnectResultStatus>.left(AdbConnectError("Connection refused")),
+        AdbConnectError,
+      ],
+    ],
+    (
+      _,
+      _ProcessResultSupplier processResultSupplier,
+      Either<AdbError, AdbConnectResultStatus> expectedResult,
+      expectedErrorType,
+    ) async {
+      final result = await parser.parseConnectResult(processResultSupplier());
+      expect(result.isRight(), expectedResult.isRight());
+      if (expectedResult.isRight()) {
+        expect(
+          result.getRight().getOrElse(() => throw "Unknown Error"),
+          expectedResult.getRight().getOrElse(() => throw "Unknown Error"),
+        );
+      } else {
+        final resultError = result.getLeft().getOrElse(() => throw "Unknown error");
+        final expectedError = expectedResult.getLeft().getOrElse(() => throw "Unknown error");
+        expect(resultError.runtimeType, expectedErrorType);
+        if (resultError is AdbConnectError && expectedError is AdbConnectError) {
+          expect(resultError.message, expectedError.message);
+        }
+      }
+    },
+  );
 }
