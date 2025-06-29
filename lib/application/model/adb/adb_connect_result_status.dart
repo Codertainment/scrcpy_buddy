@@ -1,0 +1,1 @@
+enum AdbConnectResultStatus { success, pendingAuthorization }
