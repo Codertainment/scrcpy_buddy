@@ -75,4 +75,17 @@ class AdbResultParser {
       return AdbConnectResult.left(UnknownAdbError(exception: e));
     }
   }
+
+  Future<AdbDeviceIpResult> parseDeviceIpResult(Future<ProcessResult> process) async {
+    try {
+      final result = await process;
+      if (result.exitCode == 0) {
+        return AdbDeviceIpResult.right(result.stdout.toString().split(" ").last);
+      } else {
+        return AdbDeviceIpResult.left(AdbGetDeviceIpError("${result.stdout}\n${result.stderr}"));
+      }
+    } catch (e) {
+      return AdbDeviceIpResult.left(UnknownAdbError(exception: e));
+    }
+  }
 }

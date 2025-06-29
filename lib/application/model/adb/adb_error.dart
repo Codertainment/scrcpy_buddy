@@ -19,3 +19,10 @@ class AdbConnectError extends AdbError {
 
   const AdbConnectError(this.message);
 }
+
+// get device IP Errors
+class AdbGetDeviceIpError extends AdbError {
+  final String message;
+
+  const AdbGetDeviceIpError(this.message);
+}
