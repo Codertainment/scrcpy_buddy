@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'error_process_result.dart';
+
 sealed class AdbError {
   const AdbError();
 }
@@ -13,16 +17,27 @@ sealed class AdbInitError extends AdbError {}
 
 class AdbNotFoundError extends AdbInitError {}
 
-// Connect errors
-class AdbConnectError extends AdbError {
-  final String message;
+abstract class BaseProcessResultError extends AdbError {
+  late final ErrorProcessResult processResult;
 
-  const AdbConnectError(this.message);
+  BaseProcessResultError(ProcessResult processResult) {
+    this.processResult = ErrorProcessResult(processResult);
+  }
+
+  String get message => processResult.message;
+}
+
+// Connect errors
+class AdbConnectError extends BaseProcessResultError {
+  AdbConnectError(super.processResult);
 }
 
 // get device IP Errors
-class AdbGetDeviceIpError extends AdbError {
-  final String message;
+class AdbGetDeviceIpError extends BaseProcessResultError {
+  AdbGetDeviceIpError(super.processResult);
+}
 
-  const AdbGetDeviceIpError(this.message);
+// switch device to TCPIP Error
+class AdbSwitchToTcpIpError extends BaseProcessResultError {
+  AdbSwitchToTcpIpError(super.processResult);
 }

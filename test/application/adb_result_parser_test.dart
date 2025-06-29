@@ -153,7 +153,7 @@ void main() {
       [
         'other connection error',
         () => Future<ProcessResult>.value(ProcessResultFixture.create(exitCode: 1, stderr: "Connection refused")),
-        Either<AdbError, AdbConnectResultStatus>.left(AdbConnectError("Connection refused")),
+        Either<AdbError, AdbConnectResultStatus>.left(AdbConnectError(ProcessResultFixture.create(exitCode: 1, stderr: "Connection refused"))),
         AdbConnectError,
       ],
     ],
@@ -198,7 +198,7 @@ void main() {
       [
         'Non-zero exit code',
         () => Future<ProcessResult>.value(ProcessResultFixture.create(exitCode: 1, stdout: "stdout", stderr: "stderr")),
-        Either<AdbError, String>.left(AdbGetDeviceIpError("stdout\nstderr")),
+        Either<AdbError, String>.left(AdbGetDeviceIpError(ProcessResultFixture.create(exitCode: 1, stdout: "stdout", stderr: "stderr"))),
         AdbGetDeviceIpError,
       ],
       [

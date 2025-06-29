@@ -53,6 +53,7 @@ dev_dependencies:
   build_runner: ^2.4.15
   kiwi_generator: ^4.2.1
   bloc_lint: ^0.2.0-dev
+  meta: ^1.16.0
 
 flutter:
 
