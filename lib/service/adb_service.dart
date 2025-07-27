@@ -6,16 +6,10 @@ import 'package:scrcpy_buddy/application/model/adb/adb_result.dart';
 import 'package:scrcpy_buddy/either_utils.dart';
 
 class AdbService {
-  static final AdbService _instance = AdbService._internal();
+  final ProcessManager _processManager;
+  final AdbResultParser _resultParser;
 
-  AdbService._internal();
-
-  factory AdbService() {
-    return _instance;
-  }
-
-  final _processManager = LocalProcessManager();
-  final _resultParser = AdbResultParser();
+  AdbService(this._processManager, this._resultParser);
 
   Future<AdbInitResult> init() => _resultParser.parseInitResult(_processManager.run(['adb', 'start-server']));
 
