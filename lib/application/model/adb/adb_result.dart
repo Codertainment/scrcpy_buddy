@@ -8,3 +8,4 @@ class AdbResult {}
 typedef AdbInitResult = Either<AdbError, int>;
 typedef AdbDevicesResult = Either<AdbError, List<AdbDevice>>;
 typedef AdbConnectResult = Either<AdbError, AdbConnectResultStatus>;
+typedef AdbDeviceIpResult = Either<AdbError, String>;

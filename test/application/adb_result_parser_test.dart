@@ -153,7 +153,7 @@ void main() {
       [
         'other connection error',
         () => Future<ProcessResult>.value(ProcessResultFixture.create(exitCode: 1, stderr: "Connection refused")),
-        Either<AdbError, AdbConnectResultStatus>.left(AdbConnectError("Connection refused")),
+        Either<AdbError, AdbConnectResultStatus>.left(AdbConnectError(ProcessResultFixture.create(exitCode: 1, stderr: "Connection refused"))),
         AdbConnectError,
       ],
     ],
@@ -175,6 +175,57 @@ void main() {
         final expectedError = expectedResult.getLeft().getOrElse(() => throw "Unknown error");
         expect(resultError.runtimeType, expectedErrorType);
         if (resultError is AdbConnectError && expectedError is AdbConnectError) {
+          expect(resultError.message, expectedError.message);
+        }
+      }
+    },
+  );
+
+  descriptionParameterizedTest(
+    'parseDeviceIpResult',
+    [
+      [
+        "Success",
+        () => Future<ProcessResult>.value(
+          ProcessResultFixture.create(
+            exitCode: 0,
+            stdout: "192.168.179.0/24 dev wlan1 proto kernel scope link src 192.168.179.9",
+          ),
+        ),
+        Either<AdbError, String>.right("192.168.179.9"),
+        null,
+      ],
+      [
+        'Non-zero exit code',
+        () => Future<ProcessResult>.value(ProcessResultFixture.create(exitCode: 1, stdout: "stdout", stderr: "stderr")),
+        Either<AdbError, String>.left(AdbGetDeviceIpError(ProcessResultFixture.create(exitCode: 1, stdout: "stdout", stderr: "stderr"))),
+        AdbGetDeviceIpError,
+      ],
+      [
+        'Failure',
+        () => Future<ProcessResult>.error(ProcessExceptionFixture.create()),
+        Either<AdbError, String>.left(UnknownAdbError()),
+        UnknownAdbError,
+      ],
+    ],
+    (
+      _,
+      _ProcessResultSupplier processResultSupplier,
+      Either<AdbError, String> expectedResult,
+      expectedErrorType,
+    ) async {
+      final result = await parser.parseDeviceIpResult(processResultSupplier());
+      expect(result.isRight(), expectedResult.isRight());
+      if (expectedResult.isRight()) {
+        expect(
+          result.getRight().getOrElse(() => throw "Unknown Error"),
+          expectedResult.getRight().getOrElse(() => throw "Unknown Error"),
+        );
+      } else {
+        final resultError = result.getLeft().getOrElse(() => throw "Unknown error");
+        final expectedError = expectedResult.getLeft().getOrElse(() => throw "Unknown error");
+        expect(resultError.runtimeType, expectedErrorType);
+        if (resultError is AdbGetDeviceIpError && expectedError is AdbGetDeviceIpError) {
           expect(resultError.message, expectedError.message);
         }
       }

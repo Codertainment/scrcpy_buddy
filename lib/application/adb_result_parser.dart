@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:scrcpy_buddy/application/model/adb/adb_device.dart';
 import 'package:scrcpy_buddy/application/model/adb/adb_result.dart';
@@ -12,9 +11,6 @@ class AdbResultParser {
   Future<AdbInitResult> parseInitResult(Future<ProcessResult> process) async {
     try {
       final result = await process;
-      if (kDebugMode) {
-        print("ADB init result: ${result.exitCode}\nStdOut: ${result.stdout}\nStdErr: ${result.stderr}");
-      }
       return AdbInitResult.right(result.exitCode);
     } on ProcessException catch (e) {
       if (e.message.toLowerCase().contains("failed to find")) {
@@ -69,10 +65,30 @@ class AdbResultParser {
       } else if (result.stdout.toString().contains("failed to authenticate")) {
         return AdbConnectResult.right(AdbConnectResultStatus.pendingAuthorization);
       } else {
-        return AdbConnectResult.left(AdbConnectError(result.stderr.toString()));
+        return AdbConnectResult.left(AdbConnectError(result));
       }
     } catch (e) {
       return AdbConnectResult.left(UnknownAdbError(exception: e));
+    }
+  }
+
+  Future<AdbDeviceIpResult> parseDeviceIpResult(Future<ProcessResult> process) async {
+    try {
+      final result = await process;
+      if (result.exitCode == 0) {
+        return AdbDeviceIpResult.right(result.stdout.toString().split(" ").last);
+      } else {
+        return AdbDeviceIpResult.left(AdbGetDeviceIpError(result));
+      }
+    } catch (e) {
+      return AdbDeviceIpResult.left(UnknownAdbError(exception: e));
+    }
+  }
+
+  Future<void> parseTcpIpResult(Future<ProcessResult> process) async {
+    final result = await process;
+    if (result.exitCode != 0) {
+      throw AdbSwitchToTcpIpError(result);
     }
   }
 }
