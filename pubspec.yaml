@@ -39,8 +39,6 @@ dependencies:
   fpdart: ^1.1.1
   equatable: ^2.0.7
 
-  # Testing
-  mockito: ^5.4.5
 
 dev_dependencies:
   flutter_test:
@@ -54,6 +52,8 @@ dev_dependencies:
   kiwi_generator: ^4.2.1
   bloc_lint: ^0.2.0-dev
   meta: ^1.16.0
+  # Testing
+  mockito: ^5.4.5
 
 flutter:
 
