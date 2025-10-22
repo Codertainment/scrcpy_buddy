@@ -1,23 +1,19 @@
-import 'package:kiwi/kiwi.dart';
 import 'package:process/process.dart';
+import 'package:provider/provider.dart';
 import 'package:scrcpy_buddy/service/adb_service.dart';
 
 import 'application/adb_result_parser.dart';
 
-part 'injector.g.dart';
+List<Provider> get providers => [
+  Provider<ProcessManager>(create: (_) => const LocalProcessManager()),
+  Provider<AdbResultParser>(create: (_) => AdbResultParser()),
 
-abstract class Injector {
-  @Register.singleton(ProcessManager, from: LocalProcessManager)
-  @Register.singleton(AdbResultParser)
-  @Register.singleton(AdbService)
-  void configure();
-}
-
-class Di {
-  static void setup() {
-    final injector = _$Injector();
-    injector.configure();
-  }
-}
-
-T resolveDependency<T>() => KiwiContainer().resolve<T>();
+  // For AdbService, which depends on ProcessManager and AdbResultParser.
+  // We use `context.read<T>()` to get the dependencies from other providers.
+  Provider<AdbService>(
+    create: (context) => AdbService(
+      context.read<ProcessManager>(),
+      context.read<AdbResultParser>(),
+    ),
+  ),
+];
