@@ -7,8 +7,6 @@ class AdbDevice extends Equatable {
 
   const AdbDevice({required this.serial, this.status = AdbDeviceStatus.offline, this.metadata});
 
-  bool get isReady => status == AdbDeviceStatus.device;
-
   @override
   List<Object?> get props => [serial, status, metadata];
 }

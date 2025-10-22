@@ -32,7 +32,7 @@ dependencies:
   # State
   bloc: ^9.0.0
   flutter_bloc: ^9.1.1
-  kiwi: ^5.0.1
+  provider: ^6.1.5+1
 
   # Core
   process: ^5.0.4
@@ -49,7 +49,6 @@ dev_dependencies:
 
   flutter_lints: ^6.0.0
   build_runner: ^2.4.15
-  kiwi_generator: ^4.2.1
   bloc_lint: ^0.2.0-dev
   meta: ^1.16.0
   # Testing
