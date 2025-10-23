@@ -1,0 +1,21 @@
+{
+  "home": {
+    "navigation": {
+      "devices": "Devices"
+    }
+  },
+  "common": {
+    "somethingWentWrong": "Something went wrong"
+  },
+  "devices": {
+    "refresh": "Refresh",
+    "unknown": "Unknown",
+    "deviceState": {
+      "offline": "Offline",
+      "usb": "Connected through USB",
+      "network": "Connected through the network",
+      "unauthorized": "Unauthorized"
+    },
+    "toNetwork": "To Network"
+  }
+}
