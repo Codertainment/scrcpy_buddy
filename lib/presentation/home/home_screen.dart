@@ -1,11 +1,15 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:scrcpy_buddy/presentation/devices/devices_widget.dart';
+import 'package:scrcpy_buddy/presentation/extension/translation_extension.dart';
 
-class HomeScreen extends StatelessWidget {
-  HomeScreen({super.key});
+class HomeScreen extends AppStatelessWidget {
+  const HomeScreen({super.key});
 
-  final List<NavigationPaneItem> items = [
-    PaneItem(icon: WindowsIcon(WindowsIcons.cell_phone), title: Text("Devices"), body: DevicesScreen()),
+  @override
+  String get module => 'home';
+
+  List<NavigationPaneItem> getItems(BuildContext context) => [
+    PaneItem(icon: WindowsIcon(WindowsIcons.cell_phone), title: Text(translatedText(context, key: 'navigation.devices')), body: DevicesScreen()),
   ];
 
   @override
@@ -13,7 +17,7 @@ class HomeScreen extends StatelessWidget {
     final typography = FluentTheme.of(context).typography;
     return NavigationView(
       appBar: NavigationAppBar(title: Text('scrcpy buddy', style: typography.title)),
-      pane: NavigationPane(items: items),
+      pane: NavigationPane(items: getItems(context)),
     );
   }
 }

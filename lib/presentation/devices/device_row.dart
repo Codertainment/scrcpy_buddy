@@ -2,9 +2,11 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:provider/provider.dart';
 import 'package:scrcpy_buddy/application/extension/adb_device_extension.dart';
 import 'package:scrcpy_buddy/application/model/adb/adb_device.dart';
+import 'package:scrcpy_buddy/presentation/extension/context_extension.dart';
+import 'package:scrcpy_buddy/presentation/extension/translation_extension.dart';
 import 'package:scrcpy_buddy/service/adb_service.dart';
 
-class DeviceRow extends StatelessWidget {
+class DeviceRow extends AppStatelessWidget {
   final AdbDevice device;
   final bool selected;
   final ValueChanged<bool> onSelectionChange;
@@ -12,8 +14,10 @@ class DeviceRow extends StatelessWidget {
   const DeviceRow({super.key, required this.device, required this.selected, required this.onSelectionChange});
 
   @override
+  String get module => 'devices';
+
+  @override
   Widget build(BuildContext context) {
-    final typography = FluentTheme.of(context).typography;
     return ListTile.selectable(
       title: Row(
         children: [
@@ -21,36 +25,43 @@ class DeviceRow extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(device.model ?? "Unknown", style: typography.bodyStrong),
+                Text(device.model ?? translatedText(context, key: 'unknown'), style: context.typography.bodyStrong),
                 const SizedBox(height: 4),
-                Text(device.codename ?? "Unknown", style: typography.caption),
+                Text(device.codename ?? translatedText(context, key: 'unknown'), style: context.typography.caption),
               ],
             ),
+          ] else if (device.status == AdbDeviceStatus.unauthorized) ...[
+            Text(translatedText(context, key: 'deviceState.unauthorized'), style: context.typography.bodyStrong),
           ],
           const SizedBox(width: 8),
-          Icon(connectionMode),
+          Tooltip(
+            message: translatedText(context, key: 'deviceState.$deviceStatusTooltip'),
+            child: Icon(deviceStatusIcon),
+          ),
           const Spacer(),
-          Text(device.serial, style: typography.body),
+          Text(device.serial, style: context.typography.body),
           if (device.isUsb) ...[
             const Spacer(),
             Button(
               onPressed: () => context.read<AdbService>().switchDeviceToTcpIp(device.serial),
-              child: Row(children: [Icon(WindowsIcons.wifi), const SizedBox(width: 4), Text("To TCP/IP")]),
+              child: Row(
+                children: [
+                  Icon(WindowsIcons.wifi),
+                  const SizedBox(width: 4),
+                  Text(translatedText(context, key: 'toNetwork')),
+                ],
+              ),
             ),
           ],
-          // Text(device.metadata.toString()),
         ],
       ),
       selectionMode: ListTileSelectionMode.multiple,
       selected: selected,
-      onSelectionChange: (selected) {
-        debugPrint("selected $selected ${device.serial}");
-        onSelectionChange(selected);
-      },
+      onSelectionChange: onSelectionChange,
     );
   }
 
-  IconData get connectionMode {
+  IconData get deviceStatusIcon {
     switch (device.status) {
       case AdbDeviceStatus.offline:
         return WindowsIcons.network_offline;
@@ -62,6 +73,21 @@ class DeviceRow extends StatelessWidget {
         }
       case AdbDeviceStatus.unauthorized:
         return FluentIcons.user_warning;
+    }
+  }
+
+  String get deviceStatusTooltip {
+    switch (device.status) {
+      case AdbDeviceStatus.offline:
+        return 'offline';
+      case AdbDeviceStatus.device:
+        if (device.isUsb) {
+          return 'usb';
+        } else {
+          return 'network';
+        }
+      case AdbDeviceStatus.unauthorized:
+        return 'unauthorized';
     }
   }
 }
