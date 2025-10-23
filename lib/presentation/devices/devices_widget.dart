@@ -1,6 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scrcpy_buddy/presentation/devices/device_row.dart';
+import 'package:scrcpy_buddy/presentation/extension/translation_extension.dart';
 
 import 'cubit/devices_cubit.dart';
 
@@ -20,9 +21,12 @@ class DevicesPage extends StatefulWidget {
   State<DevicesPage> createState() => _DevicesPageState();
 }
 
-class _DevicesPageState extends State<DevicesPage> {
+class _DevicesPageState extends AppModuleState<DevicesPage> {
   late final DevicesCubit cubit = context.read();
   final List<String> selectedDevices = [];
+
+  @override
+  String get module => 'devices';
 
   @override
   void initState() {
@@ -42,14 +46,16 @@ class _DevicesPageState extends State<DevicesPage> {
                 primaryItems: [
                   CommandBarButton(
                     onPressed: () => cubit.loadDevices(),
-                    label: Text('Refresh'),
+                    label: Text(translatedText(key: 'refresh')),
                     icon: Icon(WindowsIcons.refresh),
                   ),
                 ],
               ),
               const SizedBox(height: 16),
               if (state is DevicesLoading || state is DevicesInitial) ...[Center(child: ProgressBar())],
-              if (state is DevicesLoadFailure) ...[Center(child: Text(state.message ?? 'Something went wrong'))],
+              if (state is DevicesLoadFailure) ...[
+                Center(child: Text(state.message ?? translatedText(key: 'somethingWentWrong'))),
+              ],
               if (state is DevicesLoadSuccess) ...[
                 Expanded(
                   child: ListView.builder(
@@ -60,7 +66,6 @@ class _DevicesPageState extends State<DevicesPage> {
                         device: device,
                         selected: selectedDevices.contains(device.serial),
                         onSelectionChange: (selected) {
-                          debugPrint("selected $selected ${device.serial}");
                           setState(() {
                             if (selected) {
                               selectedDevices.add(device.serial);
