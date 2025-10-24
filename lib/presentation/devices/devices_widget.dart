@@ -31,6 +31,10 @@ class _DevicesPageState extends AppModuleState<DevicesPage> {
   @override
   void initState() {
     super.initState();
+    _loadDevices();
+  }
+
+  void _loadDevices() {
     cubit.loadDevices();
   }
 
@@ -38,14 +42,20 @@ class _DevicesPageState extends AppModuleState<DevicesPage> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16),
-      child: BlocBuilder<DevicesCubit, DevicesState>(
+      child: BlocConsumer<DevicesCubit, DevicesState>(
+        listener: (context, state) {
+          if (state is DevicesLoadSuccess) {
+            final currentSerials = state.devices.map((device) => device.serial);
+            selectedDevices.retainWhere((serial) => currentSerials.contains(serial));
+          }
+        },
         builder: (context, state) {
           return Column(
             children: [
               CommandBar(
                 primaryItems: [
                   CommandBarButton(
-                    onPressed: () => cubit.loadDevices(),
+                    onPressed: _loadDevices,
                     label: Text(translatedText(key: 'refresh')),
                     icon: Icon(WindowsIcons.refresh),
                   ),
@@ -64,6 +74,7 @@ class _DevicesPageState extends AppModuleState<DevicesPage> {
                       final device = state.devices[index];
                       return DeviceRow(
                         device: device,
+                        shouldRefresh: _loadDevices,
                         selected: selectedDevices.contains(device.serial),
                         onSelectionChange: (selected) {
                           setState(() {

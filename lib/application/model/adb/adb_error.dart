@@ -27,9 +27,13 @@ abstract class BaseProcessResultError extends AdbError {
   String get message => processResult.message;
 }
 
-// Connect errors
+// Connection errors
 class AdbConnectError extends BaseProcessResultError {
   AdbConnectError(super.processResult);
+}
+
+class AdbDisconnectError extends BaseProcessResultError {
+  AdbDisconnectError(super.processResult);
 }
 
 // get device IP Errors
