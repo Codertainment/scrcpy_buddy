@@ -9,23 +9,3 @@ extension TranslationExtension on BuildContext {
 
   bool get isEnglish => Localizations.localeOf(this).languageCode == 'en';
 }
-
-abstract class AppModuleState<T extends StatefulWidget> extends State<T> {
-  String get module;
-
-  String translatedText({required String key, Map<String, String>? translationParams}) {
-    return context.translatedText(module: module, key: key, translationParams: translationParams);
-  }
-
-  Typography get typography => context.typography;
-}
-
-abstract class AppStatelessWidget extends StatelessWidget {
-  const AppStatelessWidget({super.key});
-
-  String get module;
-
-  String translatedText(BuildContext context, {required String key, Map<String, String>? translationParams}) {
-    return context.translatedText(module: module, key: key, translationParams: translationParams);
-  }
-}

@@ -24,7 +24,9 @@
       "button": "Disconnect",
       "title": "Disconnect device?",
       "message": "Are you sure you want to disconnect this device?",
-      "confirm": "Disconnect"
-    }
+      "confirm": "Disconnect",
+      "done": "Device disconnected successfully"
+    },
+    "serialCopied": "Device serial copied to clipboard"
   }
 }

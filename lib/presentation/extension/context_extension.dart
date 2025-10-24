@@ -7,4 +7,20 @@ extension ContextExtension on BuildContext {
 
   Future<T?> openDialog<T>(Widget child) =>
       showDialog<T>(context: this, barrierDismissible: true, builder: (_) => child);
+
+  Future<void> showInfoBar({
+    required String title,
+    InfoBarSeverity severity = InfoBarSeverity.info,
+    String? content,
+  }) => displayInfoBar(
+    this,
+    builder: (context, close) {
+      return InfoBar(
+        title: Text(title),
+        content: content != null ? Text(content) : null,
+        action: IconButton(icon: const WindowsIcon(WindowsIcons.clear), onPressed: close),
+        severity: severity,
+      );
+    },
+  );
 }

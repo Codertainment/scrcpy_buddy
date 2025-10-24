@@ -1,7 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scrcpy_buddy/presentation/devices/device_row.dart';
-import 'package:scrcpy_buddy/presentation/extension/translation_extension.dart';
+import 'package:scrcpy_buddy/presentation/widgets/app_widgets.dart';
 
 import 'cubit/devices_cubit.dart';
 

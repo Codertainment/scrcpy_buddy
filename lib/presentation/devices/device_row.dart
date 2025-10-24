@@ -1,10 +1,12 @@
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:scrcpy_buddy/application/extension/adb_device_extension.dart';
 import 'package:scrcpy_buddy/application/extension/adb_error_extension.dart';
 import 'package:scrcpy_buddy/application/model/adb/adb_device.dart';
 import 'package:scrcpy_buddy/presentation/extension/context_extension.dart';
 import 'package:scrcpy_buddy/presentation/extension/translation_extension.dart';
+import 'package:scrcpy_buddy/presentation/widgets/app_widgets.dart';
 import 'package:scrcpy_buddy/presentation/widgets/icon_text_button.dart';
 import 'package:scrcpy_buddy/service/adb_service.dart';
 
@@ -28,8 +30,6 @@ class DeviceRow extends StatefulWidget {
 
 class _DeviceRowState extends AppModuleState<DeviceRow> {
   bool isNetworkSwitchInProgress = false;
-  final _toNetworkFlyoutController = FlyoutController();
-  final _disconnectFlyoutController = FlyoutController();
   late final _adbService = context.read<AdbService>();
 
   @override
@@ -62,30 +62,35 @@ class _DeviceRowState extends AppModuleState<DeviceRow> {
           const Spacer(),
           /* serial */
           Text(widget.device.serial, style: context.typography.body),
+          const SizedBox(width: 4),
+          IconButton(
+            icon: WindowsIcon(WindowsIcons.copy),
+            onPressed: () {
+              Clipboard.setData(ClipboardData(text: widget.device.serial));
+              showInfoBar(
+                title: translatedText(key: 'serialCopied'),
+                severity: InfoBarSeverity.success,
+              );
+            },
+          ),
           /* Device actions */
           if (widget.device.isUsb) ...[
             const Spacer(),
             /* Switch USB to network */
-            FlyoutTarget(
-              controller: _toNetworkFlyoutController,
-              child: isNetworkSwitchInProgress
-                  ? const ProgressBar()
-                  : IconTextButton(
-                      onPressed: _switchToNetwork,
-                      icon: const Icon(WindowsIcons.wifi),
-                      text: translatedText(key: 'toNetwork'),
-                    ),
-            ),
+            isNetworkSwitchInProgress
+                ? const ProgressBar()
+                : IconTextButton(
+                    onPressed: _switchToNetwork,
+                    icon: const Icon(WindowsIcons.wifi),
+                    text: translatedText(key: 'toNetwork'),
+                  ),
           ] else if (widget.device.isNetwork || widget.device.status == AdbDeviceStatus.unauthorized) ...[
             const Spacer(),
             /* Disconnect device */
-            FlyoutTarget(
-              controller: _disconnectFlyoutController,
-              child: IconTextButton(
-                onPressed: _showDisconnectConfirmationDialog,
-                icon: const Icon(WindowsIcons.clear),
-                text: translatedText(key: 'disconnect.button'),
-              ),
+            IconTextButton(
+              onPressed: _showDisconnectConfirmationDialog,
+              icon: const Icon(WindowsIcons.clear),
+              text: translatedText(key: 'disconnect.button'),
             ),
           ],
         ],
@@ -116,9 +121,12 @@ class _DeviceRowState extends AppModuleState<DeviceRow> {
     );
     if (shouldDisconnect == true) {
       final disconnectResult = await _adbService.disconnect(widget.device.serial);
-      disconnectResult.mapLeft(
-        (error) =>
-            _disconnectFlyoutController.showFlyout(builder: (context) => FlyoutContent(child: Text(error.message))),
+      disconnectResult.mapLeft((error) => showInfoBar(title: error.message, severity: InfoBarSeverity.error));
+      disconnectResult.map(
+        (_) => showInfoBar(
+          title: translatedText(key: 'disconnect.done'),
+          severity: InfoBarSeverity.success,
+        ),
       );
       widget.shouldRefresh();
     }
@@ -132,33 +140,16 @@ class _DeviceRowState extends AppModuleState<DeviceRow> {
     setState(() {
       isNetworkSwitchInProgress = false;
     });
-    switchResult.mapLeft(
-      (error) => _toNetworkFlyoutController.showFlyout(
-        builder: (context) {
-          return FlyoutContent(child: Text(error.message));
-        },
-      ),
-    );
+    switchResult.mapLeft((error) => showInfoBar(title: error.message, severity: InfoBarSeverity.error));
     switchResult.map((result) async {
-      await _toNetworkFlyoutController.showFlyout(
-        builder: (context) {
-          return FlyoutContent(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(translatedText(key: 'switchedToNetwork')),
-                const SizedBox(height: 8),
-                Button(
-                  child: Text(context.translatedText(key: 'common.done')),
-                  onPressed: () => _toNetworkFlyoutController.close(),
-                ),
-              ],
-            ),
-          );
-        },
+      showInfoBar(
+        title: translatedText(key: 'switchedToNetwork'),
+        severity: InfoBarSeverity.success,
       );
+      await Future.delayed(Duration(milliseconds: 300));
       widget.shouldRefresh();
+      /* refresh again */
+      await Future.delayed(Duration(milliseconds: 500), () => widget.shouldRefresh());
     });
   }
 
