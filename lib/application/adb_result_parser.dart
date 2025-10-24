@@ -76,7 +76,7 @@ class AdbResultParser {
     try {
       final result = await process;
       if (result.exitCode == 0) {
-        return AdbDeviceIpResult.right(result.stdout.toString().split(" ").last);
+        return AdbDeviceIpResult.right(result.stdout.toString().trim().split(" ").last);
       } else {
         return AdbDeviceIpResult.left(AdbGetDeviceIpError(result));
       }
@@ -89,6 +89,15 @@ class AdbResultParser {
     final result = await process;
     if (result.exitCode != 0) {
       throw AdbSwitchToTcpIpError(result);
+    }
+  }
+
+  Future<Either<AdbError, void>> parseDisconnectResult(Future<ProcessResult> process) async {
+    final result = await process;
+    if (result.exitCode != 0) {
+      return Either.left(AdbDisconnectError(result));
+    } else {
+      return Either.right(null);
     }
   }
 }

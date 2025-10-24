@@ -5,7 +5,9 @@
     }
   },
   "common": {
-    "somethingWentWrong": "Something went wrong"
+    "somethingWentWrong": "Something went wrong",
+    "done": "Done",
+    "cancel": "Cancel"
   },
   "devices": {
     "refresh": "Refresh",
@@ -16,6 +18,13 @@
       "network": "Connected through the network",
       "unauthorized": "Unauthorized"
     },
-    "toNetwork": "To Network"
+    "toNetwork": "To Network",
+    "switchedToNetwork": "Device switched successfully to network,\nplease disconnect the USB Cable.",
+    "disconnect": {
+      "button": "Disconnect",
+      "title": "Disconnect device?",
+      "message": "Are you sure you want to disconnect this device?",
+      "confirm": "Disconnect"
+    }
   }
 }

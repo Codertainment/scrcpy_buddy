@@ -11,5 +11,5 @@ extension AdbDeviceExtension on AdbDevice {
     return metadata?.keys.where((key) => key.contains("usb")).isNotEmpty ?? false;
   }
 
-  bool get isWifi => !isUsb;
+  bool get isNetwork => !isUsb;
 }
