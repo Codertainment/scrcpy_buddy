@@ -67,28 +67,54 @@ class _DevicesPageState extends AppModuleState<DevicesPage> {
                 Center(child: Text(state.message ?? translatedText(key: 'somethingWentWrong'))),
               ],
               if (state is DevicesLoadSuccess) ...[
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: state.devices.length,
-                    itemBuilder: (context, index) {
-                      final device = state.devices[index];
-                      return DeviceRow(
-                        device: device,
-                        shouldRefresh: _loadDevices,
-                        selected: selectedDevices.contains(device.serial),
-                        onSelectionChange: (selected) {
-                          setState(() {
-                            if (selected) {
-                              selectedDevices.add(device.serial);
-                            } else {
-                              selectedDevices.remove(device.serial);
-                            }
-                          });
-                        },
-                      );
-                    },
+                if (state.devices.isEmpty) ...[
+                  Padding(
+                    padding: const EdgeInsets.all(24),
+                    child: Text(translatedText(key: 'noDevicesFound'), style: typography.title),
                   ),
-                ),
+                ] else ...[
+                  Container(
+                    margin: EdgeInsets.only(bottom: 12),
+                    height: 28,
+                    color: Colors.grey[150],
+                    padding: EdgeInsets.symmetric(horizontal: 48, vertical: 6),
+                    child: Row(
+                      children: [
+                        Text(translatedText(key: 'header.device')),
+                        const Spacer(),
+                        Container(height: double.maxFinite, width: 3, color: Colors.grey[160]),
+                        const Spacer(),
+                        Text(translatedText(key: 'header.serial')),
+                        const Spacer(),
+                        Container(height: double.maxFinite, width: 3, color: Colors.grey[160]),
+                        const Spacer(),
+                        Text(translatedText(key: 'header.actions')),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: state.devices.length,
+                      itemBuilder: (context, index) {
+                        final device = state.devices[index];
+                        return DeviceRow(
+                          device: device,
+                          shouldRefresh: _loadDevices,
+                          selected: selectedDevices.contains(device.serial),
+                          onSelectionChange: (selected) {
+                            setState(() {
+                              if (selected) {
+                                selectedDevices.add(device.serial);
+                              } else {
+                                selectedDevices.remove(device.serial);
+                              }
+                            });
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                ],
               ],
             ],
           );
