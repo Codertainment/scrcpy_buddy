@@ -12,6 +12,12 @@
   "devices": {
     "refresh": "Refresh",
     "unknown": "Unknown",
+    "noDevicesFound": "No devices found",
+    "header": {
+      "device": "Device",
+      "serial": "Serial",
+      "actions": "Actions"
+    },
     "deviceState": {
       "offline": "Offline",
       "usb": "Connected through USB",
