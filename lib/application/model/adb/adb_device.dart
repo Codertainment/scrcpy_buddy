@@ -11,4 +11,4 @@ class AdbDevice extends Equatable {
   List<Object?> get props => [serial, status, metadata];
 }
 
-enum AdbDeviceStatus { offline, device, unauthorized }
+enum AdbDeviceStatus { offline, device, recovery, unauthorized }

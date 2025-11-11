@@ -2,7 +2,8 @@
   "home": {
     "navigation": {
       "devices": "Devices"
-    }
+    },
+    "start": "Start"
   },
   "common": {
     "somethingWentWrong": "Something went wrong",
@@ -15,15 +16,28 @@
     "noDevicesFound": "No devices found",
     "header": {
       "device": "Device",
+      "status": "Status",
       "serial": "Serial",
       "actions": "Actions"
     },
+    "error": {
+      "scrcpy": {
+        "notFound": {
+          "title": "Scrcpy not found",
+          "message": "Scrcpy not found in path. Please make sure if it's installed. If already installed, please configure the path in settings."
+        },
+        "failedToStart": "Failed to start scrcpy"
+      }
+    },
+    "copy": "Copy",
     "deviceState": {
       "offline": "Offline",
-      "usb": "Connected through USB",
-      "network": "Connected through the network",
-      "unauthorized": "Unauthorized"
+      "usb": "Connected via USB",
+      "network": "Connected via network",
+      "unauthorized": "Unauthorized",
+      "recovery": "Recovery Mode"
     },
+    "stop": "Stop",
     "toNetwork": "To Network",
     "switchedToNetwork": "Device switched successfully to network,\nplease disconnect the USB Cable.",
     "disconnect": {
