@@ -2,7 +2,9 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:scrcpy_buddy/application/args_bloc/args_bloc.dart';
+import 'package:scrcpy_buddy/application/model/scrcpy/scrcpy_error.dart';
 import 'package:scrcpy_buddy/application/scrcpy_bloc/scrcpy_bloc.dart';
+import 'package:scrcpy_buddy/presentation/devices/bloc/devices_bloc.dart';
 import 'package:scrcpy_buddy/presentation/extension/translation_extension.dart';
 import 'package:scrcpy_buddy/presentation/home/widgets/start_button.dart';
 import 'package:scrcpy_buddy/presentation/widgets/app_widgets.dart';
@@ -83,22 +85,47 @@ class _HomeScreenState extends AppModuleState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return NavigationView(
-      paneBodyBuilder: (_, _) => widget.child,
-      pane: NavigationPane(
-        displayMode: PaneDisplayMode.compact,
-        items: _getMainItems(context),
-        selected: _calculateSelectedIndex(context),
-        footerItems: _getFooterItems(context),
-      ),
-      appBar: NavigationAppBar(
-        title: Text('scrcpy buddy', style: typography.title),
-        actions: Padding(
-          padding: const EdgeInsets.only(top: 12, right: 16),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [StartButton(argsBloc: _argsBloc, scrcpyBloc: _scrcpyBloc)],
+    return BlocListener<ScrcpyBloc, ScrcpyState>(
+      listener: (context, state) {
+        if (state is ScrcpyStartSuccessState) {
+          context.read<DevicesBloc>().add(ToggleDeviceSelection(state.deviceSerial));
+        } else if (state is ScrcpyStartFailedState) {
+          if (state.error is ScrcpyNotFoundError) {
+            showInfoBar(
+              title: translatedText(key: 'error.scrcpy.notFound.title'),
+              content: translatedText(key: 'error.scrcpy.notFound.message'),
+              severity: InfoBarSeverity.error,
+              action: HyperlinkButton(
+                child: Text(translatedText(key: 'goToSettings')),
+                onPressed: () => router.push(AppRoute.settings),
+              ),
+            );
+          } else {
+            showInfoBar(
+              title: translatedText(key: 'error.scrcpy.failedToStart'),
+              content: state.error.toString(),
+              severity: InfoBarSeverity.error,
+            );
+          }
+        }
+      },
+      child: NavigationView(
+        paneBodyBuilder: (_, _) => widget.child,
+        pane: NavigationPane(
+          displayMode: PaneDisplayMode.compact,
+          items: _getMainItems(context),
+          selected: _calculateSelectedIndex(context),
+          footerItems: _getFooterItems(context),
+        ),
+        appBar: NavigationAppBar(
+          title: Text('scrcpy buddy', style: typography.title),
+          actions: Padding(
+            padding: const EdgeInsets.only(top: 12, right: 16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [StartButton(argsBloc: _argsBloc, scrcpyBloc: _scrcpyBloc)],
+            ),
           ),
         ),
       ),

@@ -4,12 +4,32 @@
       "devices": "Devices",
       "settings": "Settings"
     },
-    "start": "Start"
+    "start": "Start",
+    "error": {
+      "scrcpy": {
+        "notFound": {
+          "title": "Scrcpy not found",
+          "message": "Scrcpy not found in path. Please make sure if it's installed. If already installed, please configure the path in settings."
+        },
+        "failedToStart": "Failed to start scrcpy"
+      }
+    },
+    "goToSettings": "Go to settings"
   },
   "common": {
     "somethingWentWrong": "Something went wrong",
     "done": "Done",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "errors": {
+      "adb": {
+        "unknown": "Unknown error:\n{{ error }}",
+        "notFound": "ADB not found\nPlease set explicit path in settings.",
+        "connect": "Failed to connect to device:\n{{ error }}",
+        "getDeviceIp": "Failed to get device IP:\n{{ error }}",
+        "switchToTcpIp": "Failed to switch to network:\n{{ error }}",
+        "disconnect": "Failed to disconnect device:\n{{ error }}"
+      }
+    }
   },
   "devices": {
     "refresh": "Refresh",
@@ -20,15 +40,6 @@
       "status": "Status",
       "serial": "Serial",
       "actions": "Actions"
-    },
-    "error": {
-      "scrcpy": {
-        "notFound": {
-          "title": "Scrcpy not found",
-          "message": "Scrcpy not found in path. Please make sure if it's installed. If already installed, please configure the path in settings."
-        },
-        "failedToStart": "Failed to start scrcpy"
-      }
     },
     "copy": "Copy",
     "deviceState": {
@@ -51,5 +62,12 @@
     "serialCopied": "Device serial copied to clipboard"
   },
   "settings": {
+    "scrcpyExecutable": {
+      "title": "scrcpy executable",
+      "dialogTitle": "Select scrcpy executable",
+      "description": "Explicitly set scrcpy executable path.\nSet this in case the executable is not added to $PATH or, the tool can't find it.",
+      "invalidPath": "Invalid path provided",
+      "check": "Check"
+    }
   }
 }
