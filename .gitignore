@@ -47,3 +47,4 @@ app.*.map.json
 # Generated files
 **/*.g.dart
 test/**/*.mocks.dart
+**/*.reflectable.dart

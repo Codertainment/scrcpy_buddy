@@ -28,12 +28,13 @@ dependencies:
     sdk: flutter
 
   # UI
-  fluent_ui: ^4.12.0
+  fluent_ui: ^4.13.0
   system_theme: ^3.1.2
 
   # State
   bloc: ^9.0.0
   flutter_bloc: ^9.1.1
+  bloc_concurrency: ^0.3.0
   provider: ^6.1.5+1
 
   # Core
@@ -41,6 +42,7 @@ dependencies:
   fpdart: ^1.1.1
   equatable: ^2.0.7
   flutter_i18n: ^0.36.3
+  reflectable: ^5.0.1
 
 dev_dependencies:
   flutter_test:
@@ -51,10 +53,12 @@ dev_dependencies:
 
   flutter_lints: ^6.0.0
   build_runner: ^2.4.15
-  bloc_lint: ^0.2.0-dev
+  reflectable_builder: ^1.0.1
+  bloc_lint: ^0.3.3
   meta: ^1.16.0
   # Testing
   mockito: ^5.4.5
+  flutter_launcher_icons: ^0.14.4
 
 flutter:
 
@@ -64,6 +68,9 @@ flutter:
   uses-material-design: true
   assets:
     - assets/i18n/en.json
+    - assets/scrcpy.svg
+    - assets/scrcpy.png
+    - assets/icon.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
@@ -95,3 +102,12 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+flutter_launcher_icons:
+  image_path: "assets/icon.png"
+  windows:
+    generate: true
+    icon_size: 256
+  linux:
+    generate: true
+  macos:
+    generate: true
