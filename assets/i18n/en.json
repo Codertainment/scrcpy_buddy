@@ -1,7 +1,8 @@
 {
   "home": {
     "navigation": {
-      "devices": "Devices"
+      "devices": "Devices",
+      "settings": "Settings"
     },
     "start": "Start"
   },
@@ -48,5 +49,7 @@
       "done": "Device disconnected successfully"
     },
     "serialCopied": "Device serial copied to clipboard"
+  },
+  "settings": {
   }
 }

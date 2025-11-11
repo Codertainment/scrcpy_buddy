@@ -1,4 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter_acrylic/flutter_acrylic.dart' as flutter_acrylic;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -8,8 +10,9 @@ import 'package:scrcpy_buddy/application/model/scrcpy/scrcpy_arg.dart';
 import 'package:scrcpy_buddy/application/scrcpy_bloc/scrcpy_bloc.dart';
 import 'package:scrcpy_buddy/main.reflectable.dart';
 import 'package:scrcpy_buddy/presentation/devices/bloc/devices_bloc.dart';
-import 'package:scrcpy_buddy/presentation/home/home_screen.dart';
+import 'package:scrcpy_buddy/routes.dart';
 import 'package:system_theme/system_theme.dart';
+import 'package:window_manager/window_manager.dart';
 
 import 'injector.dart';
 
@@ -18,6 +21,15 @@ const scrcpyArg = ScrcpyArg();
 void main() async {
   initializeReflectable();
   WidgetsFlutterBinding.ensureInitialized();
+  await flutter_acrylic.Window.initialize();
+  if (defaultTargetPlatform == TargetPlatform.windows) {
+    await flutter_acrylic.Window.setEffect(effect: flutter_acrylic.WindowEffect.acrylic);
+  }
+  await WindowManager.instance.ensureInitialized();
+  windowManager.waitUntilReadyToShow().then((_) async {
+    await windowManager.setMinimumSize(const Size(500, 600));
+    await windowManager.show();
+  });
   await SystemTheme.accentColor.load();
   runApp(const MyApp());
 }
@@ -25,12 +37,11 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: providers,
-      child: FluentApp(
+      child: FluentApp.router(
         debugShowCheckedModeBanner: false,
         title: 'scrcpy Buddy',
         themeMode: ThemeMode.system,
@@ -39,14 +50,19 @@ class MyApp extends StatelessWidget {
           brightness: Brightness.dark,
           accentColor: SystemTheme.accentColor.accent.toAccentColor(),
         ),
-        home: MultiBlocProvider(
-          providers: [
-            BlocProvider(create: (_) => ArgsBloc()),
-            BlocProvider(create: (context) => ScrcpyBloc(context.read(), context.read())),
-            BlocProvider(create: (context) => DevicesBloc(context.read())),
-          ],
-          child: HomeScreen(),
-        ),
+        builder: (context, child) {
+          return MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (_) => ArgsBloc()),
+              BlocProvider(create: (context) => ScrcpyBloc(context.read(), context.read())),
+              BlocProvider(create: (context) => DevicesBloc(context.read())),
+            ],
+            child: child!,
+          );
+        },
+        routeInformationParser: router.routeInformationParser,
+        routerDelegate: router.routerDelegate,
+        routeInformationProvider: router.routeInformationProvider,
         localizationsDelegates: [
           FlutterI18nDelegate(
             translationLoader: FileTranslationLoader(basePath: 'assets/i18n'),
@@ -56,7 +72,7 @@ class MyApp extends StatelessWidget {
           ),
           GlobalWidgetsLocalizations.delegate,
         ],
-        builder: FlutterI18n.rootAppBuilder(),
+        // builder: FlutterI18n.rootAppBuilder(),
       ),
     );
   }
