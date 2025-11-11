@@ -9,9 +9,11 @@ class ScrcpyService {
 
   ScrcpyService(this._processManager);
 
-  Future<ScrcpyResult> start(List<String> args) async {
+  Future<ScrcpyResult> start(String deviceSerial, List<String> args) async {
     try {
-      return ScrcpyResult.right(await _processManager.start(['/home/linuxbrew/.linuxbrew/bin/scrcpy', ...args]));
+      return ScrcpyResult.right(
+        await _processManager.start(['scrcpy', '-s', deviceSerial, ...args]),
+      );
     } on ProcessException catch (e) {
       if (e.message.toLowerCase().contains("failed to find")) {
         return ScrcpyResult.left(ScrcpyNotFoundError());

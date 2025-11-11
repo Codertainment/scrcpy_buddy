@@ -7,7 +7,6 @@ import 'package:scrcpy_buddy/service/running_process_manager.dart';
 import 'package:scrcpy_buddy/service/scrcpy_service.dart';
 
 part 'scrcpy_event.dart';
-
 part 'scrcpy_state.dart';
 
 typedef _Emitter = Emitter<ScrcpyState>;
@@ -24,7 +23,7 @@ class ScrcpyBloc extends Bloc<ScrcpyEvent, ScrcpyState> {
   List<String> get _runningDevices => _processManager.keys;
 
   Future<void> _start(StartScrcpyEvent event, _Emitter emit) async {
-    final result = await _service.start(event.args);
+    final result = await _service.start(event.deviceSerial, event.args);
     result.mapLeft(
       (left) => emit(ScrcpyStartFailedState(deviceSerial: event.deviceSerial, error: left, devices: _runningDevices)),
     );
