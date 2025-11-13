@@ -28,6 +28,8 @@ extension AdbDeviceExtension on AdbDevice {
         return WindowsIcons.incident_triangle;
       case AdbDeviceStatus.sideload:
         return WindowsIcons.download;
+      case AdbDeviceStatus.authorizing:
+        return WindowsIcons.settings;
       case AdbDeviceStatus.unauthorized:
         return FluentIcons.user_warning;
     }
@@ -47,6 +49,8 @@ extension AdbDeviceExtension on AdbDevice {
         return 'common.deviceState.recovery';
       case AdbDeviceStatus.sideload:
         return 'common.deviceState.sideload';
+      case AdbDeviceStatus.authorizing:
+        return 'common.deviceState.authorizing';
       case AdbDeviceStatus.unauthorized:
         return 'common.deviceState.unauthorized';
     }
