@@ -108,10 +108,10 @@ class _DeviceRowState extends AppModuleState<DeviceRow> with SingleTickerProvide
             flex: 3,
             child: Row(
               children: [
-                Icon(deviceStatusIcon),
+                Icon(widget.device.statusIcon),
                 const SizedBox(width: 4),
                 Expanded(
-                  child: Text(translatedText(key: 'deviceState.$deviceStatusTooltip'), style: typography.body),
+                  child: Text(context.translatedText(key: widget.device.statusText), style: typography.body),
                 ),
               ],
             ),
@@ -237,39 +237,5 @@ class _DeviceRowState extends AppModuleState<DeviceRow> with SingleTickerProvide
       /* refresh again */
       await Future.delayed(Duration(milliseconds: 500), () => widget.shouldRefresh());
     });
-  }
-
-  IconData get deviceStatusIcon {
-    switch (widget.device.status) {
-      case AdbDeviceStatus.offline:
-        return WindowsIcons.network_offline;
-      case AdbDeviceStatus.device:
-        if (widget.device.isUsb) {
-          return WindowsIcons.usb;
-        } else {
-          return WindowsIcons.wifi;
-        }
-      case AdbDeviceStatus.recovery:
-        return WindowsIcons.incident_triangle;
-      case AdbDeviceStatus.unauthorized:
-        return FluentIcons.user_warning;
-    }
-  }
-
-  String get deviceStatusTooltip {
-    switch (widget.device.status) {
-      case AdbDeviceStatus.offline:
-        return 'offline';
-      case AdbDeviceStatus.device:
-        if (widget.device.isUsb) {
-          return 'usb';
-        } else {
-          return 'network';
-        }
-      case AdbDeviceStatus.recovery:
-        return 'recovery';
-      case AdbDeviceStatus.unauthorized:
-        return 'unauthorized';
-    }
   }
 }
