@@ -1,7 +1,9 @@
 import 'package:fluent_ui/fluent_ui.dart';
 
 extension ContextExtension on BuildContext {
-  Typography get typography => FluentTheme.of(this).typography;
+  FluentThemeData get theme => FluentTheme.of(this);
+
+  Typography get typography => theme.typography;
 
   NavigatorState get navigator => Navigator.of(this);
 

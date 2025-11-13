@@ -25,6 +25,9 @@ class _HomeScreenState extends AppModuleState<HomeScreen> {
   late final _scrcpyBloc = context.read<ScrcpyBloc>();
   late final _argsBloc = context.read<ArgsBloc>();
 
+  final _devicesKey = ValueKey('.devices');
+  final _settingsKey = ValueKey('.settings');
+
   @override
   void initState() {
     super.initState();
@@ -33,9 +36,6 @@ class _HomeScreenState extends AppModuleState<HomeScreen> {
 
   @override
   String get module => 'home';
-
-  final _devicesKey = ValueKey('.devices');
-  final _settingsKey = ValueKey('.settings');
 
   void _openRoute(String path) {
     if (GoRouterState.of(context).uri.toString() != path) {
@@ -115,27 +115,32 @@ class _HomeScreenState extends AppModuleState<HomeScreen> {
         }
       },
       child: NavigationView(
-        paneBodyBuilder: (paneItem, _) => Stack(
-          children: [
-            Positioned.fill(
-              child: SizedBox.expand(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.all(16),
-                      child: Text(
-                        translatedText(key: 'navigation${(paneItem!.key! as ValueKey).value}'),
-                        style: context.typography.title,
+        paneBodyBuilder: (paneItem, _) => LayoutBuilder(
+          builder: (context, constraints) => Stack(
+            children: [
+              Positioned.fill(
+                child: SizedBox.expand(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.all(16),
+                        child: Text(
+                          translatedText(key: 'navigation${(paneItem!.key! as ValueKey).value}'),
+                          style: context.typography.title,
+                        ),
                       ),
-                    ),
-                    Expanded(child: widget.child),
-                  ],
+                      Expanded(child: widget.child),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            Align(alignment: Alignment.bottomCenter, child: ConsoleSection()),
-          ],
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: ConsoleSection(maxConsoleViewHeight: constraints.maxHeight * 0.7),
+              ),
+            ],
+          ),
         ),
         pane: NavigationPane(
           displayMode: PaneDisplayMode.compact,
