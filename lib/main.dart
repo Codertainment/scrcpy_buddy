@@ -5,9 +5,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
+import 'package:scrcpy_buddy/application/app_settings.dart';
 import 'package:scrcpy_buddy/application/args_bloc/args_bloc.dart';
 import 'package:scrcpy_buddy/application/model/scrcpy/scrcpy_arg.dart';
 import 'package:scrcpy_buddy/application/scrcpy_bloc/scrcpy_bloc.dart';
+import 'package:scrcpy_buddy/application/shared_prefs.dart';
 import 'package:scrcpy_buddy/main.reflectable.dart';
 import 'package:scrcpy_buddy/presentation/devices/bloc/devices_bloc.dart';
 import 'package:scrcpy_buddy/routes.dart';
@@ -18,7 +20,10 @@ import 'injector.dart';
 
 const scrcpyArg = ScrcpyArg();
 
+final _prefs = SharedPrefs();
+
 void main() async {
+  await _prefs.initialize();
   initializeReflectable();
   WidgetsFlutterBinding.ensureInitialized();
   await flutter_acrylic.Window.initialize();
@@ -40,7 +45,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: providers,
+      providers: [
+        ...providers,
+        Provider(create: (_) => _prefs),
+        Provider<AppSettings>(create: (context) => AppSettings(context.read())),
+      ],
       child: FluentApp.router(
         debugShowCheckedModeBanner: false,
         title: 'scrcpy Buddy',
@@ -54,7 +63,7 @@ class MyApp extends StatelessWidget {
           return MultiBlocProvider(
             providers: [
               BlocProvider(create: (_) => ArgsBloc()),
-              BlocProvider(create: (context) => ScrcpyBloc(context.read(), context.read())),
+              BlocProvider(create: (context) => ScrcpyBloc(context.read(), context.read(), context.read())),
               BlocProvider(create: (context) => DevicesBloc(context.read())),
             ],
             child: child!,

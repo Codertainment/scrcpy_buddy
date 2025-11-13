@@ -11,8 +11,12 @@ abstract class AppModuleState<T extends StatefulWidget> extends State<T> {
 
   Typography get typography => context.typography;
 
-  Future<void> showInfoBar({required String title, InfoBarSeverity severity = InfoBarSeverity.info, String? content}) =>
-      context.showInfoBar(title: title, severity: severity, content: content);
+  Future<void> showInfoBar({
+    required String title,
+    InfoBarSeverity severity = InfoBarSeverity.info,
+    Widget? action,
+    String? content,
+  }) => context.showInfoBar(title: title, severity: severity, action: action, content: content);
 }
 
 abstract class AppStatelessWidget extends StatelessWidget {
@@ -28,6 +32,7 @@ abstract class AppStatelessWidget extends StatelessWidget {
     required BuildContext context,
     required String title,
     InfoBarSeverity severity = InfoBarSeverity.info,
+    Widget? action,
     String? content,
-  }) => context.showInfoBar(title: title, severity: severity, content: content);
+  }) => context.showInfoBar(title: title, severity: severity, action: action, content: content);
 }

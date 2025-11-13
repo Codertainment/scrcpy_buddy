@@ -11,6 +11,7 @@ extension ContextExtension on BuildContext {
   Future<void> showInfoBar({
     required String title,
     InfoBarSeverity severity = InfoBarSeverity.info,
+    Widget? action,
     String? content,
   }) => displayInfoBar(
     this,
@@ -18,7 +19,7 @@ extension ContextExtension on BuildContext {
       return InfoBar(
         title: Text(title),
         content: content != null ? Text(content) : null,
-        action: IconButton(icon: const WindowsIcon(WindowsIcons.clear), onPressed: close),
+        action: action ?? IconButton(icon: const WindowsIcon(WindowsIcons.clear), onPressed: close),
         severity: severity,
       );
     },

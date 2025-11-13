@@ -33,26 +33,7 @@ class _DevicesScreenState extends AppModuleState<DevicesScreen> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16),
-      child: BlocConsumer<ScrcpyBloc, ScrcpyState>(
-        listener: (context, state) {
-          if (state is ScrcpyStartSuccessState) {
-            _toggleDeviceSelection(state.deviceSerial);
-          } else if (state is ScrcpyStartFailedState) {
-            if (state.error is ScrcpyNotFoundError) {
-              showInfoBar(
-                title: translatedText(key: 'error.scrcpy.notFound.title'),
-                content: translatedText(key: 'error.scrcpy.notFound.message'),
-                severity: InfoBarSeverity.error,
-              );
-            } else {
-              showInfoBar(
-                title: translatedText(key: 'error.scrcpy.failedToStart'),
-                content: state.error.toString(),
-                severity: InfoBarSeverity.error,
-              );
-            }
-          }
-        },
+      child: BlocBuilder<ScrcpyBloc, ScrcpyState>(
         builder: (context, scrcpyState) {
           return BlocBuilder<DevicesBloc, DevicesState>(
             builder: (context, devicesState) {
