@@ -29,6 +29,14 @@
         "switchToTcpIp": "Failed to switch to network:\n{{ error }}",
         "disconnect": "Failed to disconnect device:\n{{ error }}"
       }
+    },
+    "deviceState": {
+      "offline": "Offline",
+      "usb": "Connected via USB",
+      "network": "Connected via network",
+      "unauthorized": "Unauthorized",
+      "recovery": "Recovery Mode",
+      "sideload": "Sideload Mode"
     }
   },
   "devices": {
@@ -42,13 +50,6 @@
       "actions": "Actions"
     },
     "copy": "Copy",
-    "deviceState": {
-      "offline": "Offline",
-      "usb": "Connected via USB",
-      "network": "Connected via network",
-      "unauthorized": "Unauthorized",
-      "recovery": "Recovery Mode"
-    },
     "stop": "Stop",
     "toNetwork": "To Network",
     "switchedToNetwork": "Device switched successfully to network,\nplease disconnect the USB Cable.",
@@ -69,5 +70,8 @@
       "invalidPath": "Invalid path provided",
       "check": "Check"
     }
+  },
+  "console": {
+    "title": "Console"
   }
 }

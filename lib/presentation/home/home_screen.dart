@@ -5,7 +5,9 @@ import 'package:scrcpy_buddy/application/args_bloc/args_bloc.dart';
 import 'package:scrcpy_buddy/application/model/scrcpy/scrcpy_error.dart';
 import 'package:scrcpy_buddy/application/scrcpy_bloc/scrcpy_bloc.dart';
 import 'package:scrcpy_buddy/presentation/devices/bloc/devices_bloc.dart';
+import 'package:scrcpy_buddy/presentation/extension/context_extension.dart';
 import 'package:scrcpy_buddy/presentation/extension/translation_extension.dart';
+import 'package:scrcpy_buddy/presentation/home/console_section/console_section.dart';
 import 'package:scrcpy_buddy/presentation/home/widgets/start_button.dart';
 import 'package:scrcpy_buddy/presentation/widgets/app_widgets.dart';
 import 'package:scrcpy_buddy/routes.dart';
@@ -32,8 +34,8 @@ class _HomeScreenState extends AppModuleState<HomeScreen> {
   @override
   String get module => 'home';
 
-  final _devicesKey = ValueKey('/devices');
-  final _settingsKey = ValueKey('/settings');
+  final _devicesKey = ValueKey('.devices');
+  final _settingsKey = ValueKey('.settings');
 
   void _openRoute(String path) {
     if (GoRouterState.of(context).uri.toString() != path) {
@@ -65,7 +67,7 @@ class _HomeScreenState extends AppModuleState<HomeScreen> {
   ];
 
   int _calculateSelectedIndex(BuildContext context) {
-    final location = GoRouterState.of(context).uri.toString();
+    final location = GoRouterState.of(context).uri.toString().replaceAll("/", ".");
     int indexOriginal = _getMainItems(
       context,
     ).where((item) => item.key != null).toList().indexWhere((item) => item.key == Key(location));
@@ -85,6 +87,9 @@ class _HomeScreenState extends AppModuleState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final mainItems = _getMainItems(context);
+    final footerItems = _getFooterItems(context);
+    final selectedIndex = _calculateSelectedIndex(context);
     return BlocListener<ScrcpyBloc, ScrcpyState>(
       listener: (context, state) {
         if (state is ScrcpyStartSuccessState) {
@@ -110,15 +115,36 @@ class _HomeScreenState extends AppModuleState<HomeScreen> {
         }
       },
       child: NavigationView(
-        paneBodyBuilder: (_, _) => widget.child,
+        paneBodyBuilder: (paneItem, _) => Stack(
+          children: [
+            Positioned.fill(
+              child: SizedBox.expand(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.all(16),
+                      child: Text(
+                        translatedText(key: 'navigation${(paneItem!.key! as ValueKey).value}'),
+                        style: context.typography.title,
+                      ),
+                    ),
+                    Expanded(child: widget.child),
+                  ],
+                ),
+              ),
+            ),
+            Align(alignment: Alignment.bottomCenter, child: ConsoleSection()),
+          ],
+        ),
         pane: NavigationPane(
           displayMode: PaneDisplayMode.compact,
-          items: _getMainItems(context),
-          selected: _calculateSelectedIndex(context),
-          footerItems: _getFooterItems(context),
+          items: mainItems,
+          selected: selectedIndex,
+          footerItems: footerItems,
         ),
         appBar: NavigationAppBar(
-          title: Text('scrcpy buddy', style: typography.title),
+          title: Text('scrcpy buddy', style: typography.bodyStrong),
           actions: Padding(
             padding: const EdgeInsets.only(top: 12, right: 16),
             child: Row(
