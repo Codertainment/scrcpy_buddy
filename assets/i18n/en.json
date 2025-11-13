@@ -34,6 +34,7 @@
       "offline": "Offline",
       "usb": "Connected via USB",
       "network": "Connected via network",
+      "authorizing": "Authorizing",
       "unauthorized": "Unauthorized",
       "recovery": "Recovery Mode",
       "sideload": "Sideload Mode"
