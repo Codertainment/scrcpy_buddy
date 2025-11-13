@@ -1,11 +1,11 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scrcpy_buddy/application/extension/adb_error_extension.dart';
-import 'package:scrcpy_buddy/application/model/scrcpy/scrcpy_error.dart';
 import 'package:scrcpy_buddy/application/scrcpy_bloc/scrcpy_bloc.dart';
 import 'package:scrcpy_buddy/presentation/devices/bloc/devices_bloc.dart';
 import 'package:scrcpy_buddy/presentation/devices/device_row.dart';
 import 'package:scrcpy_buddy/presentation/devices/widget/devices_header.dart';
+import 'package:scrcpy_buddy/presentation/extension/context_extension.dart';
 import 'package:scrcpy_buddy/presentation/widgets/app_widgets.dart';
 
 class DevicesScreen extends StatefulWidget {
@@ -59,10 +59,7 @@ class _DevicesScreenState extends AppModuleState<DevicesScreen> {
                     if (devicesState.devices.isEmpty) ...[
                       Padding(
                         padding: const EdgeInsets.all(24),
-                        child: Text(
-                          translatedText(key: 'noDevicesFound'),
-                          style: FluentTheme.of(context).typography.title,
-                        ),
+                        child: Text(translatedText(key: 'noDevicesFound'), style: context.typography.title),
                       ),
                     ] else ...[
                       const DevicesHeader(),
