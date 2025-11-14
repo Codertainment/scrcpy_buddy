@@ -154,11 +154,11 @@ class _DeviceRowState extends AppModuleState<DeviceRow> with SingleTickerProvide
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Icon(WindowsIcons.disconnect_display, color: Colors.errorSecondaryColor),
+                              Icon(WindowsIcons.disconnect_display, color: context.errorColor),
                               const SizedBox(width: 8),
                               Text(
                                 translatedText(key: 'stop'),
-                                style: TextStyle(color: Colors.errorSecondaryColor),
+                                style: TextStyle(color: context.errorColor),
                               ),
                             ],
                           ),

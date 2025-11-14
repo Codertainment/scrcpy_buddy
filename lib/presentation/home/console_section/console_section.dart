@@ -80,7 +80,7 @@ class _ConsoleSectionState extends AppModuleState<ConsoleSection> {
                 curve: context.theme.animationCurve,
                 child: Container(
                   color: context.theme.resources.solidBackgroundFillColorTertiary.lerpWith(
-                    context.theme.brightness == Brightness.dark ? Colors.white : Colors.black,
+                    context.theme.brightness.isDark ? Colors.white : Colors.black,
                     0.1,
                   ),
                   child: Column(
