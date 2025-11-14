@@ -174,17 +174,6 @@ class _DeviceRowState extends AppModuleState<DeviceRow> with SingleTickerProvide
                           mainAxisAlignment: MainAxisAlignment.end,
                           compactBreakpointWidth: 100,
                           primaryItems: [],
-                          /*primaryItems: [
-                            if (widget.isRunning) ...[
-                              CommandBarButton(
-                                icon: Icon(WindowsIcons.disconnect_display, color: Colors.errorPrimaryColor),
-                                label: Text(translatedText(key: 'stop'), style: TextStyle(color: Colors.errorPrimaryColor)),
-                                onPressed: () =>
-                                    context.read<ScrcpyBloc>().add(StopScrcpyEvent(deviceSerial: widget.device.serial)),
-                              ),
-                              const CommandBarSeparator(),
-                            ],
-                          ],*/
                           secondaryItems: [
                             if (widget.device.isUsb) ...[
                               CommandBarButton(

@@ -9,7 +9,7 @@ class HeaderContent extends AppStatelessWidget {
   final String? selectedDeviceSerial;
   final VoidCallback closePanel;
   final bool isExpanded;
-  final void Function(AdbDevice device, int index) onSelectDevice;
+  final void Function(AdbDevice device) onSelectDevice;
 
   const HeaderContent({
     super.key,
@@ -49,19 +49,20 @@ class HeaderContent extends AppStatelessWidget {
                       cursor: SystemMouseCursors.click,
                       child: isSelected
                           ? FilledButton(onPressed: closePanel, child: buttonContent)
-                          : Button(onPressed: () => onSelectDevice(device, index), child: buttonContent),
+                          : Button(onPressed: () => onSelectDevice(device), child: buttonContent),
                     ),
                   );
                 },
               ),
             ),
           ),
-          if (isExpanded) ...{
-            MouseRegion(
-              cursor: SystemMouseCursors.click,
-              child: IconButton(icon: WindowsIcon(WindowsIcons.chevron_down, size: 16), onPressed: closePanel),
+          MouseRegion(
+            cursor: SystemMouseCursors.click,
+            child: IconButton(
+              icon: WindowsIcon(isExpanded ? WindowsIcons.chevron_down : WindowsIcons.chevron_up, size: 16),
+              onPressed: isExpanded ? closePanel : () => onSelectDevice(devices.first),
             ),
-          },
+          ),
         ],
       ),
     );
