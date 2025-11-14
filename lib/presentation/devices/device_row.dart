@@ -146,36 +146,64 @@ class _DeviceRowState extends AppModuleState<DeviceRow> with SingleTickerProvide
             flex: 1,
             child: _isNetworkSwitchInProgress
                 ? ProgressBar()
-                : CommandBar(
-                    key: _commandBarKey,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    compactBreakpointWidth: 100,
-                    primaryItems: [
+                : Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
                       if (widget.isRunning) ...[
-                        CommandBarButton(
-                          icon: const Icon(WindowsIcons.stop),
-                          label: Text(translatedText(key: 'stop')),
+                        Button(
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(WindowsIcons.disconnect_display, color: Colors.errorSecondaryColor),
+                              const SizedBox(width: 8),
+                              Text(
+                                translatedText(key: 'stop'),
+                                style: TextStyle(color: Colors.errorSecondaryColor),
+                              ),
+                            ],
+                          ),
                           onPressed: () =>
                               context.read<ScrcpyBloc>().add(StopScrcpyEvent(deviceSerial: widget.device.serial)),
                         ),
-                        const CommandBarSeparator(),
                       ],
-                    ],
-                    secondaryItems: [
-                      if (widget.device.isUsb) ...[
-                        CommandBarButton(
-                          onPressed: _switchToNetwork,
-                          icon: const Icon(WindowsIcons.wifi),
-                          label: Text(translatedText(key: 'toNetwork')),
+                      Spacer(),
+                      SizedBox(
+                        width: 50,
+                        child: CommandBar(
+                          key: _commandBarKey,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          compactBreakpointWidth: 100,
+                          primaryItems: [],
+                          /*primaryItems: [
+                            if (widget.isRunning) ...[
+                              CommandBarButton(
+                                icon: Icon(WindowsIcons.disconnect_display, color: Colors.errorPrimaryColor),
+                                label: Text(translatedText(key: 'stop'), style: TextStyle(color: Colors.errorPrimaryColor)),
+                                onPressed: () =>
+                                    context.read<ScrcpyBloc>().add(StopScrcpyEvent(deviceSerial: widget.device.serial)),
+                              ),
+                              const CommandBarSeparator(),
+                            ],
+                          ],*/
+                          secondaryItems: [
+                            if (widget.device.isUsb) ...[
+                              CommandBarButton(
+                                onPressed: _switchToNetwork,
+                                icon: const Icon(WindowsIcons.wifi),
+                                label: Text(translatedText(key: 'toNetwork')),
+                              ),
+                            ] else if (widget.device.isNetwork ||
+                                widget.device.status == AdbDeviceStatus.unauthorized) ...[
+                              /* Disconnect device */
+                              CommandBarButton(
+                                onPressed: _showDisconnectConfirmationDialog,
+                                icon: const Icon(WindowsIcons.clear),
+                                label: Text(translatedText(key: 'disconnect.button')),
+                              ),
+                            ],
+                          ],
                         ),
-                      ] else if (widget.device.isNetwork || widget.device.status == AdbDeviceStatus.unauthorized) ...[
-                        /* Disconnect device */
-                        CommandBarButton(
-                          onPressed: _showDisconnectConfirmationDialog,
-                          icon: const Icon(WindowsIcons.clear),
-                          label: Text(translatedText(key: 'disconnect.button')),
-                        ),
-                      ],
+                      ),
                     ],
                   ),
           ),

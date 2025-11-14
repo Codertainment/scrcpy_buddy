@@ -1,3 +1,5 @@
+import 'package:fluent_ui/fluent_ui.dart';
+import 'package:shared_preferences/src/shared_preferences_legacy.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 
 class SharedPrefs {
@@ -17,6 +19,14 @@ class SharedPrefs {
     return _prefs.getString(_key(prefix, key), defaultValue: '');
   }
 
+  Future<void> setBrightnessValue({String? prefix, required String key, required Brightness value}) async {
+    await _prefs.setCustomValue(_key(prefix, key), value, adapter: _BrightnessAdapter());
+  }
+
+  Preference<Brightness?> getBrightness({String? prefix, required String key}) {
+    return _prefs.getCustomValue(_key(prefix, key), defaultValue: null, adapter: _BrightnessAdapter());
+  }
+
   Future<void> setBool({String? prefix, required String key, required bool value}) async {
     await _prefs.setBool(_key(prefix, key), value);
   }
@@ -31,5 +41,17 @@ class SharedPrefs {
 
   Future<void> clear() async {
     await _prefs.clear();
+  }
+}
+
+class _BrightnessAdapter extends PreferenceAdapter<Brightness> {
+  @override
+  Brightness? getValue(SharedPreferences preferences, String key) {
+    return Brightness.values.where((brightness) => brightness.name == preferences.getString(key)).firstOrNull;
+  }
+
+  @override
+  Future<bool> setValue(SharedPreferences preferences, String key, Brightness value) {
+    return preferences.setString(key, value.name);
   }
 }
