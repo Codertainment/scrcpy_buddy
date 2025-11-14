@@ -39,8 +39,15 @@ void main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  late final _settings = AppSettings(_prefs);
 
   @override
   Widget build(BuildContext context) {
@@ -48,40 +55,45 @@ class MyApp extends StatelessWidget {
       providers: [
         ...providers,
         Provider(create: (_) => _prefs),
-        Provider<AppSettings>(create: (context) => AppSettings(context.read())),
+        Provider<AppSettings>(create: (context) => _settings),
       ],
-      child: FluentApp.router(
-        debugShowCheckedModeBanner: false,
-        title: 'scrcpy Buddy',
-        themeMode: ThemeMode.system,
-        theme: FluentThemeData(accentColor: SystemTheme.accentColor.accent.toAccentColor()),
-        darkTheme: FluentThemeData(
-          brightness: Brightness.dark,
-          accentColor: SystemTheme.accentColor.accent.toAccentColor(),
-        ),
-        builder: (context, child) {
-          return MultiBlocProvider(
-            providers: [
-              BlocProvider(create: (_) => ArgsBloc()),
-              BlocProvider(create: (context) => ScrcpyBloc(context.read(), context.read(), context.read())),
-              BlocProvider(create: (context) => DevicesBloc(context.read())),
-            ],
-            child: child!,
-          );
-        },
-        routeInformationParser: router.routeInformationParser,
-        routerDelegate: router.routerDelegate,
-        routeInformationProvider: router.routeInformationProvider,
-        localizationsDelegates: [
-          FlutterI18nDelegate(
-            translationLoader: FileTranslationLoader(basePath: 'assets/i18n'),
-            missingTranslationHandler: (key, locale) {
-              print("--- Missing Key: $key, languageCode: ${locale?.languageCode ?? 'null'}");
-            },
+      child: StreamBuilder<Brightness?>(
+        stream: _settings.themeBrightness,
+        builder: (context, brightness) => FluentApp.router(
+          debugShowCheckedModeBanner: false,
+          title: 'scrcpy Buddy',
+          themeMode: brightness.data == null
+              ? ThemeMode.system
+              : (brightness.data!.isDark ? ThemeMode.dark : ThemeMode.light),
+          theme: FluentThemeData(accentColor: SystemTheme.accentColor.accent.toAccentColor()),
+          darkTheme: FluentThemeData(
+            brightness: Brightness.dark,
+            accentColor: SystemTheme.accentColor.accent.toAccentColor(),
           ),
-          GlobalWidgetsLocalizations.delegate,
-        ],
-        // builder: FlutterI18n.rootAppBuilder(),
+          builder: (context, child) {
+            return MultiBlocProvider(
+              providers: [
+                BlocProvider(create: (_) => ArgsBloc()),
+                BlocProvider(create: (context) => ScrcpyBloc(context.read(), context.read(), context.read())),
+                BlocProvider(create: (context) => DevicesBloc(context.read())),
+              ],
+              child: child!,
+            );
+          },
+          routeInformationParser: router.routeInformationParser,
+          routerDelegate: router.routerDelegate,
+          routeInformationProvider: router.routeInformationProvider,
+          localizationsDelegates: [
+            FlutterI18nDelegate(
+              translationLoader: FileTranslationLoader(basePath: 'assets/i18n'),
+              missingTranslationHandler: (key, locale) {
+                print("--- Missing Key: $key, languageCode: ${locale?.languageCode ?? 'null'}");
+              },
+            ),
+            GlobalWidgetsLocalizations.delegate,
+          ],
+          // builder: FlutterI18n.rootAppBuilder(),
+        ),
       ),
     );
   }
