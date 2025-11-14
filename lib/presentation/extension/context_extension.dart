@@ -7,6 +7,8 @@ extension ContextExtension on BuildContext {
 
   NavigatorState get navigator => Navigator.of(this);
 
+  Color get errorColor => theme.brightness.isDark ? Colors.errorSecondaryColor : Colors.errorPrimaryColor;
+
   Future<T?> openDialog<T>(Widget child) =>
       showDialog<T>(context: this, barrierDismissible: true, builder: (_) => child);
 

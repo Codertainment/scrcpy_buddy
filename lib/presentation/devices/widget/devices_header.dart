@@ -42,10 +42,10 @@ class DevicesHeader extends AppStatelessWidget {
   }
 
   Color backgroundColor(Brightness brightness) {
-    return brightness == Brightness.light ? Colors.grey[30] : Colors.grey[150];
+    return brightness.isLight ? Colors.grey[30] : Colors.grey[150];
   }
 
   Color separatorColor(Brightness brightness) {
-    return brightness == Brightness.light ? Colors.grey[40] : Colors.grey[160];
+    return brightness.isLight ? Colors.grey[40] : Colors.grey[160];
   }
 }

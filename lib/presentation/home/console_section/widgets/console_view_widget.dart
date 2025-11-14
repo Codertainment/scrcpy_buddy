@@ -94,7 +94,7 @@ class _ConsoleViewWidgetState extends State<ConsoleViewWidget> {
                                 style: context.typography.caption?.copyWith(
                                   fontFamily: 'monospace',
                                   fontSize: _fontSize,
-                                  color: stdLine.isError ? Colors.errorSecondaryColor : null,
+                                  color: stdLine.isError ? context.errorColor : null,
                                 ),
                               ),
                             )
