@@ -70,6 +70,12 @@
       "description": "Explicitly set scrcpy executable path.\nSet this in case the executable is not added to $PATH or, the tool can't find it.",
       "invalidPath": "Invalid path provided",
       "check": "Check"
+    },
+    "themeBrightness": {
+      "title": "Theme",
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System"
     }
   },
   "console": {

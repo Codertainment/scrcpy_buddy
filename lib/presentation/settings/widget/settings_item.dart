@@ -36,6 +36,7 @@ class SettingsItem extends AppStatelessWidget {
           const SizedBox(height: 4),
           Text(translatedText(context, key: descriptionKey), style: context.typography.caption),
         ],
+        const SizedBox(height: 16),
       ],
     );
   }
