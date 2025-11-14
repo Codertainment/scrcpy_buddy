@@ -58,9 +58,9 @@ class DevicesBloc extends Bloc<DevicesEvent, DevicesState> {
               .where((device) => device.status == AdbDeviceStatus.device)
               .map((d) => d.serial)
               .toSet();
-          final newselectedDeviceSerials = _selectedDeviceSerials.where((serial) => currentSerials.contains(serial));
+          final newSelectedDeviceSerials = _selectedDeviceSerials.where((serial) => currentSerials.contains(serial));
           _selectedDeviceSerials.clear();
-          _selectedDeviceSerials.addAll(newselectedDeviceSerials);
+          _selectedDeviceSerials.addAll(newSelectedDeviceSerials);
           _emitSuccess(emit);
         },
       );

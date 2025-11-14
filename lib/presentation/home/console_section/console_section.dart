@@ -32,7 +32,7 @@ class _ConsoleSectionState extends AppModuleState<ConsoleSection> {
   @override
   String get module => 'console';
 
-  void _onSelectDevice(AdbDevice device, int index) => setState(() {
+  void _onSelectDevice(AdbDevice device) => setState(() {
     _selectedDeviceSerial = device.serial;
     _isExpanded = true;
     _selectedDeviceStream = _runningProcessManager.getStdStream(_selectedDeviceSerial!);
