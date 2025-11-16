@@ -25,8 +25,9 @@ class _HomeScreenState extends AppModuleState<HomeScreen> {
   late final _scrcpyBloc = context.read<ScrcpyBloc>();
   late final _argsBloc = context.read<ArgsBloc>();
 
-  final _devicesKey = ValueKey('.devices');
-  final _settingsKey = ValueKey('.settings');
+  final _devicesKey = ValueKey('devices');
+  final _videoKey = ValueKey('scrcpyConfig.video');
+  final _settingsKey = ValueKey('settings');
 
   @override
   void initState() {
@@ -54,6 +55,14 @@ class _HomeScreenState extends AppModuleState<HomeScreen> {
       body: const SizedBox.shrink(),
       onTap: () => _openRoute(AppRoute.devices),
     ),
+    PaneItemHeader(header: _buildPaneItemTitle(context, 'scrcpyConfig.sectionTitle')),
+    PaneItem(
+      key: _videoKey,
+      icon: WindowsIcon(WindowsIcons.video),
+      title: _buildPaneItemTitle(context, 'scrcpyConfig.video'),
+      body: const SizedBox.shrink(),
+      onTap: () => _openRoute(AppRoute.video),
+    ),
   ];
 
   List<NavigationPaneItem> _getFooterItems(BuildContext context) => [
@@ -67,19 +76,21 @@ class _HomeScreenState extends AppModuleState<HomeScreen> {
   ];
 
   int _calculateSelectedIndex(BuildContext context) {
-    final location = GoRouterState.of(context).uri.toString().replaceAll("/", ".");
-    int indexOriginal = _getMainItems(
-      context,
-    ).where((item) => item.key != null).toList().indexWhere((item) => item.key == Key(location));
+    bool isItemMatch(NavigationPaneItem item, String location) => "/${(item.key as ValueKey).value}" == location;
+
+    int findIndex(List<NavigationPaneItem> items, String location) =>
+        items.where((item) => item.key != null).toList().indexWhere((item) => isItemMatch(item, location));
+
+    final location = GoRouterState.of(context).uri.toString();
+    final mainItems = _getMainItems(context);
+    int indexOriginal = findIndex(mainItems, location);
 
     if (indexOriginal == -1) {
-      int indexFooter = _getFooterItems(
-        context,
-      ).where((element) => element.key != null).toList().indexWhere((element) => element.key == Key(location));
+      int indexFooter = findIndex(_getFooterItems(context), location);
       if (indexFooter == -1) {
         return 0;
       }
-      return _getMainItems(context).where((element) => element.key != null).toList().length + indexFooter;
+      return mainItems.where((element) => element.key != null).toList().length + indexFooter;
     } else {
       return indexOriginal;
     }
@@ -126,7 +137,7 @@ class _HomeScreenState extends AppModuleState<HomeScreen> {
                       Padding(
                         padding: EdgeInsets.all(16),
                         child: Text(
-                          translatedText(key: 'navigation${(paneItem!.key! as ValueKey).value}'),
+                          translatedText(key: 'navigation.${(paneItem!.key! as ValueKey).value}'),
                           style: context.typography.title,
                         ),
                       ),
