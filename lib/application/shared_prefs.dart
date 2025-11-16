@@ -35,7 +35,6 @@ class SharedPrefs {
 class _BrightnessAdapter extends PreferenceAdapter<Brightness?> {
   @override
   Brightness? getValue(SharedPreferences preferences, String key) {
-    print("getBrightnessKey: $key");
     final storedValue = preferences.getString(key);
     if (storedValue == null) return null;
     return Brightness.values.where((brightness) => brightness.name == storedValue).firstOrNull;
@@ -43,7 +42,6 @@ class _BrightnessAdapter extends PreferenceAdapter<Brightness?> {
 
   @override
   Future<bool> setValue(SharedPreferences preferences, String key, Brightness? value) {
-    print("setBrightnessKey: $key");
     if (value == null) return preferences.remove(key);
     return preferences.setString(key, value.name);
   }

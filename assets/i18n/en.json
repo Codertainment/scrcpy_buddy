@@ -2,7 +2,11 @@
   "home": {
     "navigation": {
       "devices": "Devices",
-      "settings": "Settings"
+      "settings": "Settings",
+      "scrcpyConfig": {
+        "sectionTitle": "scrcpy Config",
+        "video": "Video"
+      }
     },
     "start": "Start",
     "error": {
@@ -80,5 +84,10 @@
   },
   "console": {
     "title": "Console"
+  },
+  "config":{
+    "video": {
+      "title": "Video"
+    }
   }
 }
