@@ -13,7 +13,7 @@ class RunningProcessManager {
   final Map<String, Process> _processMap = {};
   final Map<String, BehaviorSubject<List<StdLine>>> _stdBehaviorSubjects = {};
 
-  List<String> get keys => _processMap.keys.toList(growable: false);
+  Set<String> get keys => _processMap.keys.toSet();
 
   void add(String key, Process process) {
     _processMap[key] = process;

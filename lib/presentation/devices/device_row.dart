@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import 'package:scrcpy_buddy/application/extension/adb_device_extension.dart';
 import 'package:scrcpy_buddy/application/extension/adb_error_extension.dart';
 import 'package:scrcpy_buddy/application/model/adb/adb_device.dart';
-import 'package:scrcpy_buddy/application/scrcpy_bloc/scrcpy_bloc.dart';
 import 'package:scrcpy_buddy/presentation/extension/context_extension.dart';
 import 'package:scrcpy_buddy/presentation/extension/translation_extension.dart';
 import 'package:scrcpy_buddy/presentation/widgets/app_widgets.dart';
@@ -64,6 +63,60 @@ class _DeviceRowState extends AppModuleState<DeviceRow> with SingleTickerProvide
     ).animate(_controller);
   }
 
+  bool get canBeSelected => widget.device.status == AdbDeviceStatus.device;
+
+  void _showDisconnectConfirmationDialog() async {
+    await _commandBarKey.currentState?.toggleSecondaryMenu();
+    final shouldDisconnect = await showDialog<bool>(
+      context: context,
+      builder: (context) => ContentDialog(
+        title: Text(translatedText(key: 'disconnect.title')),
+        content: Text(translatedText(key: 'disconnect.message')),
+        actions: [
+          Button(
+            child: Text(translatedText(key: 'disconnect.confirm')),
+            onPressed: () => Navigator.pop(context, true),
+          ),
+          FilledButton(
+            child: Text(context.translatedText(key: 'common.cancel')),
+            onPressed: () => Navigator.pop(context, false),
+          ),
+        ],
+      ),
+    );
+    if (shouldDisconnect == true) {
+      final disconnectResult = await _adbService.disconnect(widget.device.serial);
+      disconnectResult.mapLeft((error) => showInfoBar(title: error.message, severity: InfoBarSeverity.error));
+      disconnectResult.map(
+            (_) => showInfoBar(
+          title: translatedText(key: 'disconnect.done'),
+          severity: InfoBarSeverity.success,
+        ),
+      );
+      widget.shouldRefresh();
+    }
+  }
+
+  Future<void> _switchToNetwork() async {
+    setState(() {
+      _isNetworkSwitchInProgress = true;
+    });
+    final switchResult = await _adbService.switchDeviceToTcpIp(widget.device.serial);
+    setState(() {
+      _isNetworkSwitchInProgress = false;
+    });
+    switchResult.mapLeft((error) => showInfoBar(title: error.message, severity: InfoBarSeverity.error));
+    switchResult.map((result) async {
+      showInfoBar(
+        title: translatedText(key: 'switchedToNetwork'),
+        severity: InfoBarSeverity.success,
+      );
+      await Future.delayed(Duration(milliseconds: 300));
+      widget.shouldRefresh();
+      /* refresh again */
+      await Future.delayed(Duration(milliseconds: 500), () => widget.shouldRefresh());
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return ListTile.selectable(
@@ -89,8 +142,6 @@ class _DeviceRowState extends AppModuleState<DeviceRow> with SingleTickerProvide
                       Text(widget.device.codename ?? translatedText(key: 'unknown'), style: context.typography.caption),
                     ],
                   ),
-                ] else if (widget.device.status == AdbDeviceStatus.unauthorized) ...[
-                  Text(translatedText(key: 'deviceState.unauthorized'), style: context.typography.bodyStrong),
                 ],
                 if (widget.isRunning) ...[
                   const SizedBox(width: 8),
@@ -148,50 +199,26 @@ class _DeviceRowState extends AppModuleState<DeviceRow> with SingleTickerProvide
                 ? ProgressBar()
                 : Row(
                     mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      if (widget.isRunning) ...[
-                        Button(
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(WindowsIcons.disconnect_display, color: context.errorColor),
-                              const SizedBox(width: 8),
-                              Text(
-                                translatedText(key: 'stop'),
-                                style: TextStyle(color: context.errorColor),
-                              ),
-                            ],
-                          ),
-                          onPressed: () =>
-                              context.read<ScrcpyBloc>().add(StopScrcpyEvent(deviceSerial: widget.device.serial)),
-                        ),
-                      ],
-                      Spacer(),
-                      SizedBox(
-                        width: 50,
-                        child: CommandBar(
-                          key: _commandBarKey,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          compactBreakpointWidth: 100,
-                          primaryItems: [],
-                          secondaryItems: [
-                            if (widget.device.isUsb) ...[
-                              CommandBarButton(
-                                onPressed: _switchToNetwork,
-                                icon: const Icon(WindowsIcons.wifi),
-                                label: Text(translatedText(key: 'toNetwork')),
-                              ),
-                            ] else if (widget.device.isNetwork ||
-                                widget.device.status == AdbDeviceStatus.unauthorized) ...[
-                              /* Disconnect device */
-                              CommandBarButton(
-                                onPressed: _showDisconnectConfirmationDialog,
-                                icon: const Icon(WindowsIcons.clear),
-                                label: Text(translatedText(key: 'disconnect.button')),
-                              ),
-                            ],
+                      DropDownButton(
+                        items: [
+                          if (widget.device.isUsb) ...[
+                            MenuFlyoutItem(
+                              onPressed: _switchToNetwork,
+                              leading: const Icon(WindowsIcons.wifi),
+                              text: Text(translatedText(key: 'toNetwork')),
+                            ),
+                          ] else if (widget.device.isNetwork ||
+                              widget.device.status == AdbDeviceStatus.unauthorized) ...[
+                            /* Disconnect device */
+                            MenuFlyoutItem(
+                              onPressed: _showDisconnectConfirmationDialog,
+                              leading: const Icon(WindowsIcons.clear),
+                              text: Text(translatedText(key: 'disconnect.button')),
+                            ),
                           ],
-                        ),
+                        ],
                       ),
                     ],
                   ),
@@ -201,58 +228,4 @@ class _DeviceRowState extends AppModuleState<DeviceRow> with SingleTickerProvide
     );
   }
 
-  bool get canBeSelected => widget.device.status == AdbDeviceStatus.device && !widget.isRunning;
-
-  void _showDisconnectConfirmationDialog() async {
-    await _commandBarKey.currentState?.toggleSecondaryMenu();
-    final shouldDisconnect = await showDialog<bool>(
-      context: context,
-      builder: (context) => ContentDialog(
-        title: Text(translatedText(key: 'disconnect.title')),
-        content: Text(translatedText(key: 'disconnect.message')),
-        actions: [
-          Button(
-            child: Text(translatedText(key: 'disconnect.confirm')),
-            onPressed: () => Navigator.pop(context, true),
-          ),
-          FilledButton(
-            child: Text(context.translatedText(key: 'common.cancel')),
-            onPressed: () => Navigator.pop(context, false),
-          ),
-        ],
-      ),
-    );
-    if (shouldDisconnect == true) {
-      final disconnectResult = await _adbService.disconnect(widget.device.serial);
-      disconnectResult.mapLeft((error) => showInfoBar(title: error.message, severity: InfoBarSeverity.error));
-      disconnectResult.map(
-        (_) => showInfoBar(
-          title: translatedText(key: 'disconnect.done'),
-          severity: InfoBarSeverity.success,
-        ),
-      );
-      widget.shouldRefresh();
-    }
-  }
-
-  Future<void> _switchToNetwork() async {
-    setState(() {
-      _isNetworkSwitchInProgress = true;
-    });
-    final switchResult = await _adbService.switchDeviceToTcpIp(widget.device.serial);
-    setState(() {
-      _isNetworkSwitchInProgress = false;
-    });
-    switchResult.mapLeft((error) => showInfoBar(title: error.message, severity: InfoBarSeverity.error));
-    switchResult.map((result) async {
-      showInfoBar(
-        title: translatedText(key: 'switchedToNetwork'),
-        severity: InfoBarSeverity.success,
-      );
-      await Future.delayed(Duration(milliseconds: 300));
-      widget.shouldRefresh();
-      /* refresh again */
-      await Future.delayed(Duration(milliseconds: 500), () => widget.shouldRefresh());
-    });
-  }
 }

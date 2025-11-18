@@ -6,33 +6,36 @@ import 'package:scrcpy_buddy/presentation/devices/bloc/devices_bloc.dart';
 import 'package:scrcpy_buddy/presentation/widgets/app_widgets.dart';
 
 class StartButton extends AppStatelessWidget {
-  const StartButton({super.key, required this.scrcpyBloc, required this.argsBloc});
-
-  final ScrcpyBloc scrcpyBloc;
-  final ArgsBloc argsBloc;
+  const StartButton({super.key});
 
   @override
   String get module => 'home';
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ArgsBloc, ArgsState>(
-      builder: (context, argsState) {
-        return BlocBuilder<DevicesBloc, DevicesState>(
-          builder: (context, devicesState) {
-            final playButtonEnabled =
-                argsState is ArgsUpdatedState &&
-                devicesState is BaseDevicesUpdateState &&
-                devicesState.selectedDeviceSerials.isNotEmpty;
-            return FilledButton(
-              onPressed: playButtonEnabled ? () => _startScrcpy(context, devicesState) : null,
-              child: Row(
-                children: [
-                  const WindowsIcon(WindowsIcons.play, size: 16),
-                  const SizedBox(width: 8),
-                  Text(translatedText(context, key: 'start')),
-                ],
-              ),
+    return BlocBuilder<ScrcpyBloc, ScrcpyState>(
+      builder: (context, scrcpyState) {
+        return BlocBuilder<ArgsBloc, ArgsState>(
+          builder: (context, argsState) {
+            return BlocBuilder<DevicesBloc, DevicesState>(
+              builder: (context, devicesState) {
+                final playButtonEnabled =
+                    argsState is ArgsUpdatedState &&
+                    devicesState is DevicesBaseUpdateState &&
+                    (scrcpyState is ScrcpyInitial && devicesState.selectedDeviceSerials.isNotEmpty ||
+                        scrcpyState is ScrcpyBaseUpdateState &&
+                            devicesState.selectedDeviceSerials.difference(scrcpyState.devices).isNotEmpty);
+                return FilledButton(
+                  onPressed: playButtonEnabled ? () => _startScrcpy(context, devicesState, scrcpyState) : null,
+                  child: Row(
+                    children: [
+                      const WindowsIcon(WindowsIcons.play, size: 16),
+                      const SizedBox(width: 4),
+                      Text(translatedText(context, key: 'start')),
+                    ],
+                  ),
+                );
+              },
             );
           },
         );
@@ -40,8 +43,16 @@ class StartButton extends AppStatelessWidget {
     );
   }
 
-  void _startScrcpy(BuildContext context, BaseDevicesUpdateState devicesState) {
-    for (final deviceSerial in devicesState.selectedDeviceSerials) {
+  void _startScrcpy(BuildContext context, DevicesBaseUpdateState devicesState, ScrcpyState scrcpyState) {
+    final scrcpyBloc = context.read<ScrcpyBloc>();
+    final argsBloc = context.read<ArgsBloc>();
+    final Set<String> devicesToStart = {};
+    if (scrcpyState is ScrcpyInitial) {
+      devicesToStart.addAll(devicesState.selectedDeviceSerials);
+    } else if (scrcpyState is ScrcpyBaseUpdateState) {
+      devicesToStart.addAll(devicesState.selectedDeviceSerials.difference(scrcpyState.devices));
+    }
+    for (final deviceSerial in devicesToStart) {
       scrcpyBloc.add(StartScrcpyEvent(deviceSerial: deviceSerial, args: argsBloc.calculateArgsList()));
     }
   }

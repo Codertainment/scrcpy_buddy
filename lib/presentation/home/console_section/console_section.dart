@@ -53,7 +53,7 @@ class _ConsoleSectionState extends AppModuleState<ConsoleSection> {
       builder: (context, devicesState) {
         return BlocBuilder<ScrcpyBloc, ScrcpyState>(
           builder: (context, scrcpyState) {
-            if (scrcpyState is! ScrcpyBaseUpdateState || devicesState is! BaseDevicesUpdateState) {
+            if (scrcpyState is! ScrcpyBaseUpdateState || devicesState is! DevicesBaseUpdateState) {
               _selectedDeviceSerial = null;
               _isExpanded = false;
               return SizedBox.shrink();

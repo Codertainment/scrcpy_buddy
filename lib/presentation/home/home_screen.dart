@@ -9,6 +9,7 @@ import 'package:scrcpy_buddy/presentation/extension/context_extension.dart';
 import 'package:scrcpy_buddy/presentation/extension/translation_extension.dart';
 import 'package:scrcpy_buddy/presentation/home/console_section/console_section.dart';
 import 'package:scrcpy_buddy/presentation/home/widgets/start_button.dart';
+import 'package:scrcpy_buddy/presentation/home/widgets/stop_button.dart';
 import 'package:scrcpy_buddy/presentation/widgets/app_widgets.dart';
 import 'package:scrcpy_buddy/routes.dart';
 
@@ -103,9 +104,7 @@ class _HomeScreenState extends AppModuleState<HomeScreen> {
     final selectedIndex = _calculateSelectedIndex(context);
     return BlocListener<ScrcpyBloc, ScrcpyState>(
       listener: (context, state) {
-        if (state is ScrcpyStartSuccessState) {
-          context.read<DevicesBloc>().add(ToggleDeviceSelection(state.deviceSerial));
-        } else if (state is ScrcpyStartFailedState) {
+        if (state is ScrcpyStartFailedState) {
           if (state.error is ScrcpyNotFoundError) {
             showInfoBar(
               title: translatedText(key: 'error.scrcpy.notFound.title'),
@@ -127,29 +126,18 @@ class _HomeScreenState extends AppModuleState<HomeScreen> {
       },
       child: NavigationView(
         paneBodyBuilder: (paneItem, _) => LayoutBuilder(
-          builder: (context, constraints) => Stack(
+          builder: (context, constraints) => Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Positioned.fill(
-                child: SizedBox.expand(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.all(16),
-                        child: Text(
-                          translatedText(key: 'navigation.${(paneItem!.key! as ValueKey).value}'),
-                          style: context.typography.title,
-                        ),
-                      ),
-                      Expanded(child: widget.child),
-                    ],
-                  ),
+              Padding(
+                padding: EdgeInsets.all(16),
+                child: Text(
+                  translatedText(key: 'navigation.${(paneItem!.key! as ValueKey).value}'),
+                  style: context.typography.title,
                 ),
               ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: ConsoleSection(maxConsoleViewHeight: constraints.maxHeight * 0.7),
-              ),
+              Expanded(child: widget.child),
+              ConsoleSection(maxConsoleViewHeight: constraints.maxHeight * 0.7),
             ],
           ),
         ),
@@ -166,7 +154,7 @@ class _HomeScreenState extends AppModuleState<HomeScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: [StartButton(argsBloc: _argsBloc, scrcpyBloc: _scrcpyBloc)],
+              children: [StartButton(), const SizedBox(width: 8), StopButton()],
             ),
           ),
         ),
