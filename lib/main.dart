@@ -23,9 +23,9 @@ const scrcpyArg = ScrcpyArg();
 final _prefs = SharedPrefs();
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await _prefs.initialize();
   initializeReflectable();
-  WidgetsFlutterBinding.ensureInitialized();
   await flutter_acrylic.Window.initialize();
   if (defaultTargetPlatform == TargetPlatform.windows) {
     await flutter_acrylic.Window.setEffect(effect: flutter_acrylic.WindowEffect.acrylic);

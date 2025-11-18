@@ -9,6 +9,7 @@
       }
     },
     "start": "Start",
+    "stop": "Stop",
     "error": {
       "scrcpy": {
         "notFound": {

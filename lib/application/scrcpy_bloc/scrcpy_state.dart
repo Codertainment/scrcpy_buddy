@@ -10,7 +10,7 @@ final class ScrcpyInitial extends ScrcpyState {
 }
 
 sealed class ScrcpyBaseUpdateState extends ScrcpyState {
-  final List<String> devices;
+  final Set<String> devices;
 
   const ScrcpyBaseUpdateState({required this.devices});
 }

@@ -18,14 +18,14 @@ final class DevicesLoading extends DevicesState {
   List<Object?> get props => [];
 }
 
-sealed class BaseDevicesUpdateState extends DevicesState {
+sealed class DevicesBaseUpdateState extends DevicesState {
   final List<AdbDevice> devices;
   final Set<String> selectedDeviceSerials;
 
-  const BaseDevicesUpdateState({required this.devices, required this.selectedDeviceSerials});
+  const DevicesBaseUpdateState({required this.devices, required this.selectedDeviceSerials});
 }
 
-final class DevicesUpdateSuccess extends BaseDevicesUpdateState {
+final class DevicesUpdateSuccess extends DevicesBaseUpdateState {
   // ignore: prefer_const_constructors_in_immutables
   DevicesUpdateSuccess({required super.devices, required super.selectedDeviceSerials});
 
@@ -34,7 +34,7 @@ final class DevicesUpdateSuccess extends BaseDevicesUpdateState {
 
 }
 
-final class DevicesUpdateError extends BaseDevicesUpdateState {
+final class DevicesUpdateError extends DevicesBaseUpdateState {
   final AdbError? adbError;
   final String? message;
 

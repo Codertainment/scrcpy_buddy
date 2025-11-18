@@ -15,14 +15,14 @@ typedef _Emitter = Emitter<ScrcpyState>;
 class ScrcpyBloc extends Bloc<ScrcpyEvent, ScrcpyState> {
   ScrcpyBloc(this._processManager, this._service, this._settings) : super(ScrcpyInitial()) {
     on<StartScrcpyEvent>(_start, transformer: concurrent());
-    on<StopScrcpyEvent>(_stop);
+    on<StopScrcpyEvent>(_stop, transformer: concurrent());
   }
 
   final RunningProcessManager _processManager;
   final ScrcpyService _service;
   final AppSettings _settings;
 
-  List<String> get _runningDevices => _processManager.keys;
+  Set<String> get _runningDevices => _processManager.keys;
 
   Future<void> _start(StartScrcpyEvent event, _Emitter emit) async {
     final result = await _service.start(event.deviceSerial, _settings.scrcpyExecutable.getValue(), event.args);
