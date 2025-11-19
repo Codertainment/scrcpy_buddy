@@ -19,21 +19,26 @@ class StartButton extends AppStatelessWidget {
           builder: (context, argsState) {
             return BlocBuilder<DevicesBloc, DevicesState>(
               builder: (context, devicesState) {
-                final playButtonEnabled =
+                final isEnabled =
                     argsState is ArgsUpdatedState &&
                     devicesState is DevicesBaseUpdateState &&
                     (scrcpyState is ScrcpyInitial && devicesState.selectedDeviceSerials.isNotEmpty ||
                         scrcpyState is ScrcpyBaseUpdateState &&
                             devicesState.selectedDeviceSerials.difference(scrcpyState.devices).isNotEmpty);
-                return FilledButton(
-                  onPressed: playButtonEnabled ? () => _startScrcpy(context, devicesState, scrcpyState) : null,
-                  child: Row(
-                    children: [
-                      const WindowsIcon(WindowsIcons.play, size: 16),
-                      const SizedBox(width: 4),
-                      Text(translatedText(context, key: 'start')),
-                    ],
-                  ),
+                return LayoutBuilder(
+                  builder: (context, constraints) {
+                    if (constraints.maxWidth < 150) {
+                      return _IconButton(
+                        isEnabled: isEnabled,
+                        onPressed: () => _startScrcpy(context, devicesState as DevicesBaseUpdateState, scrcpyState),
+                      );
+                    } else {
+                      return _FilledButton(
+                        isEnabled: isEnabled,
+                        onPressed: () => _startScrcpy(context, devicesState as DevicesBaseUpdateState, scrcpyState),
+                      );
+                    }
+                  },
                 );
               },
             );
@@ -55,5 +60,47 @@ class StartButton extends AppStatelessWidget {
     for (final deviceSerial in devicesToStart) {
       scrcpyBloc.add(StartScrcpyEvent(deviceSerial: deviceSerial, args: argsBloc.calculateArgsList()));
     }
+  }
+}
+
+class _FilledButton extends AppStatelessWidget {
+  final bool isEnabled;
+  final VoidCallback onPressed;
+
+  const _FilledButton({required this.isEnabled, required this.onPressed});
+
+  @override
+  String get module => 'home';
+
+  @override
+  Widget build(BuildContext context) {
+    return FilledButton(
+      onPressed: isEnabled ? onPressed : null,
+      child: Row(
+        children: [
+          const WindowsIcon(WindowsIcons.play, size: 16),
+          const SizedBox(width: 4),
+          Text(translatedText(context, key: 'start')),
+        ],
+      ),
+    );
+  }
+}
+
+class _IconButton extends AppStatelessWidget {
+  final bool isEnabled;
+  final VoidCallback onPressed;
+
+  const _IconButton({required this.isEnabled, required this.onPressed});
+
+  @override
+  String get module => 'home';
+
+  @override
+  Widget build(BuildContext context) {
+    return Tooltip(
+      message: translatedText(context, key: 'start'),
+      child: IconButton(icon: const WindowsIcon(WindowsIcons.play, size: 16), onPressed: isEnabled ? onPressed : null),
+    );
   }
 }
