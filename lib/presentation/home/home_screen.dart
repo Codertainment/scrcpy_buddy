@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:scrcpy_buddy/application/args_bloc/args_bloc.dart';
 import 'package:scrcpy_buddy/application/model/scrcpy/scrcpy_error.dart';
 import 'package:scrcpy_buddy/application/scrcpy_bloc/scrcpy_bloc.dart';
-import 'package:scrcpy_buddy/presentation/devices/bloc/devices_bloc.dart';
 import 'package:scrcpy_buddy/presentation/extension/context_extension.dart';
 import 'package:scrcpy_buddy/presentation/extension/translation_extension.dart';
 import 'package:scrcpy_buddy/presentation/home/console_section/console_section.dart';
@@ -23,7 +22,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends AppModuleState<HomeScreen> {
-  late final _scrcpyBloc = context.read<ScrcpyBloc>();
   late final _argsBloc = context.read<ArgsBloc>();
 
   final _devicesKey = ValueKey('devices');

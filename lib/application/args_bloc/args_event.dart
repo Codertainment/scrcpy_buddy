@@ -12,11 +12,11 @@ class InitializeArgsEvent extends ArgsEvent {
 }
 
 class UpdateArgsEvent<V> extends ArgsEvent {
-  final String key;
+  final ScrcpyCliArgument<V> arg;
   final V? value;
 
-  const UpdateArgsEvent(this.key, this.value);
+  const UpdateArgsEvent(this.arg, this.value);
 
   @override
-  List<Object?> get props => [key, value];
+  List<Object?> get props => [arg, value];
 }
