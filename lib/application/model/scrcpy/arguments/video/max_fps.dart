@@ -2,15 +2,15 @@ import 'package:scrcpy_buddy/application/model/scrcpy/scrcpy_cli_argument.dart';
 import 'package:scrcpy_buddy/main.dart';
 
 @scrcpyArg
-class VideoSize extends ScrcpyCliArgument<String> {
+class MaxFps extends ScrcpyCliArgument<int> {
   @override
-  List<String> toArgs(String value) => [argument, value];
+  List<String> toArgs(int value) => [argument, value.toString()];
 
   @override
-  final String argument = '--max-size';
+  final String argument = '--max-fps';
 
   @override
-  final String label = 'video.size';
+  final String label = 'video.maxFps';
 
   @override
   final List<String>? values = null;
