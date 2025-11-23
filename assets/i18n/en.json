@@ -86,9 +86,38 @@
   "console": {
     "title": "Console"
   },
-  "config":{
+  "config": {
     "video": {
-      "title": "Video"
+      "title": "Video",
+      "noVideo": {
+        "title": "Disable video",
+        "description": "Disable video forwarding completely",
+        "default": "Disabled by default",
+        "arg": "--no-video"
+      },
+      "maxFps": {
+        "title": "Maximum frame-rate",
+        "description": "Limit video capture frame-rate",
+        "arg": "--max-fps"
+      },
+      "size": {
+        "title": "Maximum size (resolution)",
+        "description": "Limit both width and height to a maximum value, preserving aspect ratio",
+        "default": "Device's resolution",
+        "arg": "--max-size / -m"
+      },
+      "bitRate": {
+        "title": "Bit-rate",
+        "description": "Explicitly set video bit rate",
+        "default": "8Mbps",
+        "arg": "--video-bit-rate / -b"
+      },
+      "codec": {
+        "title": "Codec",
+        "description": "Select codec.\nH265 may provide better quality, but H264 should provide lower latency. AV1 encoders are not common on current Android devices.",
+        "default": "h264",
+        "arg": "--video-codec"
+      }
     }
   }
 }
