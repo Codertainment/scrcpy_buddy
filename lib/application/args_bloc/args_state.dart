@@ -6,6 +6,12 @@ sealed class ArgsState extends Equatable {
   // ignore: prefer_const_constructors_in_immutables
   ArgsState(this.args);
 
+  dynamic getFor(ScrcpyCliArgument arg) {
+    return args[arg];
+  }
+
+  List<String> toArgsList() => args.entries.map((entry) => entry.key.toArgs(entry.value)).flatten.toList();
+
   @override
   List<Object?> get props {
     if (args.isEmpty) {

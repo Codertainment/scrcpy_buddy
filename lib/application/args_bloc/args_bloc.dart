@@ -36,6 +36,4 @@ class ArgsBloc extends Bloc<ArgsEvent, ArgsState> {
     // TODO: Load saved args/profiles
     emit(ArgsUpdatedState(_args));
   }
-
-  List<String> calculateArgsList() => _args.entries.map((entry) => entry.key.toArgs(entry.value)).flatten.toList();
 }
