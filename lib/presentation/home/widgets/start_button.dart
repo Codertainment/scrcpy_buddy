@@ -53,7 +53,7 @@ class StartButton extends AppStatelessWidget {
       devicesToStart.addAll(devicesState.selectedDeviceSerials.difference(scrcpyState.devices));
     }
     for (final deviceSerial in devicesToStart) {
-      scrcpyBloc.add(StartScrcpyEvent(deviceSerial: deviceSerial, args: argsBloc.calculateArgsList()));
+      scrcpyBloc.add(StartScrcpyEvent(deviceSerial: deviceSerial, args: argsBloc.state.toArgsList()));
     }
   }
 }
