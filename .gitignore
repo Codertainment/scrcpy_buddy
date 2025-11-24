@@ -48,3 +48,4 @@ app.*.map.json
 **/*.g.dart
 test/**/*.mocks.dart
 **/*.reflectable.dart
+!lib/objectbox.g.dart

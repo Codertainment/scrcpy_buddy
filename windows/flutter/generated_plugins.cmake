@@ -4,6 +4,7 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   flutter_acrylic
+  objectbox_flutter_libs
   screen_retriever_windows
   system_theme
   window_manager

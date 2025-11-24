@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:scrcpy_buddy/application/app_settings.dart';
 import 'package:scrcpy_buddy/application/args_bloc/args_bloc.dart';
 import 'package:scrcpy_buddy/application/model/scrcpy/scrcpy_arg.dart';
+import 'package:scrcpy_buddy/application/objectbox.dart';
 import 'package:scrcpy_buddy/application/scrcpy_bloc/scrcpy_bloc.dart';
 import 'package:scrcpy_buddy/application/shared_prefs.dart';
 import 'package:scrcpy_buddy/main.reflectable.dart';
@@ -22,9 +23,12 @@ const scrcpyArg = ScrcpyArg();
 
 final _prefs = SharedPrefs();
 
+late ObjectBox _objectBox;
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await _prefs.initialize();
+  _objectBox = await ObjectBox.create();
   initializeReflectable();
   await flutter_acrylic.Window.initialize();
   if (defaultTargetPlatform == TargetPlatform.windows) {
@@ -56,6 +60,7 @@ class _MyAppState extends State<MyApp> {
         ...providers,
         Provider(create: (_) => _prefs),
         Provider<AppSettings>(create: (context) => _settings),
+        Provider(create: (_) => _objectBox),
       ],
       child: StreamBuilder<Brightness?>(
         stream: _settings.themeBrightness,
