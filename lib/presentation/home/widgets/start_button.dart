@@ -1,6 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:scrcpy_buddy/application/args_bloc/args_bloc.dart';
+import 'package:scrcpy_buddy/application/profiles_bloc/profiles_bloc.dart';
 import 'package:scrcpy_buddy/application/scrcpy_bloc/scrcpy_bloc.dart';
 import 'package:scrcpy_buddy/presentation/devices/bloc/devices_bloc.dart';
 import 'package:scrcpy_buddy/presentation/widgets/app_widgets.dart';
@@ -15,12 +15,11 @@ class StartButton extends AppStatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ScrcpyBloc, ScrcpyState>(
       builder: (context, scrcpyState) {
-        return BlocBuilder<ArgsBloc, ArgsState>(
-          builder: (context, argsState) {
+        return BlocBuilder<ProfilesBloc, ProfilesState>(
+          builder: (context, profilesState) {
             return BlocBuilder<DevicesBloc, DevicesState>(
               builder: (context, devicesState) {
                 final playButtonEnabled =
-                    argsState is ArgsUpdatedState &&
                     devicesState is DevicesBaseUpdateState &&
                     (scrcpyState is ScrcpyInitial && devicesState.selectedDeviceSerials.isNotEmpty ||
                         scrcpyState is ScrcpyBaseUpdateState &&
@@ -45,7 +44,7 @@ class StartButton extends AppStatelessWidget {
 
   void _startScrcpy(BuildContext context, DevicesBaseUpdateState devicesState, ScrcpyState scrcpyState) {
     final scrcpyBloc = context.read<ScrcpyBloc>();
-    final argsBloc = context.read<ArgsBloc>();
+    final profilesBloc = context.read<ProfilesBloc>();
     final Set<String> devicesToStart = {};
     if (scrcpyState is ScrcpyInitial) {
       devicesToStart.addAll(devicesState.selectedDeviceSerials);
@@ -53,7 +52,7 @@ class StartButton extends AppStatelessWidget {
       devicesToStart.addAll(devicesState.selectedDeviceSerials.difference(scrcpyState.devices));
     }
     for (final deviceSerial in devicesToStart) {
-      scrcpyBloc.add(StartScrcpyEvent(deviceSerial: deviceSerial, args: argsBloc.state.toArgsList()));
+      scrcpyBloc.add(StartScrcpyEvent(deviceSerial: deviceSerial, args: profilesBloc.state.toArgsList()));
     }
   }
 }

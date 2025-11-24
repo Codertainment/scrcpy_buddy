@@ -1,6 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:scrcpy_buddy/application/args_bloc/args_bloc.dart';
+import 'package:scrcpy_buddy/application/profiles_bloc/profiles_bloc.dart';
 import 'package:scrcpy_buddy/presentation/scrcpy_config/widgets/config_item.dart';
 import 'package:scrcpy_buddy/presentation/scrcpy_config/widgets/config_text_box.dart';
 import 'package:scrcpy_buddy/presentation/widgets/app_widgets.dart';
@@ -15,7 +15,7 @@ class VideoScreen extends StatefulWidget {
 }
 
 class _VideoScreenState extends AppModuleState<VideoScreen> {
-  late final _argsBloc = context.read<ArgsBloc>();
+  late final _profilesBloc = context.read<ProfilesBloc>();
 
   @override
   String get module => 'config.video';
@@ -24,7 +24,7 @@ class _VideoScreenState extends AppModuleState<VideoScreen> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16),
-      child: BlocBuilder<ArgsBloc, ArgsState>(
+      child: BlocBuilder<ProfilesBloc, ProfilesState>(
         buildWhen: (_, _) => true,
         builder: (context, state) {
           return SingleChildScrollView(
@@ -37,8 +37,8 @@ class _VideoScreenState extends AppModuleState<VideoScreen> {
                   ConfigItem(
                     label: 'video.noVideo',
                     child: ToggleSwitch(
-                      checked: state.args[NoVideo()] ?? false,
-                      onChanged: (checked) => _argsBloc.add(UpdateArgsEvent(NoVideo(), checked)),
+                      checked: state.getFor(NoVideo()) ?? false,
+                      onChanged: (checked) => _profilesBloc.add(UpdateProfileArgEvent(NoVideo(), checked)),
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -47,10 +47,10 @@ class _VideoScreenState extends AppModuleState<VideoScreen> {
                   ConfigItem(
                     label: 'video.size',
                     child: ConfigTextBox(
-                      value: state.args[VideoSize()],
+                      value: state.getFor(VideoSize()),
                       isNumberOnly: true,
                       onChanged: (newValue) =>
-                          _argsBloc.add(UpdateArgsEvent(VideoSize(), newValue)),
+                          _profilesBloc.add(UpdateProfileArgEvent(VideoSize(), newValue)),
                     ),
                   ),
                 ],

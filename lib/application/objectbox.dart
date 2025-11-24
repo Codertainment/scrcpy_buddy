@@ -19,5 +19,5 @@ class ObjectBox {
     return ObjectBox._create(store);
   }
 
-  Box<Profile> get profileStore => store.box();
+  Box<Profile> get profileBox => store.box();
 }

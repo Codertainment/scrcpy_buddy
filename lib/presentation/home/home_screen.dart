@@ -1,7 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:scrcpy_buddy/application/args_bloc/args_bloc.dart';
+import 'package:scrcpy_buddy/application/profiles_bloc/profiles_bloc.dart';
 import 'package:scrcpy_buddy/application/model/scrcpy/scrcpy_error.dart';
 import 'package:scrcpy_buddy/application/scrcpy_bloc/scrcpy_bloc.dart';
 import 'package:scrcpy_buddy/presentation/extension/context_extension.dart';
@@ -22,7 +22,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends AppModuleState<HomeScreen> {
-  late final _argsBloc = context.read<ArgsBloc>();
+  late final _profilesBloc = context.read<ProfilesBloc>();
 
   final _devicesKey = ValueKey('devices');
   final _videoKey = ValueKey('scrcpyConfig.video');
@@ -31,7 +31,7 @@ class _HomeScreenState extends AppModuleState<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _argsBloc.add(InitializeArgsEvent());
+    _profilesBloc.add(InitializeProfilesEvent());
   }
 
   @override
