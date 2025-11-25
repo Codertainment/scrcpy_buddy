@@ -19,11 +19,16 @@
         "failedToStart": "Failed to start scrcpy"
       }
     },
-    "goToSettings": "Go to settings"
+    "goToSettings": "Go to settings",
+    "profile": {
+      "default": "Default",
+      "create": "Create profile"
+    }
   },
   "common": {
     "somethingWentWrong": "Something went wrong",
     "done": "Done",
+    "save": "Save",
     "cancel": "Cancel",
     "errors": {
       "adb": {
@@ -85,6 +90,15 @@
   },
   "console": {
     "title": "Console"
+  },
+  "profile": {
+    "nameDialog": {
+      "createTitle": "Create Profile",
+      "editTitle": "Edit Profile",
+      "createDescription": "Give your profile a name",
+      "editDescription": "Update your profile's name",
+      "placeholder": "e.g. Audio-only"
+    }
   },
   "config": {
     "video": {
