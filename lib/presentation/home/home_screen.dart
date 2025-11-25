@@ -7,6 +7,7 @@ import 'package:scrcpy_buddy/application/scrcpy_bloc/scrcpy_bloc.dart';
 import 'package:scrcpy_buddy/presentation/extension/context_extension.dart';
 import 'package:scrcpy_buddy/presentation/extension/translation_extension.dart';
 import 'package:scrcpy_buddy/presentation/home/console_section/console_section.dart';
+import 'package:scrcpy_buddy/presentation/home/widgets/profile_button.dart';
 import 'package:scrcpy_buddy/presentation/home/widgets/start_button.dart';
 import 'package:scrcpy_buddy/presentation/home/widgets/stop_button.dart';
 import 'package:scrcpy_buddy/presentation/widgets/app_widgets.dart';
@@ -152,7 +153,13 @@ class _HomeScreenState extends AppModuleState<HomeScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: [StartButton(), const SizedBox(width: 8), StopButton()],
+              children: [
+                ProfileButton(),
+                const SizedBox(width: 8),
+                StartButton(),
+                const SizedBox(width: 8),
+                StopButton(),
+              ],
             ),
           ),
         ),
