@@ -1,4 +1,5 @@
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:provider/provider.dart';
 
 extension ContextExtension on BuildContext {
   FluentThemeData get theme => FluentTheme.of(this);
@@ -6,6 +7,8 @@ extension ContextExtension on BuildContext {
   Typography get typography => theme.typography;
 
   NavigatorState get navigator => Navigator.of(this);
+
+  Size get windowSize => read<Size>();
 
   Color get errorColor => theme.brightness.isDark ? Colors.red.lighter : Colors.errorPrimaryColor;
 

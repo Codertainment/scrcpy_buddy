@@ -14,6 +14,7 @@ import 'package:scrcpy_buddy/init.dart';
 import 'package:scrcpy_buddy/presentation/devices/bloc/devices_bloc.dart';
 import 'package:scrcpy_buddy/routes.dart';
 import 'package:system_theme/system_theme.dart';
+import 'package:window_manager/window_manager.dart';
 
 import 'injector.dart';
 
@@ -46,52 +47,61 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ...providers,
-        Provider.value(value: _prefs),
-        Provider.value(value: _settings),
-        Provider.value(value: _objectBox),
-        Provider.value(value: _argsInstances),
-      ],
-      child: StreamBuilder<Brightness?>(
-        stream: _settings.themeBrightness,
-        builder: (context, brightness) => FluentApp.router(
-          debugShowCheckedModeBanner: false,
-          title: 'scrcpy Buddy',
-          themeMode: brightness.data == null
-              ? ThemeMode.system
-              : (brightness.data!.isDark ? ThemeMode.dark : ThemeMode.light),
-          theme: FluentThemeData(accentColor: SystemTheme.accentColor.accent.toAccentColor()),
-          darkTheme: FluentThemeData(
-            brightness: Brightness.dark,
-            accentColor: SystemTheme.accentColor.accent.toAccentColor(),
-          ),
-          builder: (context, child) {
-            return MultiBlocProvider(
-              providers: [
-                BlocProvider(create: (_) => ProfilesBloc(_objectBox.profileBox, _argsMap)),
-                BlocProvider(create: (context) => ScrcpyBloc(context.read(), context.read(), context.read())),
-                BlocProvider(create: (context) => DevicesBloc(context.read())),
-              ],
-              child: child!,
-            );
-          },
-          routeInformationParser: router.routeInformationParser,
-          routerDelegate: router.routerDelegate,
-          routeInformationProvider: router.routeInformationProvider,
-          localizationsDelegates: [
-            FlutterI18nDelegate(
-              translationLoader: FileTranslationLoader(basePath: 'assets/i18n'),
-              missingTranslationHandler: (key, locale) {
-                print("--- Missing Key: $key, languageCode: ${locale?.languageCode ?? 'null'}");
-              },
-            ),
-            GlobalWidgetsLocalizations.delegate,
+    return FutureBuilder(
+      future: WindowManager.instance.getSize(),
+      builder: (context, asyncSnapshot) {
+        if (!asyncSnapshot.hasData) {
+          return SizedBox();
+        }
+        return MultiProvider(
+          providers: [
+            ...providers,
+            Provider.value(value: _prefs),
+            Provider.value(value: _settings),
+            Provider.value(value: _objectBox),
+            Provider.value(value: _argsInstances),
+            Provider.value(value: asyncSnapshot.data!)
           ],
-          // builder: FlutterI18n.rootAppBuilder(),
-        ),
-      ),
+          child: StreamBuilder<Brightness?>(
+            stream: _settings.themeBrightness,
+            builder: (context, brightness) => FluentApp.router(
+              debugShowCheckedModeBanner: false,
+              title: 'scrcpy Buddy',
+              themeMode: brightness.data == null
+                  ? ThemeMode.system
+                  : (brightness.data!.isDark ? ThemeMode.dark : ThemeMode.light),
+              theme: FluentThemeData(accentColor: SystemTheme.accentColor.accent.toAccentColor()),
+              darkTheme: FluentThemeData(
+                brightness: Brightness.dark,
+                accentColor: SystemTheme.accentColor.accent.toAccentColor(),
+              ),
+              builder: (context, child) {
+                return MultiBlocProvider(
+                  providers: [
+                    BlocProvider(create: (_) => ProfilesBloc(_objectBox.profileBox, _argsMap)),
+                    BlocProvider(create: (context) => ScrcpyBloc(context.read(), context.read(), context.read())),
+                    BlocProvider(create: (context) => DevicesBloc(context.read())),
+                  ],
+                  child: child!,
+                );
+              },
+              routeInformationParser: router.routeInformationParser,
+              routerDelegate: router.routerDelegate,
+              routeInformationProvider: router.routeInformationProvider,
+              localizationsDelegates: [
+                FlutterI18nDelegate(
+                  translationLoader: FileTranslationLoader(basePath: 'assets/i18n'),
+                  missingTranslationHandler: (key, locale) {
+                    print("--- Missing Key: $key, languageCode: ${locale?.languageCode ?? 'null'}");
+                  },
+                ),
+                GlobalWidgetsLocalizations.delegate,
+              ],
+              // builder: FlutterI18n.rootAppBuilder(),
+            ),
+          ),
+        );
+      }
     );
   }
 }
