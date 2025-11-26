@@ -17,6 +17,8 @@ abstract class AppModuleState<T extends StatefulWidget> extends State<T> {
     Widget? action,
     String? content,
   }) => context.showInfoBar(title: title, severity: severity, action: action, content: content);
+
+  Size get windowSize => context.windowSize;
 }
 
 abstract class AppStatelessWidget extends StatelessWidget {
