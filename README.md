@@ -1,16 +1,45 @@
-# scrcpy_buddy
+<a title="Made with Windows Design" href="https://github.com/bdlukaa/fluent_ui">
+  <img
+    src="https://img.shields.io/badge/fluent-design-blue?style=flat-square&color=gray&labelColor=0078D7"
+  />
+</a>
+![Dart](https://img.shields.io/badge/dart-%230175C2.svg?style=for-the-badge&logo=dart&logoColor=white)
+![Flutter](https://img.shields.io/badge/Flutter-%2302569B.svg?style=for-the-badge&logo=Flutter&logoColor=white)
+![supported scrcpy version](https://img.shields.io/badge/scrcpy-v3.3.3-green?style=flat-square)
 
-A new Flutter project.
+# scrcpy buddy
+A simple, clean, minimalist GUI wrapper for [scrcpy](https://github.com/Genymobile/scrcpy).
 
-## Getting Started
+## Requirements
+To use this app, you need the following:
+- adb setup and installed
+- scrcpy installed (in the environment or in portable mode)
+- Android device(s) with Developer options and USB / Network debugging enabled
 
-This project is a starting point for a Flutter application.
+# Technical documentation
+## UI Framework
+This project uses [fluent_ui](https://pub.dev/packages/fluent_ui) and tries to stick to available widgets and design guidelines.
 
-A few resources to get you started if this is your first Flutter project:
+## Interacting with devices
+Completely relies on ADB CLI.
+- Listing devices
+- Connection state
+- Switching connection state (USB -> Network)
+- Disconnect network device
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Supported scrcpy CLI Options
+- Currently supported options are documented in [docs/scrcpy_options](docs/scrcpy_options)
+- All options are categorised, and ideally are in their own navigation section
+- Further, each option is marked as "Advanced" or not. Advanced options are to be hidden behind an Expander? (TBD)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Docs -> Code mapping
+- [`ScrcpyCliArgument`](lib/application/model/scrcpy/scrcpy_cli_argument.dart) is the base class for each option that's to be shown in the UI.
+- Each option/arg should have it's own class which extends `ScrcpyCliArgument`
+- Each option/arg class should be annotated with [`@scrcpyArg`](lib/application/model/scrcpy/scrcpy_arg.dart)
+- Each class should also be exported in [`scrcpy_arg.dart`](lib/application/model/scrcpy/scrcpy_arg.dart) (Why? - see below)
+
+### Synthetic reflection
+- As we have multiple options and their classes, we need to be able to access their instances dynamically at runtime.
+- Without reflection, this would need manual registration of each class in a central place, and thus making the management tedious.
+- We solve this problem with the `reflactable` package. Our custom annotation `@scrcpyArg` marks all classes to be able to be reflected upon.
+- They must be exported in the central [`scrcpy_arg.dart`](lib/application/model/scrcpy/scrcpy_arg.dart), so that they are not tree-shaken, and can be seen by `reflectable_builder` during `build_runner` stage.
