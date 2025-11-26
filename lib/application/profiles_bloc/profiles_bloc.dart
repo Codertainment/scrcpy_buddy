@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:scrcpy_buddy/application/model/profile.dart';
 import 'package:scrcpy_buddy/application/model/scrcpy/scrcpy_cli_argument.dart';
@@ -69,11 +68,11 @@ class ProfilesBloc extends Bloc<ProfilesEvent, ProfilesState> {
 
   void _emit(_Emitter emit) {
     final allProfiles = _profileBox.getAll();
-    if (kDebugMode) {
+    /*if (kDebugMode) {
       print(
         "emitting profiles state. allProfiles: $allProfiles\t currentProfile: $_currentProfile\tallArgs: $_allArgs",
       );
-    }
+    }*/
     emit(ProfilesState(allProfiles: allProfiles, currentProfile: _currentProfile, allArgs: _allArgs));
   }
 }

@@ -12,10 +12,7 @@ class ProfilesState extends Equatable {
     required Map<String, ScrcpyCliArgument> allArgs,
   }) : _allArgs = allArgs;
 
-  dynamic getFor(ScrcpyCliArgument arg) {
-    print("returning for $arg: ${currentProfile.args}");
-    return currentProfile.args[arg.label];
-  }
+  T? getFor<T>(ScrcpyCliArgument arg) => currentProfile.args[arg.label];
 
   List<String> toArgsList() => currentProfile.args.entries
       .map((entry) => MapEntry(_allArgs[entry.key], entry.value)) // map keys to arg instances

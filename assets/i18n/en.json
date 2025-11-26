@@ -101,12 +101,13 @@
     }
   },
   "config": {
+    "defaultValue": "Default {value}",
+    "dropdownPlaceholder": "Select",
     "video": {
       "title": "Video",
       "noVideo": {
         "title": "Disable video",
         "description": "Disable video forwarding completely",
-        "default": "Disabled by default",
         "arg": "--no-video"
       },
       "maxFps": {
@@ -128,7 +129,7 @@
       },
       "codec": {
         "title": "Codec",
-        "description": "Select codec.\nH265 may provide better quality, but H264 should provide lower latency. AV1 encoders are not common on current Android devices.",
+        "description": "H265 may provide better quality, but H264 should provide lower latency. AV1 encoders are not common on current Android devices.",
         "default": "h264",
         "arg": "--video-codec"
       }

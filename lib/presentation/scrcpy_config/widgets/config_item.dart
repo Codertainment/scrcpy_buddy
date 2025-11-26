@@ -14,11 +14,10 @@ class ConfigItem extends AppStatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
       child: Row(
         children: [
           Expanded(
-            flex: 5,
             child: Column(
               mainAxisSize: .min,
               crossAxisAlignment: .stretch,
@@ -46,9 +45,7 @@ class ConfigItem extends AppStatelessWidget {
             ),
           ),
           const SizedBox(width: 16),
-          Flexible(
-            child: Align(alignment: Alignment.centerRight, child: child),
-          ),
+          Align(alignment: Alignment.centerRight, child: child),
         ],
       ),
     );
