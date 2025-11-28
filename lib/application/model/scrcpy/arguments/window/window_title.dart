@@ -10,7 +10,7 @@ class WindowTitle extends ScrcpyCliArgument<String> {
   final String argument = '--window-title';
 
   @override
-  final String label = 'window.title';
+  final String label = 'window.windowTitle';
 
   @override
   final List<String>? values = null;

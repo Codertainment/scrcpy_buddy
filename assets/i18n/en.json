@@ -9,7 +9,8 @@
         "audio": "Audio",
         "video": "Video",
         "control": "Control",
-        "device": "Device"
+        "device": "Device",
+        "window": "Window"
       }
     },
     "start": "Start",
@@ -197,6 +198,25 @@
       "startApp": {
         "title": "Start app",
         "description": "Start given app (by package name) on start\nAdding '+' prefix would force-close the app before being started\nAdding '?' prefix would search for the app by name\nBoth prefixes can be combined in this order:'+?'"
+      }
+    },
+    "window": {
+      "noWindow": {
+        "title": "Disable window",
+        "description": "Disable window completely (Headless / server mode)\nTypically used for playing audio only"
+      },
+      "alwaysOnTop": {
+        "title": "Always on top",
+        "description": "Keep the window always on top of other windows"
+      },
+      "fullscreen": {
+        "title": "Fullscreen",
+        "description": "Start scrcpy directly in fullscreen mode"
+      },
+      "windowTitle": {
+        "title": "Window title",
+        "description": "Custom window title instead of device model",
+        "default": "device model"
       }
     }
   }
