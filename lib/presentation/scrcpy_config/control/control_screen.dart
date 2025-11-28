@@ -1,6 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scrcpy_buddy/application/profiles_bloc/profiles_bloc.dart';
+import 'package:scrcpy_buddy/presentation/extension/context_extension.dart';
 import 'package:scrcpy_buddy/presentation/scrcpy_config/control/widgets/modes_info_bar.dart';
 import 'package:scrcpy_buddy/presentation/scrcpy_config/widgets/config_divider.dart';
 import 'package:scrcpy_buddy/presentation/scrcpy_config/widgets/config_item.dart';
@@ -112,6 +113,7 @@ class _ControlScreenState extends AppModuleState<ControlScreen> {
                         hasDefault: true,
                         cliArgument: _pushTarget,
                         child: ConfigTextBox(
+                          maxWidth: context.windowSize.width * 0.25,
                           value: state.getFor(_pushTarget),
                           isNumberOnly: false,
                           onChanged: (newValue) => _profilesBloc.add(UpdateProfileArgEvent(_pushTarget, newValue)),
