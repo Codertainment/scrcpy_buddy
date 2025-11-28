@@ -6,6 +6,7 @@
       "settings": "Settings",
       "scrcpyConfig": {
         "sectionTitle": "scrcpy Config",
+        "audio": "Audio",
         "video": "Video",
         "control": "Control"
       }
@@ -103,10 +104,25 @@
     }
   },
   "config": {
-    "defaultValue": "Default {value}",
+    "defaultValue": "Default: {value}",
     "dropdownPlaceholder": "Select",
+    "audio": {
+      "noAudio": {
+        "title": "Disable audio",
+        "description": "Disable audio forwarding completely"
+      },
+      "source": {
+        "title": "Audio source",
+        "description": "Select source for audio capture",
+        "default": "output"
+      },
+      "codec": {
+        "title": "Audio codec",
+        "description": "Select audio codec",
+        "default": "opus"
+      }
+    },
     "video": {
-      "title": "Video",
       "noVideo": {
         "title": "Disable video",
         "description": "Disable video forwarding completely"
