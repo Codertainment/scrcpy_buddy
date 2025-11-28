@@ -29,6 +29,7 @@ class _HomeScreenState extends AppModuleState<HomeScreen> {
   final _videoKey = ValueKey('scrcpyConfig.video');
   final _audioKey = ValueKey('scrcpyConfig.audio');
   final _controlKey = ValueKey('scrcpyConfig.control');
+  final _deviceKey = ValueKey('scrcpyConfig.device');
   final _settingsKey = ValueKey('settings');
 
   @override
@@ -52,7 +53,7 @@ class _HomeScreenState extends AppModuleState<HomeScreen> {
   List<NavigationPaneItem> _getMainItems(BuildContext context) => [
     PaneItem(
       key: _devicesKey,
-      icon: WindowsIcon(WindowsIcons.cell_phone),
+      icon: WindowsIcon(WindowsIcons.companion_app),
       title: _buildPaneItemTitle(context, _devicesKey),
       body: const SizedBox.shrink(),
       onTap: () => _openRoute(AppRoute.devices),
@@ -78,6 +79,13 @@ class _HomeScreenState extends AppModuleState<HomeScreen> {
       title: _buildPaneItemTitle(context, _controlKey),
       body: const SizedBox.shrink(),
       onTap: () => _openRoute(AppRoute.control),
+    ),
+    PaneItem(
+      key: _deviceKey,
+      icon: WindowsIcon(WindowsIcons.cell_phone),
+      title: _buildPaneItemTitle(context, _deviceKey),
+      body: const SizedBox.shrink(),
+      onTap: () => _openRoute(AppRoute.device),
     ),
   ];
 
