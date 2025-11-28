@@ -13,7 +13,7 @@ class ConfigTextBox extends StatefulWidget {
   const ConfigTextBox({
     super.key,
     required this.value,
-    required this.isNumberOnly,
+    this.isNumberOnly = false,
     required this.onChanged,
     this.maxWidth,
     this.defaultValue,

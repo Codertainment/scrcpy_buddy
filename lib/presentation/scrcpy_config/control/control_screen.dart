@@ -3,9 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scrcpy_buddy/application/profiles_bloc/profiles_bloc.dart';
 import 'package:scrcpy_buddy/presentation/extension/context_extension.dart';
 import 'package:scrcpy_buddy/presentation/scrcpy_config/control/widgets/modes_info_bar.dart';
+import 'package:scrcpy_buddy/presentation/scrcpy_config/widgets/config_combo_box.dart';
 import 'package:scrcpy_buddy/presentation/scrcpy_config/widgets/config_divider.dart';
 import 'package:scrcpy_buddy/presentation/scrcpy_config/widgets/config_item.dart';
 import 'package:scrcpy_buddy/presentation/scrcpy_config/widgets/config_text_box.dart';
+import 'package:scrcpy_buddy/presentation/scrcpy_config/widgets/config_toggle.dart';
 import 'package:scrcpy_buddy/presentation/scrcpy_config/widgets/dropdown_placeholder.dart';
 import 'package:scrcpy_buddy/presentation/widgets/app_widgets.dart';
 
@@ -52,10 +54,7 @@ class _ControlScreenState extends AppModuleState<ControlScreen> {
                       ConfigItem(
                         icon: WindowsIcons.touch,
                         cliArgument: _noControl,
-                        child: ToggleSwitch(
-                          checked: state.getFor(_noControl) ?? false,
-                          onChanged: (checked) => _profilesBloc.add(UpdateProfileArgEvent(_noControl, checked)),
-                        ),
+                        child: ConfigToggle(state: state, cliArgument: _noControl),
                       ),
                       const ConfigDivider(),
 
@@ -64,14 +63,7 @@ class _ControlScreenState extends AppModuleState<ControlScreen> {
                         icon: WindowsIcons.keyboard_settings,
                         hasDefault: true,
                         cliArgument: _keyboardMode,
-                        child: ComboBox<String>(
-                          value: state.getFor(_keyboardMode),
-                          placeholder: const DropdownPlaceholder(),
-                          items: _keyboardMode.values!.map((mode) {
-                            return ComboBoxItem<String>(value: mode, child: Text(mode));
-                          }).toList(),
-                          onChanged: (mode) => _profilesBloc.add(UpdateProfileArgEvent(_keyboardMode, mode)),
-                        ),
+                        child: ConfigComboBox(state: state, cliArgument: _keyboardMode),
                       ),
                       const ConfigDivider(),
 
@@ -80,14 +72,7 @@ class _ControlScreenState extends AppModuleState<ControlScreen> {
                         icon: WindowsIcons.mouse,
                         hasDefault: true,
                         cliArgument: _mouseMode,
-                        child: ComboBox<String>(
-                          value: state.getFor(_mouseMode),
-                          placeholder: const DropdownPlaceholder(),
-                          items: _mouseMode.values!.map((mode) {
-                            return ComboBoxItem<String>(value: mode, child: Text(mode));
-                          }).toList(),
-                          onChanged: (mode) => _profilesBloc.add(UpdateProfileArgEvent(_mouseMode, mode)),
-                        ),
+                        child: ConfigComboBox(state: state, cliArgument: _mouseMode),
                       ),
                       const ConfigDivider(),
 
@@ -96,14 +81,7 @@ class _ControlScreenState extends AppModuleState<ControlScreen> {
                         icon: WindowsIcons.game,
                         hasDefault: true,
                         cliArgument: _gamepadMode,
-                        child: ComboBox<String>(
-                          value: state.getFor(_gamepadMode),
-                          placeholder: const DropdownPlaceholder(),
-                          items: _gamepadMode.values!.map((mode) {
-                            return ComboBoxItem<String>(value: mode, child: Text(mode));
-                          }).toList(),
-                          onChanged: (mode) => _profilesBloc.add(UpdateProfileArgEvent(_gamepadMode, mode)),
-                        ),
+                        child: ConfigComboBox(state: state, cliArgument: _gamepadMode),
                       ),
                       const ConfigDivider(),
 
@@ -115,7 +93,6 @@ class _ControlScreenState extends AppModuleState<ControlScreen> {
                         child: ConfigTextBox(
                           maxWidth: context.windowSize.width * 0.25,
                           value: state.getFor(_pushTarget),
-                          isNumberOnly: false,
                           onChanged: (newValue) => _profilesBloc.add(UpdateProfileArgEvent(_pushTarget, newValue)),
                         ),
                       ),
