@@ -8,7 +8,8 @@
         "sectionTitle": "scrcpy Config",
         "audio": "Audio",
         "video": "Video",
-        "control": "Control"
+        "control": "Control",
+        "device": "Device"
       }
     },
     "start": "Start",
@@ -178,6 +179,24 @@
         "title": "Push target",
         "description": "Path on the device to push files",
         "default": "/sdcard/Download"
+      }
+    },
+    "device": {
+      "stayAwake": {
+        "title": "Stay awake",
+        "description": "Keep device awake while plugged in\nPrevious value gets restored on exit\nHas no effect is the device is connected through network (Android behavior)"
+      },
+      "turnScreenOff": {
+        "title": "Turn screen off",
+        "description": "Turn device screen off immediately on start\nCan be toggled when scrcpy is running via shortcut: MOD + O / MOD + Shift + O"
+      },
+      "showTouches": {
+        "title": "Show touches",
+        "description": "Enable “show touches” developer option while running\nPrevious value gets restored on exit."
+      },
+      "startApp": {
+        "title": "Start app",
+        "description": "Start given app (by package name) on start\nAdding '+' prefix would force-close the app before being started\nAdding '?' prefix would search for the app by name\nBoth prefixes can be combined in this order:'+?'"
       }
     }
   }
