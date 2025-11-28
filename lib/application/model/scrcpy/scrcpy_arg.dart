@@ -27,6 +27,12 @@ export 'arguments/device/turn_screen_off.dart';
 export 'arguments/device/show_touches.dart';
 export 'arguments/device/start_app.dart';
 
+// Window
+export 'arguments/window/no_window.dart';
+export 'arguments/window/always_on_top.dart';
+export 'arguments/window/fullscreen.dart';
+export 'arguments/window/window_title.dart';
+
 /// All {ScrcpyCliArgument}s must be annotated with this annotation.
 class ScrcpyArg extends Reflectable {
   const ScrcpyArg() : super(newInstanceCapability, invokingCapability);
