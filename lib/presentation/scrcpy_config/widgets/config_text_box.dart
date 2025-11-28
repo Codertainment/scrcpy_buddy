@@ -7,16 +7,14 @@ class ConfigTextBox extends StatefulWidget {
   final String? value;
   final bool isNumberOnly;
   final double? maxWidth;
-  final String? defaultValue;
   final void Function(String? newValue) onChanged;
 
   const ConfigTextBox({
     super.key,
     required this.value,
-    required this.isNumberOnly,
+    this.isNumberOnly = false,
     required this.onChanged,
     this.maxWidth,
-    this.defaultValue,
   });
 
   @override
@@ -50,9 +48,6 @@ class _ConfigTextBoxState extends State<ConfigTextBox> {
       ),
       child: TextBox(
         controller: _controller,
-        placeholder: widget.defaultValue != null
-            ? context.translatedText(key: 'config.defaultValue', translationParams: {'value': widget.defaultValue!})
-            : null,
         inputFormatters: widget.isNumberOnly ? [FilteringTextInputFormatter.digitsOnly] : null,
         suffix: _controller.text.isNotEmpty
             ? IconButton(icon: WindowsIcon(WindowsIcons.clear), onPressed: () => widget.onChanged(null))

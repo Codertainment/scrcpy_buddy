@@ -27,6 +27,7 @@ class _HomeScreenState extends AppModuleState<HomeScreen> {
 
   final _devicesKey = ValueKey('devices');
   final _videoKey = ValueKey('scrcpyConfig.video');
+  final _audioKey = ValueKey('scrcpyConfig.audio');
   final _controlKey = ValueKey('scrcpyConfig.control');
   final _settingsKey = ValueKey('settings');
 
@@ -45,29 +46,36 @@ class _HomeScreenState extends AppModuleState<HomeScreen> {
     }
   }
 
-  Text _buildPaneItemTitle(BuildContext context, String labelKey) =>
-      Text(context.translatedText(key: 'home.navigation.$labelKey'));
+  Text _buildPaneItemTitle(BuildContext context, ValueKey<String> key) =>
+      Text(context.translatedText(key: 'home.navigation.${key.value}'));
 
   List<NavigationPaneItem> _getMainItems(BuildContext context) => [
     PaneItem(
       key: _devicesKey,
       icon: WindowsIcon(WindowsIcons.cell_phone),
-      title: _buildPaneItemTitle(context, 'devices'),
+      title: _buildPaneItemTitle(context, _devicesKey),
       body: const SizedBox.shrink(),
       onTap: () => _openRoute(AppRoute.devices),
     ),
-    PaneItemHeader(header: _buildPaneItemTitle(context, 'scrcpyConfig.sectionTitle')),
+    PaneItemHeader(header: _buildPaneItemTitle(context, ValueKey('scrcpyConfig.sectionTitle'))),
+    PaneItem(
+      key: _audioKey,
+      icon: WindowsIcon(WindowsIcons.audio),
+      title: _buildPaneItemTitle(context, _audioKey),
+      body: const SizedBox.shrink(),
+      onTap: () => _openRoute(AppRoute.audio),
+    ),
     PaneItem(
       key: _videoKey,
       icon: WindowsIcon(WindowsIcons.video),
-      title: _buildPaneItemTitle(context, 'scrcpyConfig.video'),
+      title: _buildPaneItemTitle(context, _videoKey),
       body: const SizedBox.shrink(),
       onTap: () => _openRoute(AppRoute.video),
     ),
     PaneItem(
       key: _controlKey,
       icon: WindowsIcon(WindowsIcons.keyboard_settings),
-      title: _buildPaneItemTitle(context, 'scrcpyConfig.control'),
+      title: _buildPaneItemTitle(context, _controlKey),
       body: const SizedBox.shrink(),
       onTap: () => _openRoute(AppRoute.control),
     ),
@@ -77,7 +85,7 @@ class _HomeScreenState extends AppModuleState<HomeScreen> {
     PaneItem(
       key: _settingsKey,
       icon: const WindowsIcon(WindowsIcons.settings),
-      title: _buildPaneItemTitle(context, 'settings'),
+      title: _buildPaneItemTitle(context, _settingsKey),
       body: const SizedBox.shrink(),
       onTap: () => _openRoute(AppRoute.settings),
     ),
