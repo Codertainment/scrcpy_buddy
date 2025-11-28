@@ -2,28 +2,27 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scrcpy_buddy/application/model/scrcpy/scrcpy_arg.dart';
 import 'package:scrcpy_buddy/application/profiles_bloc/profiles_bloc.dart';
-import 'package:scrcpy_buddy/presentation/extension/context_extension.dart';
 import 'package:scrcpy_buddy/presentation/scrcpy_config/widgets/config_divider.dart';
 import 'package:scrcpy_buddy/presentation/scrcpy_config/widgets/config_item.dart';
 import 'package:scrcpy_buddy/presentation/scrcpy_config/widgets/config_text_box.dart';
 import 'package:scrcpy_buddy/presentation/scrcpy_config/widgets/config_toggle.dart';
 import 'package:scrcpy_buddy/presentation/widgets/app_widgets.dart';
 
-class DeviceScreen extends StatefulWidget {
-  const DeviceScreen({super.key});
+class WindowScreen extends StatefulWidget {
+  const WindowScreen({super.key});
 
   @override
-  State<DeviceScreen> createState() => _DeviceScreenState();
+  State<WindowScreen> createState() => _WindowScreenState();
 }
 
-class _DeviceScreenState extends AppModuleState<DeviceScreen> {
+class _WindowScreenState extends AppModuleState<WindowScreen> {
   @override
-  String get module => 'config.device';
+  String get module => 'config.window';
 
-  final _stayAwake = StayAwake();
-  final _turnScreenOff = TurnScreenOff();
-  final _showTouches = ShowTouches();
-  final _startApp = StartApp();
+  final _noWindow = NoWindow();
+  final _alwaysOnTop = AlwaysOnTop();
+  final _title = WindowTitle();
+  final _fullscreen = Fullscreen();
 
   @override
   Widget build(BuildContext context) {
@@ -39,32 +38,32 @@ class _DeviceScreenState extends AppModuleState<DeviceScreen> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   ConfigItem(
-                    icon: WindowsIcons.red_eye,
-                    cliArgument: _stayAwake,
-                    child: ConfigToggle(state: state, cliArgument: _stayAwake),
+                    icon: WindowsIcons.hole_punch_off,
+                    cliArgument: _noWindow,
+                    child: ConfigToggle(state: state, cliArgument: _noWindow),
                   ),
                   const ConfigDivider(),
                   ConfigItem(
-                    icon: WindowsIcons.disconnect_display,
-                    cliArgument: _turnScreenOff,
-                    child: ConfigToggle(state: state, cliArgument: _turnScreenOff),
+                    icon: WindowsIcons.new_window,
+                    cliArgument: _alwaysOnTop,
+                    child: ConfigToggle(state: state, cliArgument: _alwaysOnTop),
                   ),
                   const ConfigDivider(),
                   ConfigItem(
-                    icon: WindowsIcons.touch,
-                    cliArgument: _showTouches,
-                    child: ConfigToggle(state: state, cliArgument: _showTouches),
-                  ),
-                  const ConfigDivider(),
-                  ConfigItem(
-                    icon: WindowsIcons.app_icon_default_add,
-                    cliArgument: _startApp,
+                    icon: FluentIcons.insert_text_box,
+                    hasDefault: true,
+                    cliArgument: _title,
                     child: ConfigTextBox(
-                      maxWidth: context.windowSize.width * 0.2,
-                      value: state.getFor(_startApp),
+                      value: state.getFor(_title),
                       onChanged: (newValue) =>
-                          context.read<ProfilesBloc>().add(UpdateProfileArgEvent(_startApp, newValue)),
+                          context.read<ProfilesBloc>().add(UpdateProfileArgEvent(_title, newValue)),
                     ),
+                  ),
+                  const ConfigDivider(),
+                  ConfigItem(
+                    icon: WindowsIcons.full_screen,
+                    cliArgument: _fullscreen,
+                    child: ConfigToggle(state: state, cliArgument: _fullscreen),
                   ),
                 ],
               ),

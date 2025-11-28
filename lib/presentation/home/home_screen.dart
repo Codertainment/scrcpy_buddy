@@ -26,10 +26,13 @@ class _HomeScreenState extends AppModuleState<HomeScreen> {
   late final _profilesBloc = context.read<ProfilesBloc>();
 
   final _devicesKey = ValueKey('devices');
+
   final _videoKey = ValueKey('scrcpyConfig.video');
   final _audioKey = ValueKey('scrcpyConfig.audio');
   final _controlKey = ValueKey('scrcpyConfig.control');
   final _deviceKey = ValueKey('scrcpyConfig.device');
+  final _windowKey = ValueKey('scrcpyConfig.window');
+
   final _settingsKey = ValueKey('settings');
 
   @override
@@ -86,6 +89,13 @@ class _HomeScreenState extends AppModuleState<HomeScreen> {
       title: _buildPaneItemTitle(context, _deviceKey),
       body: const SizedBox.shrink(),
       onTap: () => _openRoute(AppRoute.device),
+    ),
+    PaneItem(
+      key: _windowKey,
+      icon: WindowsIcon(WindowsIcons.hole_punch_portrait_top),
+      title: _buildPaneItemTitle(context, _windowKey),
+      body: const SizedBox.shrink(),
+      onTap: () => _openRoute(AppRoute.window),
     ),
   ];
 
