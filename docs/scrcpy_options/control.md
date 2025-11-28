@@ -1,11 +1,10 @@
 # Control options
 
-| CLI option                | Description (short)                                                                         | Suggested GUI control                              | Advanced? |
-|---------------------------|---------------------------------------------------------------------------------------------|----------------------------------------------------|-----------|
-| `--no-control` / `-n`     | Disable all control (no input events, no drag & drop); read‑only mirroring.                 | Switch/toggle “Read‑only mode”                     | No        |
-| `--no-clipboard-autosync` | Disable automatic Android↔computer clipboard synchronization.                               | Switch/toggle                                      | Yes       |
-| `--legacy-paste`          | Change Ctrl+v / MOD+v to inject clipboard text as key events (for buggy clipboard devices). | Switch/toggle “Legacy paste mode”                  | Yes       |
-| `--no-video --no-audio`   | “Control only”: use keyboard/mouse without mirroring or audio.                              | Preset mode toggle “Control only (no video/audio)” | No        |
+| CLI option                | Description (short)                                                                         | Suggested GUI control             | Advanced? |
+|---------------------------|---------------------------------------------------------------------------------------------|-----------------------------------|-----------|
+| `--no-control` / `-n`     | Disable all control (no input events, no drag & drop); read‑only mirroring.                 | Switch/toggle “Read‑only mode”    | No        |
+| `--no-clipboard-autosync` | Disable automatic Android↔computer clipboard synchronization.                               | Switch/toggle                     | Yes       |
+| `--legacy-paste`          | Change Ctrl+v / MOD+v to inject clipboard text as key events (for buggy clipboard devices). | Switch/toggle “Legacy paste mode” | Yes       |
 
 ### Gestures
 
@@ -25,12 +24,12 @@ Add the following config:
 
 ## Keyboard options
 
-| CLI option         | Description (short)                                                                                        | Suggested GUI control | Advanced? |
-|--------------------|------------------------------------------------------------------------------------------------------------|-----------------------|-----------|
-| `--keyboard`       | Select keyboard mode: `sdk` (default), `uhid`, `aoa`, `disabled`. [1][1]                                   | Dropdown              | No        |
-| `--prefer-text`    | Prefer injecting letters as text events instead of key events (better compatibility, worse for games). [1] | Switch/toggle         | Yes       |
-| `--raw-key-events` | Inject everything as raw key events (no text events). [1]                                                  | Switch/toggle         | Yes       |
-| `--no-key-repeat`  | Disable key repeat when holding a key down (avoid performance issues in some games). [1]                   | Switch/toggle         | Yes       |
+| CLI option         | Description (short)                                                                                    | Suggested GUI control | Advanced? |
+|--------------------|--------------------------------------------------------------------------------------------------------|-----------------------|-----------|
+| `--keyboard`       | Select keyboard mode: `sdk` (default), `uhid`, `aoa`, `disabled`.                                      | Dropdown              | No        |
+| `--prefer-text`    | Prefer injecting letters as text events instead of key events (better compatibility, worse for games). | Switch/toggle         | Yes       |
+| `--raw-key-events` | Inject everything as raw key events (no text events).                                                  | Switch/toggle         | Yes       |
+| `--no-key-repeat`  | Disable key repeat when holding a key down (avoid performance issues in some games).                   | Switch/toggle         | Yes       |
 
 ***
 
@@ -38,7 +37,7 @@ Add the following config:
 
 | CLI option         | Description (short)                                                                                  | Suggested GUI control                            | Advanced? |
 |--------------------|------------------------------------------------------------------------------------------------------|--------------------------------------------------|-----------|
-| `--mouse`          | Select mouse mode: `sdk` (default), `uhid`, `aoa`, `disabled`. [1]                                   | Dropdown                                         | No        |
+| `--mouse`          | Select mouse mode: `sdk` (default), `uhid`, `aoa`, `disabled`.                                       | Dropdown                                         | No        |
 | `--no-mouse-hover` | Do not forward mouse move/hover events without click to the device.                                  | Switch/toggle                                    | Yes       |
 | `--mouse-bind`     | Configure bindings for right/middle/4th/5th clicks and their Shift variants (`b/h/s/n/+/-` pattern). | Advanced text input with helper (binding editor) | Yes       |
 
@@ -46,6 +45,6 @@ Add the following config:
 
 ## Gamepad options
 
-| CLI option  | Description (short)                                                    | Suggested GUI control                 | Advanced? |
-|-------------|------------------------------------------------------------------------|---------------------------------------|-----------|
-| `--gamepad` | Select gamepad mode: `uhid`, `aoa`, `disabled` (no gamepad). [1][2][3] | Dropdown                              | No        |
+| CLI option  | Description (short)                                          | Suggested GUI control | Advanced? |
+|-------------|--------------------------------------------------------------|-----------------------|-----------|
+| `--gamepad` | Select gamepad mode: `uhid`, `aoa`, `disabled` (no gamepad). | Dropdown              | No        |

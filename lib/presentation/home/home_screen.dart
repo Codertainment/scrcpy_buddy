@@ -27,6 +27,7 @@ class _HomeScreenState extends AppModuleState<HomeScreen> {
 
   final _devicesKey = ValueKey('devices');
   final _videoKey = ValueKey('scrcpyConfig.video');
+  final _controlKey = ValueKey('scrcpyConfig.control');
   final _settingsKey = ValueKey('settings');
 
   @override
@@ -62,6 +63,13 @@ class _HomeScreenState extends AppModuleState<HomeScreen> {
       title: _buildPaneItemTitle(context, 'scrcpyConfig.video'),
       body: const SizedBox.shrink(),
       onTap: () => _openRoute(AppRoute.video),
+    ),
+    PaneItem(
+      key: _controlKey,
+      icon: WindowsIcon(WindowsIcons.keyboard_settings),
+      title: _buildPaneItemTitle(context, 'scrcpyConfig.control'),
+      body: const SizedBox.shrink(),
+      onTap: () => _openRoute(AppRoute.control),
     ),
   ];
 
