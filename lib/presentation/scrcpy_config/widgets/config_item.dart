@@ -1,4 +1,5 @@
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:scrcpy_buddy/application/model/scrcpy/scrcpy_cli_argument.dart';
 import 'package:scrcpy_buddy/presentation/extension/context_extension.dart';
 import 'package:scrcpy_buddy/presentation/extension/translation_extension.dart';
 import 'package:scrcpy_buddy/presentation/widgets/app_widgets.dart';
@@ -6,13 +7,13 @@ import 'package:scrcpy_buddy/presentation/widgets/app_widgets.dart';
 class ConfigItem extends AppStatelessWidget {
   final IconData? icon;
   final bool hasDefault;
-  final String label;
+  final ScrcpyCliArgument cliArgument;
   final Widget child;
 
-  const ConfigItem({super.key, this.icon, this.hasDefault = false, required this.label, required this.child});
+  const ConfigItem({super.key, this.icon, this.hasDefault = false, required this.cliArgument, required this.child});
 
   @override
-  String get module => 'config.$label';
+  String get module => 'config.${cliArgument.label}';
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +35,7 @@ class ConfigItem extends AppStatelessWidget {
                       richMessage: TextSpan(
                         children: [
                           TextSpan(
-                            text: translatedText(context, key: 'arg'),
+                            text: cliArgument.argument,
                             style: TextStyle(fontFamily: 'monospace'),
                           ),
                           if (hasDefault)
@@ -49,7 +50,8 @@ class ConfigItem extends AppStatelessWidget {
                       ),
                       child: CircleAvatar(
                         radius: 10,
-                        backgroundColor: context.theme.resources.subtleFillColorSecondary,
+                        backgroundColor: context.theme.resources.cardStrokeColorDefault,
+                        foregroundColor: context.theme.resources.textFillColorPrimary,
                         child: WindowsIcon(WindowsIcons.help, size: 8),
                       ),
                     ),
