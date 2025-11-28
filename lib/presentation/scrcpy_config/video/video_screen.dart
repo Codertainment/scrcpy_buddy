@@ -3,9 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scrcpy_buddy/application/model/scrcpy/scrcpy_arg.dart';
 import 'package:scrcpy_buddy/application/profiles_bloc/profiles_bloc.dart';
 import 'package:scrcpy_buddy/presentation/scrcpy_config/video/bit_rate_config.dart';
+import 'package:scrcpy_buddy/presentation/scrcpy_config/widgets/config_combo_box.dart';
 import 'package:scrcpy_buddy/presentation/scrcpy_config/widgets/config_divider.dart';
 import 'package:scrcpy_buddy/presentation/scrcpy_config/widgets/config_item.dart';
 import 'package:scrcpy_buddy/presentation/scrcpy_config/widgets/config_text_box.dart';
+import 'package:scrcpy_buddy/presentation/scrcpy_config/widgets/config_toggle.dart';
 import 'package:scrcpy_buddy/presentation/scrcpy_config/widgets/dropdown_placeholder.dart';
 import 'package:scrcpy_buddy/presentation/widgets/app_widgets.dart';
 
@@ -43,10 +45,7 @@ class _VideoScreenState extends AppModuleState<VideoScreen> {
                   ConfigItem(
                     icon: FluentIcons.video_off2,
                     cliArgument: _noVideo,
-                    child: ToggleSwitch(
-                      checked: state.getFor(_noVideo) ?? false,
-                      onChanged: (checked) => _profilesBloc.add(UpdateProfileArgEvent(_noVideo, checked)),
-                    ),
+                    child: ConfigToggle(state: state, cliArgument: _noVideo),
                   ),
                   const ConfigDivider(),
                   ConfigItem(
@@ -81,16 +80,7 @@ class _VideoScreenState extends AppModuleState<VideoScreen> {
                     icon: WindowsIcons.line_display,
                     hasDefault: true,
                     cliArgument: _codec,
-                    child: ComboBox<String>(
-                      value: state.getFor(_codec),
-                      placeholder: const DropdownPlaceholder(),
-                      items: _codec.values!
-                          .map((codec) {
-                            return ComboBoxItem<String>(value: codec, child: Text(codec));
-                          })
-                          .toList(growable: false),
-                      onChanged: (codec) => _profilesBloc.add(UpdateProfileArgEvent(_codec, codec)),
-                    ),
+                    child: ConfigComboBox(state: state, cliArgument: _codec),
                   ),
                 ],
               ),
