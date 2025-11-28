@@ -21,6 +21,12 @@ export 'arguments/audio/no_audio.dart';
 export 'arguments/audio/audio_source.dart';
 export 'arguments/audio/audio_codec.dart';
 
+// Device
+export 'arguments/device/stay_awake.dart';
+export 'arguments/device/turn_screen_off.dart';
+export 'arguments/device/show_touches.dart';
+export 'arguments/device/start_app.dart';
+
 /// All {ScrcpyCliArgument}s must be annotated with this annotation.
 class ScrcpyArg extends Reflectable {
   const ScrcpyArg() : super(newInstanceCapability, invokingCapability);
