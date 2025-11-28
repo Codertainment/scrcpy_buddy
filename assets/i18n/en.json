@@ -109,31 +109,26 @@
       "title": "Video",
       "noVideo": {
         "title": "Disable video",
-        "description": "Disable video forwarding completely",
-        "arg": "--no-video"
+        "description": "Disable video forwarding completely"
       },
       "maxFps": {
         "title": "Maximum frame-rate",
-        "description": "Limit video capture frame-rate",
-        "arg": "--max-fps"
+        "description": "Limit video capture frame-rate"
       },
       "size": {
         "title": "Maximum size (resolution)",
         "description": "Limit both width and height to a maximum value, preserving aspect ratio",
-        "default": "Device's resolution",
-        "arg": "--max-size / -m"
+        "default": "Device's resolution"
       },
       "bitRate": {
         "title": "Bit-rate",
         "description": "Explicitly set video bit rate",
-        "default": "8Mbps",
-        "arg": "--video-bit-rate / -b"
+        "default": "8Mbps"
       },
       "codec": {
         "title": "Codec",
         "description": "H265 may provide better quality, but H264 should provide lower latency. AV1 encoders are not common on current Android devices.",
-        "default": "h264",
-        "arg": "--video-codec"
+        "default": "h264"
       }
     },
     "control": {
@@ -146,32 +141,27 @@
       },
       "noControl": {
         "title": "Disable control",
-        "description": "Disable control completely (Read-only mode)",
-        "arg": "--no-control"
+        "description": "Disable control completely (Read-only mode)"
       },
       "keyboardMode": {
         "title": "Keyboard mode",
         "description": "Choose keyboard input mode",
-        "default": "sdk",
-        "arg": "--keyboard"
+        "default": "sdk"
       },
       "mouseMode": {
         "title": "Mouse mode",
         "description": "Choose mouse input mode",
-        "default": "sdk",
-        "arg": "--mouse"
+        "default": "sdk"
       },
       "gamepadMode": {
         "title": "Gamepad mode",
         "description": "Choose gamepad input mode",
-        "default": "disabled",
-        "arg": "--gamepad"
+        "default": "disabled"
       },
       "pushTarget": {
         "title": "Push target",
         "description": "Path on the device to push files",
-        "default": "/sdcard/Download",
-        "arg": "--push-target"
+        "default": "/sdcard/Download"
       }
     }
   }

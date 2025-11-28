@@ -41,7 +41,7 @@ class _VideoScreenState extends AppModuleState<VideoScreen> {
                 crossAxisAlignment: .stretch,
                 children: [
                   ConfigItem(
-                    label: 'video.noVideo',
+                    cliArgument: _noVideo,
                     child: ToggleSwitch(
                       checked: state.getFor(_noVideo) ?? false,
                       onChanged: (checked) => _profilesBloc.add(UpdateProfileArgEvent(_noVideo, checked)),
@@ -49,7 +49,7 @@ class _VideoScreenState extends AppModuleState<VideoScreen> {
                   ),
                   const ConfigDivider(),
                   ConfigItem(
-                    label: 'video.size',
+                    cliArgument: _size,
                     child: ConfigTextBox(
                       value: state.getFor(_size),
                       isNumberOnly: true,
@@ -57,10 +57,10 @@ class _VideoScreenState extends AppModuleState<VideoScreen> {
                     ),
                   ),
                   const ConfigDivider(),
-                  ConfigItem(label: 'video.bitRate', child: BitRateConfig()),
+                  ConfigItem(cliArgument: VideoBitRate(), child: BitRateConfig()),
                   const ConfigDivider(),
                   ConfigItem(
-                    label: 'video.maxFps',
+                    cliArgument: _maxFps,
                     child: ConfigTextBox(
                       value: state.getFor(_maxFps),
                       isNumberOnly: true,
@@ -69,7 +69,7 @@ class _VideoScreenState extends AppModuleState<VideoScreen> {
                   ),
                   const ConfigDivider(),
                   ConfigItem(
-                    label: 'video.codec',
+                    cliArgument: _codec,
                     child: ComboBox<String>(
                       value: state.getFor(_codec),
                       placeholder: const DropdownPlaceholder(),

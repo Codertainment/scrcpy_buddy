@@ -50,7 +50,7 @@ class _ControlScreenState extends AppModuleState<ControlScreen> {
                       // General Control Options
                       ConfigItem(
                         icon: WindowsIcons.touch,
-                        label: 'control.noControl',
+                        cliArgument: _noControl,
                         child: ToggleSwitch(
                           checked: state.getFor(_noControl) ?? false,
                           onChanged: (checked) => _profilesBloc.add(UpdateProfileArgEvent(_noControl, checked)),
@@ -62,7 +62,7 @@ class _ControlScreenState extends AppModuleState<ControlScreen> {
                       ConfigItem(
                         icon: WindowsIcons.keyboard_settings,
                         hasDefault: true,
-                        label: 'control.keyboardMode',
+                        cliArgument: _keyboardMode,
                         child: ComboBox<String>(
                           value: state.getFor(_keyboardMode),
                           placeholder: const DropdownPlaceholder(),
@@ -78,7 +78,7 @@ class _ControlScreenState extends AppModuleState<ControlScreen> {
                       ConfigItem(
                         icon: WindowsIcons.mouse,
                         hasDefault: true,
-                        label: 'control.mouseMode',
+                        cliArgument: _mouseMode,
                         child: ComboBox<String>(
                           value: state.getFor(_mouseMode),
                           placeholder: const DropdownPlaceholder(),
@@ -94,7 +94,7 @@ class _ControlScreenState extends AppModuleState<ControlScreen> {
                       ConfigItem(
                         icon: WindowsIcons.game,
                         hasDefault: true,
-                        label: 'control.gamepadMode',
+                        cliArgument: _gamepadMode,
                         child: ComboBox<String>(
                           value: state.getFor(_gamepadMode),
                           placeholder: const DropdownPlaceholder(),
@@ -110,7 +110,7 @@ class _ControlScreenState extends AppModuleState<ControlScreen> {
                       ConfigItem(
                         icon: WindowsIcons.download,
                         hasDefault: true,
-                        label: 'control.pushTarget',
+                        cliArgument: _pushTarget,
                         child: ConfigTextBox(
                           value: state.getFor(_pushTarget),
                           isNumberOnly: false,
