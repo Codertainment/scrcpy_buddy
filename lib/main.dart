@@ -18,6 +18,8 @@ import 'package:window_manager/window_manager.dart';
 
 import 'injector.dart';
 
+const supportedScrcpyVersion = "3.3.3";
+
 const scrcpyArg = ScrcpyArg();
 
 final _prefs = SharedPrefs();
@@ -66,7 +68,7 @@ class _MyAppState extends State<MyApp> {
             stream: _settings.themeBrightness,
             builder: (context, brightness) => FluentApp.router(
               debugShowCheckedModeBanner: false,
-              title: 'scrcpy Buddy',
+              title: 'scrcpy buddy 🤝',
               themeMode: brightness.data == null
                   ? ThemeMode.system
                   : (brightness.data!.isDark ? ThemeMode.dark : ThemeMode.light),

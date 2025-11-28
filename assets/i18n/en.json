@@ -1,11 +1,13 @@
 {
+  "appName": "scrcpy buddy 🤝",
   "home": {
     "navigation": {
       "devices": "Devices",
       "settings": "Settings",
       "scrcpyConfig": {
         "sectionTitle": "scrcpy Config",
-        "video": "Video"
+        "video": "Video",
+        "control": "Control"
       }
     },
     "start": "Start",
@@ -132,6 +134,44 @@
         "description": "H265 may provide better quality, but H264 should provide lower latency. AV1 encoders are not common on current Android devices.",
         "default": "h264",
         "arg": "--video-codec"
+      }
+    },
+    "control": {
+      "modesInfoBar": {
+        "title": "Control modes",
+        "description": "Click on the links to open scrcpy documentation:",
+        "keyboard": "Keyboard\n",
+        "mouse": "Mouse\n",
+        "gamepad": "Gamepad"
+      },
+      "noControl": {
+        "title": "Disable control",
+        "description": "Disable control completely (Read-only mode)",
+        "arg": "--no-control"
+      },
+      "keyboardMode": {
+        "title": "Keyboard mode",
+        "description": "Choose keyboard input mode",
+        "default": "sdk",
+        "arg": "--keyboard"
+      },
+      "mouseMode": {
+        "title": "Mouse mode",
+        "description": "Choose mouse input mode",
+        "default": "sdk",
+        "arg": "--mouse"
+      },
+      "gamepadMode": {
+        "title": "Gamepad mode",
+        "description": "Choose gamepad input mode",
+        "default": "disabled",
+        "arg": "--gamepad"
+      },
+      "pushTarget": {
+        "title": "Push target",
+        "description": "Path on the device to push files",
+        "default": "/sdcard/Download",
+        "arg": "--push-target"
       }
     }
   }

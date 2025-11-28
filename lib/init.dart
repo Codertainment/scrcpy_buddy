@@ -5,6 +5,8 @@ import 'package:scrcpy_buddy/main.reflectable.dart';
 import 'package:system_theme/system_theme.dart';
 import 'package:window_manager/window_manager.dart';
 
+const _appName = "scrcpy buddy 🤝";
+
 Future<void> init() async {
   WidgetsFlutterBinding.ensureInitialized();
   initializeReflectable();
@@ -17,6 +19,7 @@ Future<void> init() async {
   await WindowManager.instance.ensureInitialized();
   windowManager.waitUntilReadyToShow().then((_) async {
     await windowManager.setMinimumSize(const Size(500, 600));
+    await windowManager.setTitle(_appName);
     await windowManager.show();
   });
 

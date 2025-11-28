@@ -6,6 +6,7 @@ import 'package:scrcpy_buddy/presentation/devices/bloc/devices_bloc.dart';
 import 'package:scrcpy_buddy/presentation/devices/device_row.dart';
 import 'package:scrcpy_buddy/presentation/devices/widget/devices_header.dart';
 import 'package:scrcpy_buddy/presentation/extension/context_extension.dart';
+import 'package:scrcpy_buddy/presentation/extension/translation_extension.dart';
 import 'package:scrcpy_buddy/presentation/widgets/app_widgets.dart';
 
 class DevicesScreen extends StatefulWidget {
@@ -53,7 +54,11 @@ class _DevicesScreenState extends AppModuleState<DevicesScreen> {
                     const Center(child: ProgressBar()),
                   ],
                   if (devicesState is DevicesUpdateError) ...[
-                    Center(child: Text(devicesState.adbError?.message ?? translatedText(key: 'somethingWentWrong'))),
+                    Center(
+                      child: Text(
+                        devicesState.adbError?.message ?? context.translatedText(key: 'common.somethingWentWrong'),
+                      ),
+                    ),
                   ],
                   if (devicesState is DevicesUpdateSuccess) ...[
                     if (devicesState.devices.isEmpty) ...[

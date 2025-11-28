@@ -2,7 +2,8 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:go_router/go_router.dart';
 import 'package:scrcpy_buddy/presentation/devices/devices_screen.dart';
 import 'package:scrcpy_buddy/presentation/home/home_screen.dart';
-import 'package:scrcpy_buddy/presentation/scrcpy_config/video_screen.dart';
+import 'package:scrcpy_buddy/presentation/scrcpy_config/control/control_screen.dart';
+import 'package:scrcpy_buddy/presentation/scrcpy_config/video/video_screen.dart';
 import 'package:scrcpy_buddy/presentation/settings/setings_screen.dart';
 
 class AppRoute {
@@ -10,6 +11,7 @@ class AppRoute {
 
   static const String devices = "/devices";
   static const String video = "/scrcpyConfig.video";
+  static const String control = "/scrcpyConfig.control";
   static const String settings = "/settings";
 }
 
@@ -30,6 +32,7 @@ final router = GoRouter(
       routes: [
         GoRoute(path: AppRoute.devices, builder: (_, _) => const DevicesScreen()),
         GoRoute(path: AppRoute.video, builder: (_, _) => const VideoScreen()),
+        GoRoute(path: AppRoute.control, builder: (_, _) => const ControlScreen()),
         GoRoute(path: AppRoute.settings, builder: (_, _) => const SettingsScreen()),
       ],
     ),
