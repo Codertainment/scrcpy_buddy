@@ -118,7 +118,7 @@
       "size": {
         "title": "Maximum size (resolution)",
         "description": "Limit both width and height to a maximum value, preserving aspect ratio",
-        "default": "Device's resolution"
+        "default": "device's resolution"
       },
       "bitRate": {
         "title": "Bit-rate",

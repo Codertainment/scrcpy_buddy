@@ -41,6 +41,7 @@ class _VideoScreenState extends AppModuleState<VideoScreen> {
                 crossAxisAlignment: .stretch,
                 children: [
                   ConfigItem(
+                    icon: FluentIcons.video_off2,
                     cliArgument: _noVideo,
                     child: ToggleSwitch(
                       checked: state.getFor(_noVideo) ?? false,
@@ -49,6 +50,8 @@ class _VideoScreenState extends AppModuleState<VideoScreen> {
                   ),
                   const ConfigDivider(),
                   ConfigItem(
+                    icon: FluentIcons.image_pixel,
+                    hasDefault: true,
                     cliArgument: _size,
                     child: ConfigTextBox(
                       value: state.getFor(_size),
@@ -57,9 +60,15 @@ class _VideoScreenState extends AppModuleState<VideoScreen> {
                     ),
                   ),
                   const ConfigDivider(),
-                  ConfigItem(cliArgument: VideoBitRate(), child: BitRateConfig()),
+                  ConfigItem(
+                    icon: FluentIcons.rate,
+                    hasDefault: true,
+                    cliArgument: VideoBitRate(),
+                    child: BitRateConfig(),
+                  ),
                   const ConfigDivider(),
                   ConfigItem(
+                    icon: WindowsIcons.speed_medium,
                     cliArgument: _maxFps,
                     child: ConfigTextBox(
                       value: state.getFor(_maxFps),
@@ -69,6 +78,8 @@ class _VideoScreenState extends AppModuleState<VideoScreen> {
                   ),
                   const ConfigDivider(),
                   ConfigItem(
+                    icon: WindowsIcons.line_display,
+                    hasDefault: true,
                     cliArgument: _codec,
                     child: ComboBox<String>(
                       value: state.getFor(_codec),
