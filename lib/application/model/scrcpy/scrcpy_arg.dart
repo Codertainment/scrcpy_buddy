@@ -33,6 +33,9 @@ export 'arguments/window/always_on_top.dart';
 export 'arguments/window/fullscreen.dart';
 export 'arguments/window/window_title.dart';
 
+// Virtual Display
+export 'arguments/virtualDisplay/new_display.dart';
+
 /// All {ScrcpyCliArgument}s must be annotated with this annotation.
 class ScrcpyArg extends Reflectable {
   const ScrcpyArg() : super(newInstanceCapability, invokingCapability);

@@ -10,6 +10,7 @@
         "video": "Video",
         "control": "Control",
         "device": "Device",
+        "virtualDisplay": "Virtual Display",
         "window": "Window"
       }
     },
@@ -217,6 +218,30 @@
         "title": "Window title",
         "description": "Custom window title instead of device model",
         "default": "device model"
+      }
+    },
+    "virtualDisplay": {
+      "infoBar": {
+        "title": "Tip",
+        "description": "It is recommended to use virtual display with \"Start app\" option available in \"Device\" section"
+      },
+      "newDisplay": {
+        "toggle": {
+          "title": "Create virtual display",
+          "description": "Create and mirror a virtual display instead of the main device screen"
+        },
+        "resolution": {
+          "title": "Resolution",
+          "description": "Explicitly set the resolution for virtual display",
+          "default": "main display resolution",
+          "width": "Width",
+          "height": "Height"
+        },
+        "dpi": {
+          "title": "DPI",
+          "description": "Explicitly set the DPI for virtual display",
+          "default": "main display DPI"
+        }
       }
     }
   }

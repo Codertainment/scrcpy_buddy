@@ -1,7 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:scrcpy_buddy/application/model/scrcpy/scrcpy_cli_argument.dart';
-import 'package:scrcpy_buddy/presentation/extension/context_extension.dart';
-import 'package:scrcpy_buddy/presentation/extension/translation_extension.dart';
+import 'package:scrcpy_buddy/presentation/scrcpy_config/widgets/config_item_base.dart';
 import 'package:scrcpy_buddy/presentation/widgets/app_widgets.dart';
 
 class ConfigItem extends AppStatelessWidget {
@@ -17,55 +16,13 @@ class ConfigItem extends AppStatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
-      child: Row(
-        children: [
-          if (icon != null) ...[Icon(icon, size: 24), const SizedBox(width: 12)],
-          Expanded(
-            child: Column(
-              mainAxisSize: .min,
-              crossAxisAlignment: .stretch,
-              children: [
-                Row(
-                  children: [
-                    Text(translatedText(context, key: 'title'), style: context.typography.bodyStrong),
-                    const SizedBox(width: 8),
-                    Tooltip(
-                      richMessage: TextSpan(
-                        children: [
-                          TextSpan(
-                            text: cliArgument.argument,
-                            style: TextStyle(fontFamily: 'monospace'),
-                          ),
-                          if (hasDefault)
-                            TextSpan(
-                              text:
-                                  '\n${context.translatedText(
-                                    key: 'config.defaultValue',
-                                    translationParams: {'value': translatedText(context, key: 'default')},
-                                  )}',
-                            ),
-                        ],
-                      ),
-                      child: CircleAvatar(
-                        radius: 10,
-                        backgroundColor: context.theme.resources.cardStrokeColorDefault,
-                        foregroundColor: context.theme.resources.textFillColorPrimary,
-                        child: WindowsIcon(WindowsIcons.help, size: 8),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                Text(translatedText(context, key: 'description'), style: context.typography.body),
-              ],
-            ),
-          ),
-          const SizedBox(width: 16),
-          Align(alignment: Alignment.centerRight, child: child),
-        ],
-      ),
+    return ConfigItemBase(
+      icon: icon,
+      defaultValueKey: hasDefault ? '${cliArgument.label}.default' : null,
+      titleKey: '${cliArgument.label}.title',
+      descriptionKey: '${cliArgument.label}.description',
+      arg: cliArgument.argument,
+      child: child,
     );
   }
 }
