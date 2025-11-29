@@ -1,4 +1,5 @@
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scrcpy_buddy/application/profiles_bloc/profiles_bloc.dart';
 import 'package:scrcpy_buddy/application/scrcpy_bloc/scrcpy_bloc.dart';
@@ -51,8 +52,12 @@ class StartButton extends AppStatelessWidget {
     } else if (scrcpyState is ScrcpyBaseUpdateState) {
       devicesToStart.addAll(devicesState.selectedDeviceSerials.difference(scrcpyState.devices));
     }
+    final args = profilesBloc.state.toArgsList();
+    if (kDebugMode) {
+      debugPrint("args: $args");
+    }
     for (final deviceSerial in devicesToStart) {
-      scrcpyBloc.add(StartScrcpyEvent(deviceSerial: deviceSerial, args: profilesBloc.state.toArgsList()));
+      scrcpyBloc.add(StartScrcpyEvent(deviceSerial: deviceSerial, args: args));
     }
   }
 }

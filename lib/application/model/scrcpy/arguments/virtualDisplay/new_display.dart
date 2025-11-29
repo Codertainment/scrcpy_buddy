@@ -4,7 +4,7 @@ import 'package:scrcpy_buddy/main.dart';
 @scrcpyArg
 class NewDisplay extends ScrcpyCliArgument<String> {
   @override
-  List<String> toArgs(String value) => [argument, value];
+  List<String> toArgs(String value) => ["$argument=$value"];
 
   @override
   final String argument = '--new-display';
