@@ -248,6 +248,16 @@
           "default": "main display DPI"
         }
       }
+    },
+    "camera": {
+      "id": {
+        "title": "Camera ID",
+        "description": "Use a specific camera ID"
+      },
+      "facing": {
+        "title": "Camera facing",
+        "description": "Automatically select the camera based on selected facing direction"
+      }
     }
   }
 }

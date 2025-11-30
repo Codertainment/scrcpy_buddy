@@ -10,6 +10,10 @@ export 'arguments/video/max_fps.dart';
 export 'arguments/video/video_codec.dart';
 export 'arguments/video/no_video.dart';
 
+// Camera
+export 'arguments/camera/camera_id.dart';
+export 'arguments/camera/camera_facing.dart';
+
 // Control
 export 'arguments/control/no_control.dart';
 export 'arguments/control/push_target.dart';
