@@ -2,6 +2,7 @@
 
 | CLI option                | Description (short)                                                                 | Suggested GUI control                              | Advanced? |
 |---------------------------|-------------------------------------------------------------------------------------|----------------------------------------------------|-----------|
+| `--video-source=`         | Choose `display` (default) or `camera` as video source. [4]                         | Dropdown (“Screen”, “Camera”)                      | No        |
 | `--max-size` / `-m`       | Limit both width and height to a maximum value, preserving aspect ratio. [1][1]     | Number input (pixels)                              | No        |
 | `--video-bit-rate` / `-b` | Set video bit rate (e.g. 2M, 8000000). [1]                                          | Number input + unit dropdown (kbps/Mbps)           | No        |
 | `--max-fps`               | Limit capture frame rate. [1]                                                       | Number input (fps)                                 | No        |
