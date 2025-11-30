@@ -72,13 +72,6 @@ class _HomeScreenState extends AppModuleState<HomeScreen> {
       onTap: () => _openRoute(AppRoute.audio),
     ),
     PaneItem(
-      key: _videoKey,
-      icon: WindowsIcon(WindowsIcons.video),
-      title: _buildPaneItemTitle(context, _videoKey),
-      body: const SizedBox.shrink(),
-      onTap: () => _openRoute(AppRoute.video),
-    ),
-    PaneItem(
       key: _controlKey,
       icon: WindowsIcon(WindowsIcons.keyboard_settings),
       title: _buildPaneItemTitle(context, _controlKey),
@@ -91,6 +84,13 @@ class _HomeScreenState extends AppModuleState<HomeScreen> {
       title: _buildPaneItemTitle(context, _deviceKey),
       body: const SizedBox.shrink(),
       onTap: () => _openRoute(AppRoute.device),
+    ),
+    PaneItem(
+      key: _videoKey,
+      icon: WindowsIcon(WindowsIcons.video),
+      title: _buildPaneItemTitle(context, _videoKey),
+      body: const SizedBox.shrink(),
+      onTap: () => _openRoute(AppRoute.video),
     ),
     PaneItem(
       key: _virtualDisplayKey,
