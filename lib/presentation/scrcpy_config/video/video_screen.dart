@@ -1,5 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:scrcpy_buddy/application/model/scrcpy/arguments/video/video_source.dart';
 import 'package:scrcpy_buddy/application/model/scrcpy/scrcpy_arg.dart';
 import 'package:scrcpy_buddy/application/profiles_bloc/profiles_bloc.dart';
 import 'package:scrcpy_buddy/presentation/scrcpy_config/video/bit_rate_config.dart';
@@ -8,7 +9,6 @@ import 'package:scrcpy_buddy/presentation/scrcpy_config/widgets/config_divider.d
 import 'package:scrcpy_buddy/presentation/scrcpy_config/widgets/config_item.dart';
 import 'package:scrcpy_buddy/presentation/scrcpy_config/widgets/config_text_box.dart';
 import 'package:scrcpy_buddy/presentation/scrcpy_config/widgets/config_toggle.dart';
-import 'package:scrcpy_buddy/presentation/scrcpy_config/widgets/dropdown_placeholder.dart';
 import 'package:scrcpy_buddy/presentation/widgets/app_widgets.dart';
 
 class VideoScreen extends StatefulWidget {
@@ -21,6 +21,7 @@ class VideoScreen extends StatefulWidget {
 class _VideoScreenState extends AppModuleState<VideoScreen> {
   late final _profilesBloc = context.read<ProfilesBloc>();
   final _noVideo = NoVideo();
+  final _source = VideoSource();
   final _size = VideoSize();
   final _maxFps = MaxFps();
   final _codec = VideoCodec();
@@ -46,6 +47,13 @@ class _VideoScreenState extends AppModuleState<VideoScreen> {
                     icon: FluentIcons.video_off2,
                     cliArgument: _noVideo,
                     child: ConfigToggle(state: state, cliArgument: _noVideo),
+                  ),
+                  const ConfigDivider(),
+                  ConfigItem(
+                    icon: FluentIcons.video_search,
+                    cliArgument: _source,
+                    hasDefault: true,
+                    child: ConfigComboBox(state: state, cliArgument: _source),
                   ),
                   const ConfigDivider(),
                   ConfigItem(
