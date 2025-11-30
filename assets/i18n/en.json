@@ -115,12 +115,12 @@
         "description": "Disable audio forwarding completely"
       },
       "source": {
-        "title": "Audio source",
+        "title": "Source",
         "description": "Select source for audio capture",
         "default": "output"
       },
       "codec": {
-        "title": "Audio codec",
+        "title": "Codec",
         "description": "Select audio codec",
         "default": "opus"
       }
@@ -129,6 +129,11 @@
       "noVideo": {
         "title": "Disable video",
         "description": "Disable video forwarding completely"
+      },
+      "source": {
+        "title": "Source",
+        "description": "Select source for video capture",
+        "default": "display"
       },
       "maxFps": {
         "title": "Maximum frame-rate",
@@ -164,17 +169,17 @@
       },
       "keyboardMode": {
         "title": "Keyboard mode",
-        "description": "Choose keyboard input mode",
+        "description": "Select keyboard input mode",
         "default": "sdk"
       },
       "mouseMode": {
         "title": "Mouse mode",
-        "description": "Choose mouse input mode",
+        "description": "Select mouse input mode",
         "default": "sdk"
       },
       "gamepadMode": {
         "title": "Gamepad mode",
-        "description": "Choose gamepad input mode",
+        "description": "Select gamepad input mode",
         "default": "disabled"
       },
       "pushTarget": {
