@@ -27,11 +27,12 @@ class _HomeScreenState extends AppModuleState<HomeScreen> {
 
   final _devicesKey = ValueKey('devices');
 
-  final _videoKey = ValueKey('scrcpyConfig.video');
   final _audioKey = ValueKey('scrcpyConfig.audio');
+  final _cameraKey = ValueKey('scrcpyConfig.camera');
   final _controlKey = ValueKey('scrcpyConfig.control');
   final _deviceKey = ValueKey('scrcpyConfig.device');
   final _virtualDisplayKey = ValueKey('scrcpyConfig.virtualDisplay');
+  final _videoKey = ValueKey('scrcpyConfig.video');
 
   final _windowKey = ValueKey('scrcpyConfig.window');
 
@@ -70,6 +71,13 @@ class _HomeScreenState extends AppModuleState<HomeScreen> {
       title: _buildPaneItemTitle(context, _audioKey),
       body: const SizedBox.shrink(),
       onTap: () => _openRoute(AppRoute.audio),
+    ),
+    PaneItem(
+      key: _cameraKey,
+      icon: WindowsIcon(WindowsIcons.camera),
+      title: _buildPaneItemTitle(context, _cameraKey),
+      body: const SizedBox.shrink(),
+      onTap: () => _openRoute(AppRoute.camera),
     ),
     PaneItem(
       key: _controlKey,

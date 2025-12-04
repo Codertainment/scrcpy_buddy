@@ -7,9 +7,10 @@
       "scrcpyConfig": {
         "sectionTitle": "scrcpy Config",
         "audio": "Audio",
-        "video": "Video",
+        "camera": "Camera",
         "control": "Control",
         "device": "Device",
+        "video": "Video",
         "virtualDisplay": "Virtual Display",
         "window": "Window"
       }
@@ -228,7 +229,8 @@
     "virtualDisplay": {
       "infoBar": {
         "title": "Tip",
-        "description": "It is recommended to use virtual display with \"Start app\" option available in \"Device\" section"
+        "description": "It is recommended to use virtual display with 'Start app' option available in ",
+        "button": "'Device' section"
       },
       "newDisplay": {
         "toggle": {
@@ -250,6 +252,11 @@
       }
     },
     "camera": {
+      "infoBar": {
+        "title": "Video source is not set to 'camera'",
+        "description": "These settings won't have an effect until the video source is set to 'camera'\n",
+        "button": "Click here to configure the video source"
+      },
       "id": {
         "title": "Camera ID",
         "description": "Use a specific camera ID"
