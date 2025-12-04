@@ -1,12 +1,15 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:scrcpy_buddy/application/model/scrcpy/scrcpy_arg.dart';
 import 'package:scrcpy_buddy/application/profiles_bloc/profiles_bloc.dart';
 import 'package:scrcpy_buddy/presentation/extension/translation_extension.dart';
 import 'package:scrcpy_buddy/presentation/scrcpy_config/widgets/config_divider.dart';
 import 'package:scrcpy_buddy/presentation/scrcpy_config/widgets/config_item_base.dart';
 import 'package:scrcpy_buddy/presentation/scrcpy_config/widgets/config_text_box.dart';
+import 'package:scrcpy_buddy/presentation/scrcpy_config/widgets/link_span.dart';
 import 'package:scrcpy_buddy/presentation/widgets/app_widgets.dart';
+import 'package:scrcpy_buddy/routes.dart';
 
 class VirtualDisplayScreen extends StatefulWidget {
   const VirtualDisplayScreen({super.key});
@@ -142,8 +145,19 @@ class _VirtualDisplayScreenState extends AppModuleState<VirtualDisplayScreen> {
               crossAxisAlignment: .stretch,
               children: [
                 InfoBar(
+                  isLong: true,
                   title: Text(translatedText(key: 'infoBar.title')),
-                  content: Text(translatedText(key: 'infoBar.description')),
+                  content: RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(text: translatedText(key: 'infoBar.description')),
+                        LinkSpan(
+                          text: translatedText(key: 'infoBar.button'),
+                          onTap: () => context.go(AppRoute.device),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
                 const SizedBox(height: 16),
                 Card(

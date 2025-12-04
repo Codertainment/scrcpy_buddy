@@ -1,6 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:flutter/gestures.dart';
 import 'package:scrcpy_buddy/main.dart';
+import 'package:scrcpy_buddy/presentation/scrcpy_config/widgets/link_span.dart';
 import 'package:scrcpy_buddy/presentation/widgets/app_widgets.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
@@ -12,7 +12,6 @@ class ModesInfoBar extends AppStatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final link = TextStyle(decoration: TextDecoration.underline, color: Colors.blue);
     return InfoBar(
       isLong: true,
       title: Text(translatedText(context, key: 'title')),
@@ -26,20 +25,17 @@ class ModesInfoBar extends AppStatelessWidget {
           RichText(
             text: TextSpan(
               children: [
-                TextSpan(
+                LinkSpan(
                   text: translatedText(context, key: 'keyboard'),
-                  style: link,
-                  recognizer: TapGestureRecognizer()..onTap = _openKeyboardDocs,
+                  onTap: _openKeyboardDocs,
                 ),
-                TextSpan(
+                LinkSpan(
                   text: translatedText(context, key: 'mouse'),
-                  style: link,
-                  recognizer: TapGestureRecognizer()..onTap = _openMouseDocs,
+                  onTap: _openMouseDocs,
                 ),
-                TextSpan(
+                LinkSpan(
                   text: translatedText(context, key: 'gamepad'),
-                  style: link,
-                  recognizer: TapGestureRecognizer()..onTap = _openGamepadDocs,
+                  onTap: _openGamepadDocs,
                 ),
               ],
             ),
