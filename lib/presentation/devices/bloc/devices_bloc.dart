@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:scrcpy_buddy/application/model/adb/adb_device.dart';
@@ -5,7 +7,6 @@ import 'package:scrcpy_buddy/application/model/adb/adb_error.dart';
 import 'package:scrcpy_buddy/service/adb_service.dart';
 
 part 'devices_event.dart';
-
 part 'devices_state.dart';
 
 typedef _Emitter = Emitter<DevicesState>;
@@ -64,7 +65,16 @@ class DevicesBloc extends Bloc<DevicesEvent, DevicesState> {
           _emitSuccess(emit);
         },
       );
+    } on ProcessException catch (e) {
+      emit(
+        DevicesUpdateError(
+          devices: _devices,
+          selectedDeviceSerials: _selectedDeviceSerials,
+          adbError: AdbNotFoundError(),
+        ),
+      );
     } catch (e) {
+      print(e);
       emit(DevicesUpdateError(devices: _devices, selectedDeviceSerials: _selectedDeviceSerials, message: e.toString()));
     }
   }
