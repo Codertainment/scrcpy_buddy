@@ -1,7 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/services.dart';
 import 'package:scrcpy_buddy/presentation/extension/context_extension.dart';
-import 'package:scrcpy_buddy/presentation/extension/translation_extension.dart';
 
 class ConfigTextBox extends StatefulWidget {
   final String? value;

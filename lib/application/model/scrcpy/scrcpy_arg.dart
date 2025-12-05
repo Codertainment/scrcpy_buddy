@@ -38,6 +38,9 @@ export 'arguments/window/always_on_top.dart';
 export 'arguments/window/fullscreen.dart';
 export 'arguments/window/window_title.dart';
 
+// Recording
+export 'arguments/recording/record.dart';
+
 // Virtual Display
 export 'arguments/virtualDisplay/new_display.dart';
 

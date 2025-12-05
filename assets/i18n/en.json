@@ -10,6 +10,7 @@
         "camera": "Camera",
         "control": "Control",
         "device": "Device",
+        "recording": "Recording",
         "video": "Video",
         "virtualDisplay": "Virtual Display",
         "window": "Window"
@@ -264,6 +265,13 @@
       "facing": {
         "title": "Camera facing",
         "description": "Automatically select the camera based on selected facing direction"
+      }
+    },
+    "recording": {
+      "record": {
+        "title": "Save to",
+        "description": "Select where to save the recording file to (along with the file extension)",
+        "button": "Save to"
       }
     }
   }
