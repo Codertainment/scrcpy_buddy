@@ -6,6 +6,7 @@ import 'package:scrcpy_buddy/presentation/scrcpy_config/audio/audio_screen.dart'
 import 'package:scrcpy_buddy/presentation/scrcpy_config/camera_screen.dart';
 import 'package:scrcpy_buddy/presentation/scrcpy_config/control/control_screen.dart';
 import 'package:scrcpy_buddy/presentation/scrcpy_config/device/device_screen.dart';
+import 'package:scrcpy_buddy/presentation/scrcpy_config/recording_screen.dart';
 import 'package:scrcpy_buddy/presentation/scrcpy_config/video/video_screen.dart';
 import 'package:scrcpy_buddy/presentation/scrcpy_config/virtualDisplay/virtual_display_screen.dart';
 import 'package:scrcpy_buddy/presentation/scrcpy_config/window/window_screen.dart';
@@ -20,6 +21,7 @@ class AppRoute {
   static const String camera = "/scrcpyConfig.camera";
   static const String control = "/scrcpyConfig.control";
   static const String device = "/scrcpyConfig.device";
+  static const String recording = "/scrcpyConfig.recording";
   static const String video = "/scrcpyConfig.video";
   static const String virtualDisplay = "/scrcpyConfig.virtualDisplay";
   static const String window = "/scrcpyConfig.window";
@@ -48,6 +50,7 @@ final router = GoRouter(
         GoRoute(path: AppRoute.camera, builder: (_, _) => const CameraScreen()),
         GoRoute(path: AppRoute.control, builder: (_, _) => const ControlScreen()),
         GoRoute(path: AppRoute.device, builder: (_, _) => const DeviceScreen()),
+        GoRoute(path: AppRoute.recording, builder: (_, _) => const RecordingScreen()),
         GoRoute(path: AppRoute.video, builder: (_, _) => const VideoScreen()),
         GoRoute(path: AppRoute.virtualDisplay, builder: (_, _) => const VirtualDisplayScreen()),
         GoRoute(path: AppRoute.window, builder: (_, _) => const WindowScreen()),

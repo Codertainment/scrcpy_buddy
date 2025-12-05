@@ -47,7 +47,7 @@ dependencies:
   fpdart: ^1.1.1
   equatable: ^2.0.7
   reflectable: ^5.0.1
-  file_picker: ^10.3.3
+  file_selector: ^1.1.0
 
   # Storage
   streaming_shared_preferences: ^2.0.0

@@ -8,7 +8,6 @@ import 'package:scrcpy_buddy/presentation/scrcpy_config/widgets/config_divider.d
 import 'package:scrcpy_buddy/presentation/scrcpy_config/widgets/config_item.dart';
 import 'package:scrcpy_buddy/presentation/scrcpy_config/widgets/config_text_box.dart';
 import 'package:scrcpy_buddy/presentation/scrcpy_config/widgets/config_toggle.dart';
-import 'package:scrcpy_buddy/presentation/scrcpy_config/widgets/dropdown_placeholder.dart';
 import 'package:scrcpy_buddy/presentation/widgets/app_widgets.dart';
 
 import 'package:scrcpy_buddy/application/model/scrcpy/scrcpy_arg.dart';
