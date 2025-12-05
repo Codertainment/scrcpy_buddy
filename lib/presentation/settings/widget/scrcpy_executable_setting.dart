@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:file_picker/file_picker.dart';
+import 'package:file_selector/file_selector.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:provider/provider.dart';
 import 'package:scrcpy_buddy/application/app_settings.dart';
@@ -95,12 +95,10 @@ class _ScrcpyExecutableSettingState extends AppModuleState<ScrcpyExecutableSetti
                 : IconButton(
                     icon: Icon(WindowsIcons.file_explorer),
                     onPressed: () async {
-                      final result = await FilePicker.platform.pickFiles(
-                        dialogTitle: translatedText(key: 'dialogTitle'),
-                      );
+                      final result = await openFile();
 
                       if (result != null) {
-                        _validateAndSave(result.files.single.path);
+                        _validateAndSave(result.path);
                       }
                     },
                   ),

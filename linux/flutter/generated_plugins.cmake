@@ -3,6 +3,7 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+  file_selector_linux
   flutter_acrylic
   objectbox_flutter_libs
   screen_retriever_linux
