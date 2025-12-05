@@ -149,6 +149,7 @@ class _VirtualDisplayScreenState extends AppModuleState<VirtualDisplayScreen> {
                   title: Text(translatedText(key: 'infoBar.title')),
                   content: RichText(
                     text: TextSpan(
+                      style: typography.body,
                       children: [
                         TextSpan(text: translatedText(key: 'infoBar.description')),
                         LinkSpan(
