@@ -1,8 +1,10 @@
+import 'dart:io';
+
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:scrcpy_buddy/application/profiles_bloc/profiles_bloc.dart';
 import 'package:scrcpy_buddy/application/model/scrcpy/scrcpy_error.dart';
+import 'package:scrcpy_buddy/application/profiles_bloc/profiles_bloc.dart';
 import 'package:scrcpy_buddy/application/scrcpy_bloc/scrcpy_bloc.dart';
 import 'package:scrcpy_buddy/presentation/extension/context_extension.dart';
 import 'package:scrcpy_buddy/presentation/extension/translation_extension.dart';
@@ -32,8 +34,9 @@ class _HomeScreenState extends AppModuleState<HomeScreen> {
   final _controlKey = ValueKey('scrcpyConfig.control');
   final _deviceKey = ValueKey('scrcpyConfig.device');
   final _recordingKey = ValueKey('scrcpyConfig.recording');
-  final _virtualDisplayKey = ValueKey('scrcpyConfig.virtualDisplay');
+  final _v4l2Key = ValueKey('scrcpyConfig.v4l2');
   final _videoKey = ValueKey('scrcpyConfig.video');
+  final _virtualDisplayKey = ValueKey('scrcpyConfig.virtualDisplay');
 
   final _windowKey = ValueKey('scrcpyConfig.window');
 
@@ -101,6 +104,14 @@ class _HomeScreenState extends AppModuleState<HomeScreen> {
       body: const SizedBox.shrink(),
       onTap: () => _openRoute(AppRoute.recording),
     ),
+    if (Platform.isLinux)
+      PaneItem(
+        key: _v4l2Key,
+        icon: WindowsIcon(FluentIcons.funnel_chart),
+        title: _buildPaneItemTitle(context, _v4l2Key),
+        body: const SizedBox.shrink(),
+        onTap: () => _openRoute(AppRoute.v4l2),
+      ),
     PaneItem(
       key: _videoKey,
       icon: WindowsIcon(WindowsIcons.video),

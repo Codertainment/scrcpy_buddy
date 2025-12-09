@@ -41,6 +41,9 @@ export 'arguments/window/window_title.dart';
 // Recording
 export 'arguments/recording/record.dart';
 
+// V4L2
+export 'arguments/v4l2/v4l2_sink.dart';
+
 // Virtual Display
 export 'arguments/virtualDisplay/new_display.dart';
 
