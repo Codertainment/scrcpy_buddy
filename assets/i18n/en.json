@@ -11,6 +11,7 @@
         "control": "Control",
         "device": "Device",
         "recording": "Recording",
+        "v4l2": "V4L2 (Video4Linux)",
         "video": "Video",
         "virtualDisplay": "Virtual Display",
         "window": "Window"
@@ -272,6 +273,19 @@
         "title": "Save to",
         "description": "Select where to save the recording file to (along with the file extension)",
         "button": "Save to"
+      }
+    },
+    "v4l2": {
+      "infoBar": {
+        "title": "Guide",
+        "description": "You need to have `v4l2loopback-dkms` installed to be able to create a V4L2 device\n\n",
+        "create": "Create V4L2 device:\n",
+        "stream": "Open V4L2 stream:\n",
+        "moreInfo": "More information available in scrcpy documentation"
+      },
+      "sink": {
+        "title": "Sink",
+        "description": "Send video stream to a V4L2 loopback device (e.g. '/dev/videoN')"
       }
     }
   }
