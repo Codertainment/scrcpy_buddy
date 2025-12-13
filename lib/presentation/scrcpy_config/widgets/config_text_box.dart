@@ -8,6 +8,7 @@ class ConfigTextBox extends StatefulWidget {
   final double? maxWidth;
   final String? placeholder;
   final bool isDisabled;
+  final Widget? prefix;
   final void Function(String? newValue) onChanged;
 
   const ConfigTextBox({
@@ -18,6 +19,7 @@ class ConfigTextBox extends StatefulWidget {
     this.placeholder,
     this.maxWidth,
     this.isDisabled = false,
+    this.prefix,
   });
 
   @override
@@ -50,6 +52,7 @@ class _ConfigTextBoxState extends State<ConfigTextBox> {
         maxWidth: widget.maxWidth != null ? widget.maxWidth! : context.windowSize.width * 0.15,
       ),
       child: TextBox(
+        prefix: widget.prefix,
         readOnly: widget.isDisabled,
         controller: _controller,
         placeholder: widget.placeholder,

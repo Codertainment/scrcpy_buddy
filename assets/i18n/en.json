@@ -39,6 +39,7 @@
     "done": "Done",
     "save": "Save",
     "cancel": "Cancel",
+    "close": "Close",
     "errors": {
       "adb": {
         "unknown": "Unknown error:\n{{ error }}",
@@ -154,7 +155,7 @@
       },
       "codec": {
         "title": "Codec",
-        "description": "H265 may provide better quality, but H264 should provide lower latency. AV1 encoders are not common on current Android devices.",
+        "description": "H265 may provide better quality, but H264 should provide lower latency.\nAV1 encoders are not common on older devices",
         "default": "h264"
       }
     },
@@ -206,7 +207,20 @@
       },
       "startApp": {
         "title": "Start app",
-        "description": "Start given app (by package name) on start\nAdding '+' prefix would force-close the app before being started\nAdding '?' prefix would search for the app by name\nBoth prefixes can be combined in this order:'+?'"
+        "description": "Start given app (by package name) on start\nAdding '+' prefix would force-close the app before being started\nAdding '?' prefix would search for the app by name\nBoth prefixes can be combined in this order:'+?'",
+        "selectApp": "Select app",
+        "listAppsError": "Could not get list of apps",
+        "dialogTitle": "Select App"
+      },
+      "appsList": {
+        "search": "Search",
+        "filter": "Filter",
+        "iconTooltip": {
+          "system": "System app",
+          "thirdParty": "Third-party app"
+        },
+        "onlySystemApps": "Only system apps",
+        "onlyThirdPartyApps": "Only third-party apps"
       }
     },
     "window": {

@@ -2,10 +2,9 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scrcpy_buddy/application/model/scrcpy/scrcpy_arg.dart';
 import 'package:scrcpy_buddy/application/profiles_bloc/profiles_bloc.dart';
-import 'package:scrcpy_buddy/presentation/extension/context_extension.dart';
+import 'package:scrcpy_buddy/presentation/scrcpy_config/device/start_app_config.dart';
 import 'package:scrcpy_buddy/presentation/scrcpy_config/widgets/config_divider.dart';
 import 'package:scrcpy_buddy/presentation/scrcpy_config/widgets/config_item.dart';
-import 'package:scrcpy_buddy/presentation/scrcpy_config/widgets/config_text_box.dart';
 import 'package:scrcpy_buddy/presentation/scrcpy_config/widgets/config_toggle.dart';
 import 'package:scrcpy_buddy/presentation/widgets/app_widgets.dart';
 
@@ -56,16 +55,7 @@ class _DeviceScreenState extends AppModuleState<DeviceScreen> {
                     child: ConfigToggle(state: state, cliArgument: _showTouches),
                   ),
                   const ConfigDivider(),
-                  ConfigItem(
-                    icon: WindowsIcons.app_icon_default_add,
-                    cliArgument: _startApp,
-                    child: ConfigTextBox(
-                      maxWidth: context.windowSize.width * 0.2,
-                      value: state.getFor(_startApp),
-                      onChanged: (newValue) =>
-                          context.read<ProfilesBloc>().add(UpdateProfileArgEvent(_startApp, newValue)),
-                    ),
-                  ),
+                  ConfigItem(icon: WindowsIcons.app_icon_default_add, cliArgument: _startApp, child: StartAppConfig()),
                 ],
               ),
             ),
