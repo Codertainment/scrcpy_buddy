@@ -35,7 +35,7 @@ class _ProfilesScreenState extends AppModuleState<ProfilesScreen> {
       actionKey: 'profiles.delete',
     );
     if (shouldDelete == true) {
-      _profilesBloc.add(DeleteMultipleProfilesEvent(_selectedProfiles));
+      _profilesBloc.add(DeleteMultipleProfilesEvent(profilesToDelete));
     }
   }
 
