@@ -1,11 +1,13 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:scrcpy_buddy/application/app_settings.dart';
 import 'package:scrcpy_buddy/application/profiles_bloc/profiles_bloc.dart';
 import 'package:scrcpy_buddy/presentation/extension/context_extension.dart';
 import 'package:scrcpy_buddy/presentation/profiles/profile_name_dialog.dart';
 import 'package:scrcpy_buddy/presentation/profiles/widgets/profile_list_tile.dart';
 import 'package:scrcpy_buddy/presentation/widgets/app_widgets.dart';
 import 'package:scrcpy_buddy/presentation/widgets/dialogs.dart';
+import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 
 class ProfilesScreen extends StatefulWidget {
   const ProfilesScreen({super.key});
@@ -19,6 +21,7 @@ class _ProfilesScreenState extends AppModuleState<ProfilesScreen> {
   String get module => 'profiles';
 
   late final _profilesBloc = context.read<ProfilesBloc>();
+  late final _appSettings = context.read<AppSettings>();
   final _selectedProfiles = <int>{};
 
   Future<void> _showDeleteConfirmationDialog() async {
@@ -104,22 +107,37 @@ class _ProfilesScreenState extends AppModuleState<ProfilesScreen> {
               ),
               const SizedBox(height: 16),
               Expanded(
-                child: ListView(
-                  children: state.allProfiles
-                      .map(
-                        (profile) => ProfileListTile(
-                          profile: profile,
-                          isSelected: _selectedProfiles.contains(profile.id),
-                          onSelectionChange: (isSelected) {
-                            if (isSelected == true) {
-                              setState(() => _selectedProfiles.add(profile.id));
-                            } else if (isSelected == false && _selectedProfiles.contains(profile.id)) {
-                              setState(() => _selectedProfiles.remove(profile.id));
-                            }
-                          },
-                        ),
-                      )
-                      .toList(growable: false),
+                child: PreferenceBuilder<bool>(
+                  preference: _appSettings.isLastUsedProfileDefault,
+                  builder: (context, isLastUsedProfileDefault) {
+                    return PreferenceBuilder<int>(
+                      preference: _appSettings.defaultProfileId,
+                      builder: (context, defaultProfileId) {
+                        return ListView(
+                          children: state.allProfiles
+                              .map(
+                                (profile) => ProfileListTile(
+                                  profile: profile,
+                                  isDefault: !isLastUsedProfileDefault && profile.id == defaultProfileId,
+                                  isSelected: _selectedProfiles.contains(profile.id),
+                                  onSetDefault: () {
+                                    _appSettings.isLastUsedProfileDefault.setValue(false);
+                                    _appSettings.defaultProfileId.setValue(profile.id);
+                                  },
+                                  onSelectionChange: (isSelected) {
+                                    if (isSelected == true) {
+                                      setState(() => _selectedProfiles.add(profile.id));
+                                    } else if (isSelected == false && _selectedProfiles.contains(profile.id)) {
+                                      setState(() => _selectedProfiles.remove(profile.id));
+                                    }
+                                  },
+                                ),
+                              )
+                              .toList(growable: false),
+                        );
+                      },
+                    );
+                  },
                 ),
               ),
             ],

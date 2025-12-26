@@ -324,6 +324,7 @@
       "title": "Delete profiles?",
       "message": "Are you sure you want to delete {count} profiles?\nThis action is irreversible, and you will lose the configured scrcpy options stored in these profiles"
     },
-    "create": "Create"
+    "create": "Create",
+    "setDefault": "Set default"
   }
 }

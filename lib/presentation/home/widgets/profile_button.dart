@@ -4,6 +4,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:go_router/go_router.dart';
 import 'package:scrcpy_buddy/application/model/profile.dart';
 import 'package:scrcpy_buddy/application/profiles_bloc/profiles_bloc.dart';
+import 'package:scrcpy_buddy/presentation/extension/profile_extension.dart';
 import 'package:scrcpy_buddy/presentation/profiles/profile_name_dialog.dart';
 import 'package:scrcpy_buddy/presentation/widgets/app_widgets.dart';
 import 'package:scrcpy_buddy/routes.dart';
@@ -73,7 +74,7 @@ class _ProfileName extends AppStatelessWidget {
     return ConstrainedBox(
       constraints: BoxConstraints(maxWidth: 120),
       child: TextScroll(
-        getProfileName(context, profile),
+        profile.getName(context),
         // Explicit ValueKey to ensure rebuild when profile changes (reset scroll animation)
         key: ValueKey(profile.id),
         mode: TextScrollMode.bouncing,
@@ -84,7 +85,4 @@ class _ProfileName extends AppStatelessWidget {
       ),
     );
   }
-
-  String getProfileName(BuildContext context, Profile profile) =>
-      profile.name != null ? profile.name! : translatedText(context, key: 'default');
 }
