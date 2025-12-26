@@ -8,6 +8,7 @@ import 'package:scrcpy_buddy/application/model/adb/adb_device.dart';
 import 'package:scrcpy_buddy/presentation/extension/context_extension.dart';
 import 'package:scrcpy_buddy/presentation/extension/translation_extension.dart';
 import 'package:scrcpy_buddy/presentation/widgets/app_widgets.dart';
+import 'package:scrcpy_buddy/presentation/widgets/dialogs.dart';
 import 'package:scrcpy_buddy/service/adb_service.dart';
 
 class DeviceRow extends StatefulWidget {
@@ -67,28 +68,17 @@ class _DeviceRowState extends AppModuleState<DeviceRow> with SingleTickerProvide
 
   void _showDisconnectConfirmationDialog() async {
     await _commandBarKey.currentState?.toggleSecondaryMenu();
-    final shouldDisconnect = await showDialog<bool>(
-      context: context,
-      builder: (context) => ContentDialog(
-        title: Text(translatedText(key: 'disconnect.title')),
-        content: Text(translatedText(key: 'disconnect.message')),
-        actions: [
-          Button(
-            child: Text(translatedText(key: 'disconnect.confirm')),
-            onPressed: () => Navigator.pop(context, true),
-          ),
-          FilledButton(
-            child: Text(context.translatedText(key: 'common.cancel')),
-            onPressed: () => Navigator.pop(context, false),
-          ),
-        ],
-      ),
+    final shouldDisconnect = await showDangerActionConfirmationDialog(
+      context,
+      titleKey: 'devices.disconnect.title',
+      messageKey: 'devices.disconnect.message',
+      actionKey: 'devices.disconnect.confirm',
     );
     if (shouldDisconnect == true) {
       final disconnectResult = await _adbService.disconnect(widget.device.serial);
       disconnectResult.mapLeft((error) => showInfoBar(title: error.message, severity: InfoBarSeverity.error));
       disconnectResult.map(
-            (_) => showInfoBar(
+        (_) => showInfoBar(
           title: translatedText(key: 'disconnect.done'),
           severity: InfoBarSeverity.success,
         ),
@@ -117,6 +107,7 @@ class _DeviceRowState extends AppModuleState<DeviceRow> with SingleTickerProvide
       await Future.delayed(Duration(milliseconds: 500), () => widget.shouldRefresh());
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return ListTile.selectable(
@@ -227,5 +218,4 @@ class _DeviceRowState extends AppModuleState<DeviceRow> with SingleTickerProvide
       ),
     );
   }
-
 }
