@@ -1,6 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:provider/provider.dart';
 import 'package:scrcpy_buddy/application/app_settings.dart';
+import 'package:scrcpy_buddy/presentation/settings/widget/default_profile_setting.dart';
 import 'package:scrcpy_buddy/presentation/settings/widget/scrcpy_executable_setting.dart';
 import 'package:scrcpy_buddy/presentation/settings/widget/settings_item.dart';
 import 'package:scrcpy_buddy/presentation/settings/widget/theme_brightness_setting.dart';
@@ -37,6 +38,12 @@ class _SettingsScreenState extends AppModuleState<SettingsScreen> {
             groupKey: 'themeBrightness',
             childConstraints: _defaultConstraints,
             child: ThemeBrightnessSetting(brightnessPreference: _settings.themeBrightness),
+          ),
+          SettingsItem(
+            groupKey: 'defaultProfile',
+            shouldShowDescription: true,
+            childConstraints: _defaultConstraints,
+            child: DefaultProfileSetting(),
           ),
         ],
       ),

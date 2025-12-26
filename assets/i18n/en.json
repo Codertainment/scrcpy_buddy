@@ -98,6 +98,11 @@
       "light": "Light",
       "dark": "Dark",
       "system": "System"
+    },
+    "defaultProfile": {
+      "title": "Default profile",
+      "description": "Select default profile",
+      "lastUsed": "Last used"
     }
   },
   "console": {

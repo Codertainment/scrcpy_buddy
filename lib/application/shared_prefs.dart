@@ -1,5 +1,4 @@
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:scrcpy_buddy/application/app_settings.dart';
 import 'package:shared_preferences/src/shared_preferences_legacy.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 
