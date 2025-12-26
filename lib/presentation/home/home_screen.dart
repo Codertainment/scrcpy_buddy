@@ -40,6 +40,7 @@ class _HomeScreenState extends AppModuleState<HomeScreen> {
 
   final _windowKey = ValueKey('scrcpyConfig.window');
 
+  final _profilesKey = ValueKey('profiles');
   final _settingsKey = ValueKey('settings');
 
   @override
@@ -136,6 +137,13 @@ class _HomeScreenState extends AppModuleState<HomeScreen> {
   ];
 
   List<NavigationPaneItem> _getFooterItems(BuildContext context) => [
+    PaneItem(
+      key: _profilesKey,
+      icon: const WindowsIcon(WindowsIcons.guest_user),
+      title: _buildPaneItemTitle(context, _profilesKey),
+      body: const SizedBox.shrink(),
+      onTap: () => _openRoute(AppRoute.profiles),
+    ),
     PaneItem(
       key: _settingsKey,
       icon: const WindowsIcon(WindowsIcons.settings),

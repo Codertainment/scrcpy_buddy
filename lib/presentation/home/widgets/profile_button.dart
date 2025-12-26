@@ -1,10 +1,12 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:go_router/go_router.dart';
 import 'package:scrcpy_buddy/application/model/profile.dart';
 import 'package:scrcpy_buddy/application/profiles_bloc/profiles_bloc.dart';
 import 'package:scrcpy_buddy/presentation/profiles/profile_name_dialog.dart';
 import 'package:scrcpy_buddy/presentation/widgets/app_widgets.dart';
+import 'package:scrcpy_buddy/routes.dart';
 import 'package:text_scroll/text_scroll.dart';
 
 class ProfileButton extends AppStatelessWidget {
@@ -30,6 +32,11 @@ class ProfileButton extends AppStatelessWidget {
                 ),
             // only show separator if there are profiles shown in menu flyout
             if (state.allProfiles.length > 1) MenuFlyoutSeparator(),
+            MenuFlyoutItem(
+              leading: WindowsIcon(WindowsIcons.edit),
+              text: Text(translatedText(context, key: 'manage')),
+              onPressed: () => context.go(AppRoute.profiles),
+            ),
             MenuFlyoutItem(
               leading: WindowsIcon(WindowsIcons.add),
               text: Text(translatedText(context, key: 'create')),

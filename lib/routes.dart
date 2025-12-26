@@ -2,6 +2,7 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:go_router/go_router.dart';
 import 'package:scrcpy_buddy/presentation/devices/devices_screen.dart';
 import 'package:scrcpy_buddy/presentation/home/home_screen.dart';
+import 'package:scrcpy_buddy/presentation/profiles/profiles_screen.dart';
 import 'package:scrcpy_buddy/presentation/scrcpy_config/audio/audio_screen.dart';
 import 'package:scrcpy_buddy/presentation/scrcpy_config/camera_screen.dart';
 import 'package:scrcpy_buddy/presentation/scrcpy_config/control/control_screen.dart';
@@ -28,6 +29,7 @@ class AppRoute {
   static const String virtualDisplay = "/scrcpyConfig.virtualDisplay";
   static const String window = "/scrcpyConfig.window";
 
+  static const String profiles = "/profiles";
   static const String settings = "/settings";
 }
 
@@ -58,6 +60,7 @@ final router = GoRouter(
         GoRoute(path: AppRoute.virtualDisplay, builder: (_, _) => const VirtualDisplayScreen()),
         GoRoute(path: AppRoute.window, builder: (_, _) => const WindowScreen()),
 
+        GoRoute(path: AppRoute.profiles, builder: (_, _) => const ProfilesScreen()),
         GoRoute(path: AppRoute.settings, builder: (_, _) => const SettingsScreen()),
       ],
     ),

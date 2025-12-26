@@ -3,6 +3,7 @@
   "home": {
     "navigation": {
       "devices": "Devices",
+      "profiles": "Manage Profiles",
       "settings": "Settings",
       "scrcpyConfig": {
         "sectionTitle": "scrcpy Config",
@@ -31,6 +32,7 @@
     "goToSettings": "Go to settings",
     "profile": {
       "default": "Default",
+      "manage": "Manage profiles",
       "create": "Create profile"
     }
   },
@@ -302,5 +304,21 @@
         "description": "Send video stream to a V4L2 loopback device (e.g. '/dev/videoN')"
       }
     }
+  },
+  "profiles": {
+    "default": "Default",
+    "rename": "Rename",
+    "delete": "Delete",
+    "deleteAll": "Delete all",
+    "deleteSelected": "Delete selected",
+    "deleteDialog": {
+      "title": "Delete profile?",
+      "message": "Are you sure you want to delete this profile?\nThis action is irreversible, and you will lose the configured scrcpy options stored in this profile"
+    },
+    "multipleDeleteDialog": {
+      "title": "Delete profiles?",
+      "message": "Are you sure you want to delete {count} profiles?\nThis action is irreversible, and you will lose the configured scrcpy options stored in these profiles"
+    },
+    "create": "Create"
   }
 }
