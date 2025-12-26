@@ -2,6 +2,7 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scrcpy_buddy/application/app_settings.dart';
 import 'package:scrcpy_buddy/application/profiles_bloc/profiles_bloc.dart';
+import 'package:scrcpy_buddy/presentation/extension/profile_extension.dart';
 import 'package:scrcpy_buddy/presentation/widgets/app_widgets.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 
@@ -40,7 +41,7 @@ class _DefaultProfileSettingState extends AppModuleState<DefaultProfileSetting> 
                 items: [
                   ComboBoxItem(value: -1, child: Text(translatedText(key: 'lastUsed'))),
                   ...state.allProfiles.map(
-                    (profile) => ComboBoxItem(value: profile.id, child: Text(profile.name ?? 'Default')),
+                    (profile) => ComboBoxItem(value: profile.id, child: Text(profile.getName(context))),
                   ),
                 ],
               );
