@@ -90,7 +90,7 @@ class _ProfilesScreenState extends AppModuleState<ProfilesScreen> {
                         }
                       }),
                     ),
-                    onPressed: _showDeleteConfirmationDialog,
+                    onPressed: state.allProfiles.isNotEmpty ? _showDeleteConfirmationDialog : null,
                     child: Row(
                       mainAxisSize: .min,
                       children: [
