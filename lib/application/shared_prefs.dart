@@ -1,5 +1,4 @@
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:scrcpy_buddy/application/app_settings.dart';
 import 'package:shared_preferences/src/shared_preferences_legacy.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 
@@ -24,16 +23,8 @@ class SharedPrefs {
     return _prefs.getCustomValue(_key(prefix, key), defaultValue: null, adapter: _BrightnessAdapter());
   }
 
-  Preference<DefaultProfileMode> getDefaultProfileMode({String? prefix, required String key}) {
-    return _prefs.getCustomValue(
-      _key(prefix, key),
-      defaultValue: DefaultProfileMode.lastUsed,
-      adapter: _DefaultProfileModeAdapter(),
-    );
-  }
-
-  Preference<bool> getBool({String? prefix, required String key}) {
-    return _prefs.getBool(_key(prefix, key), defaultValue: false);
+  Preference<bool> getBool({String? prefix, required String key, bool defaultValue = false}) {
+    return _prefs.getBool(_key(prefix, key), defaultValue: defaultValue);
   }
 
   Future<void> remove({String? prefix, required String key}) async {
@@ -56,21 +47,6 @@ class _BrightnessAdapter extends PreferenceAdapter<Brightness?> {
   @override
   Future<bool> setValue(SharedPreferences preferences, String key, Brightness? value) {
     if (value == null) return preferences.remove(key);
-    return preferences.setString(key, value.name);
-  }
-}
-
-class _DefaultProfileModeAdapter extends PreferenceAdapter<DefaultProfileMode> {
-  @override
-  DefaultProfileMode? getValue(SharedPreferences preferences, String key) {
-    final storedValue = preferences.getString(key);
-    if (storedValue == null) return null;
-    return DefaultProfileMode.values.where((profileMode) => profileMode.name == storedValue).firstOrNull ??
-        DefaultProfileMode.lastUsed;
-  }
-
-  @override
-  Future<bool> setValue(SharedPreferences preferences, String key, DefaultProfileMode value) {
     return preferences.setString(key, value.name);
   }
 }

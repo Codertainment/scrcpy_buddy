@@ -62,7 +62,7 @@ class _MyAppState extends State<MyApp> {
             Provider.value(value: _settings),
             Provider.value(value: _objectBox),
             Provider.value(value: _argsInstances),
-            Provider.value(value: asyncSnapshot.data!)
+            Provider.value(value: asyncSnapshot.data!),
           ],
           child: StreamBuilder<Brightness?>(
             stream: _settings.themeBrightness,
@@ -80,7 +80,9 @@ class _MyAppState extends State<MyApp> {
               builder: (context, child) {
                 return MultiBlocProvider(
                   providers: [
-                    BlocProvider(create: (_) => ProfilesBloc(_objectBox.profileBox, _argsMap)),
+                    BlocProvider(
+                      create: (_) => ProfilesBloc(_settings, _objectBox.profileBox, _argsMap),
+                    ),
                     BlocProvider(create: (context) => ScrcpyBloc(context.read(), context.read(), context.read())),
                     BlocProvider(create: (context) => DevicesBloc(context.read())),
                   ],
@@ -103,7 +105,7 @@ class _MyAppState extends State<MyApp> {
             ),
           ),
         );
-      }
+      },
     );
   }
 }

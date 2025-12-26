@@ -6,19 +6,17 @@ class AppSettings {
   static const _PREFIX = "settings";
   static const _KEY_SCRCPY_EXECUTABLE = "scrcpyExecutable";
   static const _KEY_THEME_BRIGHTNESS = "theme.brightness";
-  static const _KEY_DEFAULT_PROFILE_MODE = "defaultProfileMode";
+  static const _KEY_IS_LAST_USED_PROFILE_DEFAULT = "isLastUsedProfileDefault";
   static const _KEY_DEFAULT_PROFILE_ID = "defaultProfileId";
 
   AppSettings(SharedPrefs prefs)
     : scrcpyExecutable = prefs.getString(prefix: _PREFIX, key: _KEY_SCRCPY_EXECUTABLE),
       themeBrightness = prefs.getBrightness(prefix: _PREFIX, key: _KEY_THEME_BRIGHTNESS),
-      defaultProfileMode = prefs.getDefaultProfileMode(prefix: _PREFIX, key: _KEY_DEFAULT_PROFILE_MODE),
+      isLastUsedProfileDefault = prefs.getBool(prefix: _PREFIX, key: _KEY_IS_LAST_USED_PROFILE_DEFAULT, defaultValue: true),
       defaultProfileId = prefs.getInt(prefix: _PREFIX, key: _KEY_DEFAULT_PROFILE_ID);
 
   final Preference<String> scrcpyExecutable;
   final Preference<Brightness?> themeBrightness;
-  final Preference<DefaultProfileMode> defaultProfileMode;
+  final Preference<bool> isLastUsedProfileDefault;
   final Preference<int> defaultProfileId;
 }
-
-enum DefaultProfileMode { lastUsed, selected }
