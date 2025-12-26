@@ -23,8 +23,9 @@ class ProfilesBloc extends Bloc<ProfilesEvent, ProfilesState> {
     _currentProfile = state.currentProfile;
     on<InitializeProfilesEvent>((event, emit) => _emit(emit));
     on<CreateProfileEvent>(_createProfile);
+    on<RenameProfileEvent>(_renameProfile);
     on<UpdateProfileArgEvent>(_updateArg);
-    on<DeleteProfileEvent>(_deleteProfile);
+    on<DeleteMultipleProfilesEvent>(_deleteMultipleProfiles);
     on<SwitchCurrentProfileEvent>(_switchCurrentProfile);
   }
 
@@ -36,6 +37,16 @@ class ProfilesBloc extends Bloc<ProfilesEvent, ProfilesState> {
     final newProfile = Profile()..name = event.name;
     _profileBox.put(newProfile);
     _currentProfile = newProfile;
+    _emit(emit);
+  }
+
+  void _renameProfile(RenameProfileEvent event, _Emitter emit) {
+    final originalProfile = _profileBox.get(event.profileId);
+    final newProfile = originalProfile?.copyWith(name: event.newName);
+    if (newProfile != null) {
+      _profileBox.put(newProfile);
+      _currentProfile = newProfile;
+    }
     _emit(emit);
   }
 
@@ -52,10 +63,12 @@ class ProfilesBloc extends Bloc<ProfilesEvent, ProfilesState> {
     _emit(emit);
   }
 
-  void _deleteProfile(DeleteProfileEvent event, _Emitter emit) {
-    _profileBox.remove(event.id);
+  void _deleteMultipleProfiles(DeleteMultipleProfilesEvent event, _Emitter emit) {
+    for (final profileId in event.profileIds) {
+      _profileBox.remove(profileId);
+    }
     // if current profile is being deleted, reset to first / new profile
-    if (_currentProfile.id == event.id) {
+    if (event.profileIds.contains(_currentProfile.id)) {
       _currentProfile = _profileBox.getAll().firstOrNull ?? Profile();
     }
     _emit(emit);
@@ -68,11 +81,6 @@ class ProfilesBloc extends Bloc<ProfilesEvent, ProfilesState> {
 
   void _emit(_Emitter emit) {
     final allProfiles = _profileBox.getAll();
-    /*if (kDebugMode) {
-      print(
-        "emitting profiles state. allProfiles: $allProfiles\t currentProfile: $_currentProfile\tallArgs: $_allArgs",
-      );
-    }*/
     emit(ProfilesState(allProfiles: allProfiles, currentProfile: _currentProfile, allArgs: _allArgs));
   }
 }

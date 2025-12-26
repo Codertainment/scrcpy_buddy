@@ -20,13 +20,23 @@ class CreateProfileEvent extends ProfilesEvent {
   List<Object?> get props => [name];
 }
 
-class DeleteProfileEvent extends ProfilesEvent {
-  final int id;
+class RenameProfileEvent extends ProfilesEvent {
+  final int profileId;
+  final String newName;
 
-  const DeleteProfileEvent(this.id);
+  const RenameProfileEvent(this.profileId, this.newName);
 
   @override
-  List<Object?> get props => [id];
+  List<Object?> get props => [profileId, newName];
+}
+
+class DeleteMultipleProfilesEvent extends ProfilesEvent {
+  final Set<int> profileIds;
+
+  const DeleteMultipleProfilesEvent(this.profileIds);
+
+  @override
+  List<Object?> get props => [profileIds];
 }
 
 class SwitchCurrentProfileEvent extends ProfilesEvent {
