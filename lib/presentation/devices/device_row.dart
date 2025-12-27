@@ -64,6 +64,12 @@ class _DeviceRowState extends AppModuleState<DeviceRow> with SingleTickerProvide
     ).animate(_controller);
   }
 
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   bool get canBeSelected => widget.device.status == AdbDeviceStatus.device;
 
   void _showDisconnectConfirmationDialog() async {
