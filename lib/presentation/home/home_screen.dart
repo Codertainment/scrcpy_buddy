@@ -9,6 +9,7 @@ import 'package:scrcpy_buddy/application/scrcpy_bloc/scrcpy_bloc.dart';
 import 'package:scrcpy_buddy/presentation/extension/context_extension.dart';
 import 'package:scrcpy_buddy/presentation/extension/translation_extension.dart';
 import 'package:scrcpy_buddy/presentation/home/console_section/console_section.dart';
+import 'package:scrcpy_buddy/presentation/home/widgets/console_dialog.dart';
 import 'package:scrcpy_buddy/presentation/home/widgets/profile_button.dart';
 import 'package:scrcpy_buddy/presentation/home/widgets/start_button.dart';
 import 'package:scrcpy_buddy/presentation/home/widgets/stop_button.dart';
@@ -174,6 +175,36 @@ class _HomeScreenState extends AppModuleState<HomeScreen> {
     }
   }
 
+  void _showUnexpectedStopInfoBar(ScrcpyStopSuccessState state) {
+    showInfoBar(
+      isLong: true,
+      title: translatedText(
+        key: 'error.scrcpy.unexpectedStop.title',
+        translationParams: {'deviceSerial': state.deviceSerial},
+      ),
+      action: HyperlinkButton(
+        child: Text(translatedText(key: 'error.scrcpy.unexpectedStop.action')),
+        onPressed: () => showDialog(
+          context: context,
+          builder: (context) => ConsoleDialog(state: state),
+        ),
+      ),
+      severity: InfoBarSeverity.warning,
+    );
+  }
+
+  void _showScrcpyNotFoundInfoBar() {
+    showInfoBar(
+      title: translatedText(key: 'error.scrcpy.notFound.title'),
+      content: translatedText(key: 'error.scrcpy.notFound.message'),
+      severity: InfoBarSeverity.error,
+      action: HyperlinkButton(
+        child: Text(translatedText(key: 'goToSettings')),
+        onPressed: () => router.push(AppRoute.settings),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final mainItems = _getMainItems(context);
@@ -183,15 +214,7 @@ class _HomeScreenState extends AppModuleState<HomeScreen> {
       listener: (context, state) {
         if (state is ScrcpyStartFailedState) {
           if (state.error is ScrcpyNotFoundError) {
-            showInfoBar(
-              title: translatedText(key: 'error.scrcpy.notFound.title'),
-              content: translatedText(key: 'error.scrcpy.notFound.message'),
-              severity: InfoBarSeverity.error,
-              action: HyperlinkButton(
-                child: Text(translatedText(key: 'goToSettings')),
-                onPressed: () => router.push(AppRoute.settings),
-              ),
-            );
+            _showScrcpyNotFoundInfoBar();
           } else {
             showInfoBar(
               title: translatedText(key: 'error.scrcpy.failedToStart'),
@@ -199,6 +222,8 @@ class _HomeScreenState extends AppModuleState<HomeScreen> {
               severity: InfoBarSeverity.error,
             );
           }
+        } else if (state is ScrcpyStopSuccessState && state.stdLines != null) {
+          _showUnexpectedStopInfoBar(state);
         }
       },
       child: NavigationView(
