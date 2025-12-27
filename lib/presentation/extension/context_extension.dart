@@ -20,13 +20,18 @@ extension ContextExtension on BuildContext {
     InfoBarSeverity severity = InfoBarSeverity.info,
     Widget? action,
     String? content,
+    bool? isLong,
+    Duration? duration,
   }) => displayInfoBar(
     this,
+    duration: duration ?? Duration(seconds: 5),
     builder: (context, close) {
       return InfoBar(
         title: Text(title),
+        isLong: isLong ?? false,
         content: content != null ? Text(content) : null,
-        action: action ?? IconButton(icon: const WindowsIcon(WindowsIcons.clear), onPressed: close),
+        action: action,
+        onClose: close,
         severity: severity,
       );
     },

@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:scrcpy_buddy/application/model/scrcpy/std_line.dart';
 import 'package:scrcpy_buddy/presentation/extension/context_extension.dart';
+import 'package:scrcpy_buddy/presentation/home/console_section/widgets/code_view.dart';
 
 class ConsoleViewWidget extends StatefulWidget {
   const ConsoleViewWidget({
@@ -84,24 +85,7 @@ class _ConsoleViewWidgetState extends State<ConsoleViewWidget> {
                     }
                   }
                 },
-                child: SelectableText.rich(
-                  TextSpan(
-                    children:
-                        snapshot.data
-                            ?.map(
-                              (stdLine) => TextSpan(
-                                text: stdLine.line,
-                                style: context.typography.caption?.copyWith(
-                                  fontFamily: 'monospace',
-                                  fontSize: _fontSize,
-                                  color: stdLine.isError ? context.errorColor : null,
-                                ),
-                              ),
-                            )
-                            .toList(growable: false) ??
-                        [],
-                  ),
-                ),
+                child: CodeView(lines: snapshot.data ?? [], fontSize: _fontSize),
               ),
             );
           } else if (snapshot.hasError) {

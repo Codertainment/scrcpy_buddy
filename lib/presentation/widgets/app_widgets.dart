@@ -16,7 +16,16 @@ abstract class AppModuleState<T extends StatefulWidget> extends State<T> {
     InfoBarSeverity severity = InfoBarSeverity.info,
     Widget? action,
     String? content,
-  }) => context.showInfoBar(title: title, severity: severity, action: action, content: content);
+    bool? isLong,
+    Duration? duration,
+  }) => context.showInfoBar(
+    title: title,
+    severity: severity,
+    action: action,
+    content: content,
+    isLong: isLong,
+    duration: duration,
+  );
 
   Size get windowSize => context.windowSize;
 }

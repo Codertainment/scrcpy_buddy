@@ -26,7 +26,14 @@
           "title": "Scrcpy not found",
           "message": "Scrcpy not found in path. Please make sure if it's installed. If already installed, please configure the path in settings."
         },
-        "failedToStart": "Failed to start scrcpy"
+        "failedToStart": "Failed to start scrcpy",
+        "unexpectedStop": {
+          "title": "{deviceSerial} may have stopped unexpectedly",
+          "action": "View console",
+          "console": {
+            "title": "Console out for {deviceSerial}"
+          }
+        }
       }
     },
     "goToSettings": "Go to settings",

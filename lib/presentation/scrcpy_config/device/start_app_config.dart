@@ -81,7 +81,7 @@ class _StartAppConfigState extends AppModuleState<StartAppConfig> {
               value: _profilesBloc.state.getFor(_startApp),
               onChanged: (newValue) => _profilesBloc.add(UpdateProfileArgEvent(_startApp, newValue)),
             ),
-            if (devicesState is DevicesBaseUpdateState) ...[
+            if (devicesState is DevicesBaseUpdateState && devicesState.devices.isNotEmpty) ...[
               const SizedBox(height: 16),
               if (_appsListLoading) ...[
                 const ProgressRing(),
