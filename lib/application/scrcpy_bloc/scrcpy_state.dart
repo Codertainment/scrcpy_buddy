@@ -36,11 +36,18 @@ final class ScrcpyStartFailedState extends ScrcpyBaseUpdateState {
 
 final class ScrcpyStopSuccessState extends ScrcpyBaseUpdateState {
   final String deviceSerial;
+  final Duration? totalRuntimeDuration;
+  final List<StdLine>? stdLines;
 
-  const ScrcpyStopSuccessState({required this.deviceSerial, required super.devices});
+  const ScrcpyStopSuccessState({
+    required this.deviceSerial,
+    required super.devices,
+    this.totalRuntimeDuration,
+    this.stdLines,
+  });
 
   @override
-  List<Object?> get props => [deviceSerial, devices];
+  List<Object?> get props => [deviceSerial, devices, ...(stdLines ?? []), totalRuntimeDuration?.inMilliseconds];
 }
 
 final class ScrcpyStopFailedState extends ScrcpyBaseUpdateState {
