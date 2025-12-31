@@ -80,9 +80,7 @@ class _MyAppState extends State<MyApp> {
               builder: (context, child) {
                 return MultiBlocProvider(
                   providers: [
-                    BlocProvider(
-                      create: (_) => ProfilesBloc(_settings, _objectBox.profileBox, _argsMap),
-                    ),
+                    BlocProvider(create: (_) => ProfilesBloc(_settings, _objectBox.profileBox, _argsMap)),
                     BlocProvider(create: (context) => ScrcpyBloc(context.read(), context.read(), context.read())),
                     BlocProvider(create: (context) => DevicesBloc(context.read())),
                   ],
