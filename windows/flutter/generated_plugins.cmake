@@ -8,6 +8,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
   objectbox_flutter_libs
   screen_retriever_windows
   system_theme
+  tray_manager
   url_launcher_windows
   window_manager
 )
