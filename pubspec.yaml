@@ -96,6 +96,7 @@ flutter:
     - assets/scrcpy.svg
     - assets/scrcpy.png
     - assets/icon.png
+    - assets/tray/
 
   # To add assets to your application, add an assets section, like this:
   # assets:
