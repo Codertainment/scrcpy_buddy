@@ -15,6 +15,8 @@ import 'package:scrcpy_buddy/presentation/home/widgets/start_button.dart';
 import 'package:scrcpy_buddy/presentation/home/widgets/stop_button.dart';
 import 'package:scrcpy_buddy/presentation/widgets/app_widgets.dart';
 import 'package:scrcpy_buddy/routes.dart';
+import 'package:tray_manager/tray_manager.dart';
+import 'package:window_manager/window_manager.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key, required this.child});
@@ -25,7 +27,7 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends AppModuleState<HomeScreen> {
+class _HomeScreenState extends AppModuleState<HomeScreen> with WindowListener, TrayListener {
   late final _profilesBloc = context.read<ProfilesBloc>();
 
   final _devicesKey = ValueKey('devices');
@@ -45,13 +47,65 @@ class _HomeScreenState extends AppModuleState<HomeScreen> {
   final _settingsKey = ValueKey('settings');
 
   @override
+  String get module => 'home';
+
+  @override
   void initState() {
     super.initState();
     _profilesBloc.add(InitializeProfilesEvent());
+    trayManager.addListener(this);
+    windowManager.addListener(this);
+
+    // wait for context to be initialized before loading translations
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => trayManager.setContextMenu(
+        Menu(
+          items: [
+            MenuItem(
+              label: translatedText(key: 'tray.showApp'),
+              onClick: (menuItem) => _showWindow(),
+            ),
+            MenuItem(
+              label: translatedText(key: 'tray.quit'),
+              onClick: (menuItem) => _exitApp(),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   @override
-  String get module => 'home';
+  void onWindowClose() async {
+    windowManager.hide();
+  }
+
+  @override
+  void onTrayIconMouseDown() {
+    _showWindow();
+  }
+
+  void _showWindow() {
+    windowManager.show(); // Restore window
+    windowManager.focus();
+  }
+
+  void _exitApp() {
+    trayManager.destroy();
+    windowManager.destroy();
+  }
+
+  @override
+  void onTrayIconRightMouseDown() {
+    trayManager.popUpContextMenu();
+  }
+
+  @override
+  void dispose() {
+    windowManager.removeListener(this);
+    trayManager.removeListener(this);
+    super.dispose();
+  }
 
   void _openRoute(String path) {
     if (GoRouterState.of(context).uri.toString() != path) {

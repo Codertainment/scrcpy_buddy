@@ -1,6 +1,10 @@
 {
   "appName": "scrcpy buddy 🤝",
   "home": {
+    "tray": {
+      "showApp": "Show app",
+      "quit": "Quit"
+    },
     "navigation": {
       "devices": "Devices",
       "profiles": "Manage Profiles",
