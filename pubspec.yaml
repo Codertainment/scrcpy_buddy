@@ -92,10 +92,8 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   assets:
-    - assets/i18n/en.json
-    - assets/scrcpy.svg
-    - assets/scrcpy.png
-    - assets/icon.png
+    - assets/
+    - assets/i18n/
     - assets/tray/
 
   # To add assets to your application, add an assets section, like this:
@@ -129,7 +127,7 @@ flutter:
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
 flutter_launcher_icons:
-  image_path: "assets/icon.png"
+  image_path: "assets/icon_light.png"
   windows:
     generate: true
     icon_size: 256
