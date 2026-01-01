@@ -1,6 +1,10 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:scrcpy_buddy/application/model/adb/adb_device.dart';
 
+final _ipRegex = RegExp(
+  r"^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?):(?:[0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$",
+);
+
 extension AdbDeviceExtension on AdbDevice {
   bool get isReady => status == AdbDeviceStatus.device;
 
@@ -9,7 +13,7 @@ extension AdbDeviceExtension on AdbDevice {
   String? get codename => metadata?["device"];
 
   bool get isUsb {
-    return metadata?.keys.where((key) => key.contains("usb")).isNotEmpty ?? false;
+    return !_ipRegex.hasMatch(serial);
   }
 
   bool get isNetwork => !isUsb;
