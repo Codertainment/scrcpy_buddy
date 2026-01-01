@@ -26,7 +26,7 @@ class AdbResultParser {
   Future<AdbDevicesResult> parseDevicesResult(Future<ProcessResult> process) async {
     try {
       final result = await process;
-      final lines = result.stdout.toString().split("\n")
+      final lines = result.stdout.toString().split(Platform.lineTerminator)
         ..removeAt(0)
         ..removeWhere((line) => line.trim().isEmpty);
 
