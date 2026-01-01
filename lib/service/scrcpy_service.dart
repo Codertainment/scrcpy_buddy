@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:process/process.dart';
 import 'package:scrcpy_buddy/application/model/scrcpy/device_app.dart';
@@ -47,7 +48,7 @@ class ScrcpyService {
       final processResult = await _processManager.run([execPath, '-s', deviceSerial, '--list-apps']);
       if (processResult.exitCode == 0) {
         final stdout = processResult.stdout.toString();
-        final parts = stdout.split("List of apps:\n");
+        final parts = stdout.split("List of apps:${Platform.lineTerminator}");
 
         // This regex handles both single and multi-line entries.
         // It looks for a starting character, captures the app name, and then the package name,
@@ -68,7 +69,11 @@ class ScrcpyService {
       } else {
         return Either.left(UnknownScrcpyError(exception: e));
       }
-    } catch (e) {
+    } catch (e, stacktrace) {
+      if (kDebugMode) {
+        debugPrint(e.toString());
+        debugPrintStack(stackTrace: stacktrace);
+      }
       return Either.left(UnknownScrcpyError(exception: e));
     }
   }
