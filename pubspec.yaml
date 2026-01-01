@@ -84,6 +84,7 @@ dev_dependencies:
   # Testing
   mockito: ^5.4.5
   objectbox_generator: ^5.0.2
+  msix: any
 
 flutter:
 
@@ -135,3 +136,12 @@ flutter_launcher_icons:
     generate: true
   macos:
     generate: true
+
+msix_config:
+  display_name: scrcpy buddy
+  publisher_display_name: Codertainment
+  publisher: CN=5EFFC3AA-14FC-4D47-AABD-2F91F482F2F7
+  identity_name: Codertainment.scrcpybuddy
+  store: true
+  logo_path: assets/icon_light.png
+  capabilities: privateNetworkClientServer, usb
