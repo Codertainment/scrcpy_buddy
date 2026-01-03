@@ -6,7 +6,7 @@ on:
 
   pull_request:
     paths:
-      - lib/
+      - lib/**
       - .github/workflows/build.yml
 
   workflow_dispatch:
