@@ -29,6 +29,12 @@ class _SettingsScreenState extends AppModuleState<SettingsScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SettingsItem(
+            groupKey: 'adbExecutable',
+            shouldShowDescription: true,
+            childConstraints: _defaultConstraints,
+            child: ScrcpyExecutableSetting(),
+          ),
+          SettingsItem(
             groupKey: 'scrcpyExecutable',
             shouldShowDescription: true,
             childConstraints: _defaultConstraints,
