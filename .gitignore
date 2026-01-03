@@ -49,3 +49,6 @@ app.*.map.json
 test/**/*.mocks.dart
 **/*.reflectable.dart
 !lib/objectbox.g.dart
+
+# MacOS DMG
+*.dmg
