@@ -90,7 +90,7 @@ void main() {
         arrangeParseConnect(fakeConnectProcessResult, AdbConnectResult.right(AdbConnectResultStatus.success));
 
         // Act
-        final result = await adbService.switchDeviceToTcpIp(serial); // No port provided
+        final result = await adbService.switchDeviceToTcpIp(serial, ''); // No port provided
 
         // Assert
         expect(result.isRight(), isTrue);
@@ -329,7 +329,7 @@ void main() {
         arrangeParseConnect(fakeConnectProcessResult, AdbConnectResult.right(AdbConnectResultStatus.success));
 
         // Act
-        await adbService.switchDeviceToTcpIp(serial); // No port, so default for tcpip
+        await adbService.switchDeviceToTcpIp(serial, ''); // No port, so default for tcpip
 
         // Assert
         // Verify tcpip command used defaultPort

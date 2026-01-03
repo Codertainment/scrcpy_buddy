@@ -5,6 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:scrcpy_buddy/application/model/adb/adb_device.dart';
 import 'package:scrcpy_buddy/application/model/adb/adb_error.dart';
 import 'package:scrcpy_buddy/service/adb_service.dart';
+import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 
 part 'devices_event.dart';
 part 'devices_state.dart';
@@ -12,7 +13,7 @@ part 'devices_state.dart';
 typedef _Emitter = Emitter<DevicesState>;
 
 class DevicesBloc extends Bloc<DevicesEvent, DevicesState> {
-  DevicesBloc(this._adbService) : super(const DevicesInitial()) {
+  DevicesBloc(this._adbService, this._adbPath) : super(const DevicesInitial()) {
     on<LoadDevices>(_onLoadDevices);
     on<ToggleDeviceSelection>(_onToggleDeviceSelection);
   }
@@ -21,12 +22,13 @@ class DevicesBloc extends Bloc<DevicesEvent, DevicesState> {
   final AdbService _adbService;
   final List<AdbDevice> _devices = [];
   final Set<String> _selectedDeviceSerials = {};
+  final Preference<String> _adbPath;
 
   Future<void> _onLoadDevices(LoadDevices event, _Emitter emit) async {
     try {
       emit(DevicesLoading());
       if (!_initDone) {
-        final initResult = await _adbService.init();
+        final initResult = await _adbService.init(_adbPath.getValue());
         if (initResult.isLeft()) {
           final error = initResult.fold((l) => l, (r) => null);
           emit(
@@ -42,7 +44,7 @@ class DevicesBloc extends Bloc<DevicesEvent, DevicesState> {
           _initDone = true;
         }
       }
-      final devicesResult = await _adbService.devices();
+      final devicesResult = await _adbService.devices(_adbPath.getValue());
       devicesResult.fold(
         (error) => emit(
           DevicesUpdateError(

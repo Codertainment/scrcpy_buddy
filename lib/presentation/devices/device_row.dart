@@ -2,6 +2,7 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:scrcpy_buddy/application/app_settings.dart';
 import 'package:scrcpy_buddy/application/extension/adb_device_extension.dart';
 import 'package:scrcpy_buddy/application/extension/adb_error_extension.dart';
 import 'package:scrcpy_buddy/application/model/adb/adb_device.dart';
@@ -34,6 +35,7 @@ class DeviceRow extends StatefulWidget {
 class _DeviceRowState extends AppModuleState<DeviceRow> with SingleTickerProviderStateMixin {
   bool _isNetworkSwitchInProgress = false;
   late final _adbService = context.read<AdbService>();
+  late final _adbPath = context.read<AppSettings>().adbExecutable;
 
   late AnimationController _controller;
   late Animation<Color?> _colorAnimation;
@@ -81,7 +83,7 @@ class _DeviceRowState extends AppModuleState<DeviceRow> with SingleTickerProvide
       actionKey: 'devices.disconnect.confirm',
     );
     if (shouldDisconnect == true) {
-      final disconnectResult = await _adbService.disconnect(widget.device.serial);
+      final disconnectResult = await _adbService.disconnect(widget.device.serial, _adbPath.getValue());
       disconnectResult.mapLeft((error) => showInfoBar(title: error.message, severity: InfoBarSeverity.error));
       disconnectResult.map(
         (_) => showInfoBar(
@@ -97,7 +99,7 @@ class _DeviceRowState extends AppModuleState<DeviceRow> with SingleTickerProvide
     setState(() {
       _isNetworkSwitchInProgress = true;
     });
-    final switchResult = await _adbService.switchDeviceToTcpIp(widget.device.serial);
+    final switchResult = await _adbService.switchDeviceToTcpIp(widget.device.serial, _adbPath.getValue());
     setState(() {
       _isNetworkSwitchInProgress = false;
     });

@@ -21,7 +21,7 @@ class _AdbExecutableSettingState extends AppModuleState<AdbExecutableSetting> {
   @override
   String get module => 'settings.adbExecutable';
 
-  late final _settings = context.read<AppSettings>();
+  late final _executablePreference = context.read<AppSettings>().adbExecutable;
   late final _adbService = context.read<AdbService>();
 
   final _infoFlyoutController = FlyoutController();
@@ -32,15 +32,19 @@ class _AdbExecutableSettingState extends AppModuleState<AdbExecutableSetting> {
   @override
   void initState() {
     super.initState();
-    _textController.text = _settings.adbExecutable.getValue();
+    _textController.text = _executablePreference.getValue();
   }
 
   Future<void> _validateAndSave(String? path) async {
     if (path == null) return;
+    if (path.isEmpty) {
+      await _executablePreference.setValue(path);
+      return;
+    }
     setState(() => _isSaving = true);
     final file = File(path);
     if (await file.exists()) {
-      await _settings.adbExecutable.setValue(path);
+      await _executablePreference.setValue(path);
     } else {
       showInfoBar(
         title: translatedText(key: 'invalidPath'),

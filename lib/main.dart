@@ -82,7 +82,7 @@ class _MyAppState extends State<MyApp> {
                   providers: [
                     BlocProvider(create: (_) => ProfilesBloc(_settings, _objectBox.profileBox, _argsMap)),
                     BlocProvider(create: (context) => ScrcpyBloc(context.read(), context.read(), context.read())),
-                    BlocProvider(create: (context) => DevicesBloc(context.read())),
+                    BlocProvider(create: (context) => DevicesBloc(context.read(), _settings.adbExecutable)),
                   ],
                   child: child!,
                 );

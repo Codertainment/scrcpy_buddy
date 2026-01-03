@@ -20,38 +20,42 @@ class _ScrcpyExecutableSettingState extends AppModuleState<ScrcpyExecutableSetti
   @override
   String get module => 'settings.scrcpyExecutable';
 
-  late final _settings = context.read<AppSettings>();
+  late final _executablePreference = context.read<AppSettings>().scrcpyExecutable;
   late final _scrcpyService = context.read<ScrcpyService>();
 
   final _infoFlyoutController = FlyoutController();
-  final _scrcpyExecutableController = TextEditingController();
-  bool _isSavingScrcpyExecutable = false;
+  final _textController = TextEditingController();
+  bool _isSaving = false;
   bool _isCheckingVersionInfo = false;
 
   @override
   void initState() {
     super.initState();
-    _scrcpyExecutableController.text = _settings.scrcpyExecutable.getValue();
+    _textController.text = _executablePreference.getValue();
   }
 
   Future<void> _validateAndSave(String? path) async {
     if (path == null) return;
-    setState(() => _isSavingScrcpyExecutable = true);
+    if (path.isEmpty) {
+      await _executablePreference.setValue(path);
+      return;
+    }
+    setState(() => _isSaving = true);
     final file = File(path);
     if (await file.exists()) {
-      await _settings.scrcpyExecutable.setValue(path);
+      await _executablePreference.setValue(path);
     } else {
       showInfoBar(
         title: translatedText(key: 'invalidPath'),
         severity: InfoBarSeverity.warning,
       );
     }
-    setState(() => _isSavingScrcpyExecutable = false);
+    setState(() => _isSaving = false);
   }
 
   Future<void> _checkVersionInfo() async {
     setState(() => _isCheckingVersionInfo = true);
-    final result = await _scrcpyService.getVersionInfo(_scrcpyExecutableController.text);
+    final result = await _scrcpyService.getVersionInfo(_textController.text);
     result.mapLeft(
       (left) => showInfoBar(
         title: context.translatedText(key: 'common.somethingWentWrong'),
@@ -85,12 +89,12 @@ class _ScrcpyExecutableSettingState extends AppModuleState<ScrcpyExecutableSetti
       children: [
         Expanded(
           child: TextBox(
-            controller: _scrcpyExecutableController,
-            enabled: !_isSavingScrcpyExecutable,
+            controller: _textController,
+            enabled: !_isSaving,
             textInputAction: TextInputAction.done,
             onSubmitted: (value) => _validateAndSave(value),
-            onTapOutside: (_) => _validateAndSave(_scrcpyExecutableController.text),
-            suffix: _isSavingScrcpyExecutable
+            onTapOutside: (_) => _validateAndSave(_textController.text),
+            suffix: _isSaving
                 ? ProgressRing()
                 : IconButton(
                     icon: Icon(WindowsIcons.file_explorer),
