@@ -40,6 +40,29 @@ class _ProfileNameDialogState extends AppModuleState<_ProfileNameDialog> {
   @override
   String get module => 'profile.nameDialog';
 
+  void _submit() {
+    if (_saveButtonEnabled) {
+      Navigator.pop(context, _textController.text);
+    }
+  }
+
+  void _updateSaveButtonEnabledState() {
+    setState(() => _saveButtonEnabled = _textController.text.isNotEmpty);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _textController.addListener(_updateSaveButtonEnabledState);
+  }
+
+  @override
+  void dispose() {
+    _textController.removeListener(_updateSaveButtonEnabledState);
+    _textController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ContentDialog(
@@ -53,13 +76,14 @@ class _ProfileNameDialogState extends AppModuleState<_ProfileNameDialog> {
             maxLength: _maxLength,
             autofocus: true,
             maxLines: 1,
+            textInputAction: TextInputAction.done,
+            onEditingComplete: _submit,
             suffix: Padding(
               padding: const EdgeInsets.only(right: 8),
               child: Text("${_textController.text.length}/$_maxLength", style: typography.caption),
             ),
             suffixMode: .editing,
             placeholder: translatedText(key: 'placeholder'),
-            onChanged: (newName) => setState(() => _saveButtonEnabled = newName.isNotEmpty),
           ),
         ),
       ),
@@ -69,7 +93,7 @@ class _ProfileNameDialogState extends AppModuleState<_ProfileNameDialog> {
           onPressed: () => Navigator.pop(context),
         ),
         FilledButton(
-          onPressed: _saveButtonEnabled ? () => Navigator.pop(context, _textController.text) : null,
+          onPressed: _saveButtonEnabled ? _submit : null,
           child: Text(context.translatedText(key: 'common.save')),
         ),
       ],
