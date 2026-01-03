@@ -33,6 +33,16 @@ To use this app, you need the following:
 - scrcpy installed (in the environment or in portable mode)
 - Android device(s) with Developer options and USB / Network debugging enabled
 
+## Opening the app on macOS
+
+For macOS apps to be verified, a developer account is required, which has a membership fee of $99/year. As this is my personal project, I cannot afford this.
+
+
+Hence, the app is unverified, and it requires **manual intervention to open it for the first time**.
+
+
+Follow https://support.apple.com/guide/mac-help/mchleab3a043 for instructions to manually override the security check.
+
 # Technical documentation
 
 ## UI Framework
