@@ -11,35 +11,39 @@ class AdbService {
 
   AdbService(this._processManager, this._resultParser);
 
-  Future<AdbVersionInfoResult> getVersionInfo(String? path) =>
-      _resultParser.parseVersionInfoResult(_processManager.run([path ?? 'adb', '--version']));
+  Future<AdbVersionInfoResult> getVersionInfo(String path) =>
+      _resultParser.parseVersionInfoResult(_processManager.run([_getExecutable(path), '--version']));
 
-  Future<AdbInitResult> init() => _resultParser.parseInitResult(_processManager.run(['adb', 'start-server']));
+  Future<AdbInitResult> init(String path) =>
+      _resultParser.parseInitResult(_processManager.run([_getExecutable(path), 'start-server']));
 
-  Future<AdbDevicesResult> devices() => _resultParser.parseDevicesResult(_processManager.run(['adb', 'devices', '-l']));
+  Future<AdbDevicesResult> devices(String path) =>
+      _resultParser.parseDevicesResult(_processManager.run([_getExecutable(path), 'devices', '-l']));
 
-  Future<AdbConnectResult> connect(String ip) =>
-      _resultParser.parseConnectResult(_processManager.run(['adb', 'connect', ip]));
+  Future<AdbConnectResult> connect(String ip, String path) =>
+      _resultParser.parseConnectResult(_processManager.run([_getExecutable(path), 'connect', ip]));
 
-  Future<AdbDeviceIpResult> getDeviceIp(String serial) =>
-      _resultParser.parseDeviceIpResult(_processManager.run(['adb', '-s', serial, 'shell', 'ip', 'route', 'show']));
+  Future<AdbDeviceIpResult> getDeviceIp(String serial, String path) =>
+      _resultParser.parseDeviceIpResult(_processManager.run([_getExecutable(path), '-s', serial, 'shell', 'ip', 'route', 'show']));
 
-  Future<void> tcpIp(String serial, [String port = "5555"]) =>
-      _resultParser.parseTcpIpResult(_processManager.run(['adb', '-s', serial, 'tcpip', port]));
+  Future<void> tcpIp(String serial, String path, [String port = "5555"]) =>
+      _resultParser.parseTcpIpResult(_processManager.run([_getExecutable(path), '-s', serial, 'tcpip', port]));
 
-  Future<Either<AdbError, void>> disconnect(String serial) =>
-      _resultParser.parseDisconnectResult(_processManager.run(['adb', 'disconnect', serial]));
+  Future<Either<AdbError, void>> disconnect(String serial, String path) =>
+      _resultParser.parseDisconnectResult(_processManager.run([_getExecutable(path), 'disconnect', serial]));
 
-  Future<AdbConnectResult> switchDeviceToTcpIp(String serial, [String port = "5555"]) async {
-    final deviceIp = await getDeviceIp(serial);
+  Future<AdbConnectResult> switchDeviceToTcpIp(String serial, String path, [String port = "5555"]) async {
+    final deviceIp = await getDeviceIp(serial, path);
     if (deviceIp.isLeft()) {
       return AdbConnectResult.left(deviceIp.getLeft().getOrElse(() => throw Exception("Failed to get device ip")));
     }
     try {
-      await tcpIp(serial, port);
-      return await connect(EitherUtils.getRight(deviceIp));
+      await tcpIp(serial, path, port);
+      return await connect(EitherUtils.getRight(deviceIp), path);
     } catch (e) {
       return AdbConnectResult.left(UnknownAdbError(exception: e));
     }
   }
+
+  String _getExecutable(String path) => path.isNotEmpty ? path : 'adb';
 }

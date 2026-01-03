@@ -13,9 +13,8 @@ class ScrcpyService {
   ScrcpyService(this._processManager);
 
   Future<ScrcpyResult> start(String deviceSerial, String path, List<String> args) async {
-    final execPath = path.isEmpty ? 'scrcpy' : path;
     try {
-      return ScrcpyResult.right(await _processManager.start([execPath, '-s', deviceSerial, ...args]));
+      return ScrcpyResult.right(await _processManager.start([_getExecutable(path), '-s', deviceSerial, ...args]));
     } on ProcessException catch (e) {
       if (e.message.toLowerCase().contains("failed to find")) {
         return ScrcpyResult.left(ScrcpyNotFoundError());
@@ -27,9 +26,9 @@ class ScrcpyService {
     }
   }
 
-  Future<Either<ScrcpyError, String>> getVersionInfo(String? scrcpyPath) async {
+  Future<Either<ScrcpyError, String>> getVersionInfo(String path) async {
     try {
-      final result = await _processManager.run([scrcpyPath ?? 'scrcpy', '--version']);
+      final result = await _processManager.run([_getExecutable(path), '--version']);
       return Either.right(result.stdout.toString());
     } on ProcessException catch (e) {
       if (e.message.toLowerCase().contains("failed to find")) {
@@ -43,9 +42,8 @@ class ScrcpyService {
   }
 
   Future<Either<ScrcpyError, List<DeviceApp>>> listApps(String deviceSerial, String path) async {
-    final execPath = path.isEmpty ? 'scrcpy' : path;
     try {
-      final processResult = await _processManager.run([execPath, '-s', deviceSerial, '--list-apps']);
+      final processResult = await _processManager.run([_getExecutable(path), '-s', deviceSerial, '--list-apps']);
       if (processResult.exitCode == 0) {
         final stdout = processResult.stdout.toString();
         final parts = stdout.split("List of apps:${Platform.lineTerminator}");
@@ -77,4 +75,6 @@ class ScrcpyService {
       return Either.left(UnknownScrcpyError(exception: e));
     }
   }
+
+  String _getExecutable(String path) => path.isEmpty ? 'scrcpy' : path;
 }

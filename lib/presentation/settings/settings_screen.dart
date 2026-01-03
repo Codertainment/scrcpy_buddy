@@ -1,6 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:provider/provider.dart';
 import 'package:scrcpy_buddy/application/app_settings.dart';
+import 'package:scrcpy_buddy/presentation/settings/widget/adb_executable_setting.dart';
 import 'package:scrcpy_buddy/presentation/settings/widget/default_profile_setting.dart';
 import 'package:scrcpy_buddy/presentation/settings/widget/scrcpy_executable_setting.dart';
 import 'package:scrcpy_buddy/presentation/settings/widget/settings_item.dart';
@@ -32,7 +33,7 @@ class _SettingsScreenState extends AppModuleState<SettingsScreen> {
             groupKey: 'adbExecutable',
             shouldShowDescription: true,
             childConstraints: _defaultConstraints,
-            child: ScrcpyExecutableSetting(),
+            child: AdbExecutableSetting(),
           ),
           SettingsItem(
             groupKey: 'scrcpyExecutable',
