@@ -8,7 +8,7 @@ import 'package:system_theme/system_theme.dart';
 import 'package:tray_manager/tray_manager.dart';
 import 'package:window_manager/window_manager.dart';
 
-const _appName = "scrcpy buddy 🤝";
+const _appName = "scrcpy buddy";
 
 Future<void> init() async {
   WidgetsFlutterBinding.ensureInitialized();
