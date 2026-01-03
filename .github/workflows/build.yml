@@ -3,8 +3,12 @@ name: Build Flutter Desktop Apps
 on:
   push:
     branches: [ main ]
+
   pull_request:
-    branches: [ main ]
+    paths:
+      - lib/
+      - .github/workflows/build.yml
+
   workflow_dispatch:
 
 jobs:
