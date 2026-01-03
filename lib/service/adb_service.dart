@@ -11,6 +11,9 @@ class AdbService {
 
   AdbService(this._processManager, this._resultParser);
 
+  Future<AdbVersionInfoResult> getVersionInfo(String? path) =>
+      _resultParser.parseVersionInfoResult(_processManager.run([path ?? 'adb', '--version']));
+
   Future<AdbInitResult> init() => _resultParser.parseInitResult(_processManager.run(['adb', 'start-server']));
 
   Future<AdbDevicesResult> devices() => _resultParser.parseDevicesResult(_processManager.run(['adb', 'devices', '-l']));

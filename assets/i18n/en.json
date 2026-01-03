@@ -97,6 +97,13 @@
     "serialCopied": "Device serial copied to clipboard"
   },
   "settings": {
+    "adbExecutable": {
+      "title": "adb executable",
+      "dialogTitle": "adb scrcpy executable",
+      "description": "Explicitly set adb executable path.\nSet this in case the executable is not added to $PATH or, the tool can't find it.",
+      "invalidPath": "Invalid path provided",
+      "check": "Check"
+    },
     "scrcpyExecutable": {
       "title": "scrcpy executable",
       "dialogTitle": "Select scrcpy executable",

@@ -8,6 +8,25 @@ import 'model/adb/adb_connect_result_status.dart';
 import 'model/adb/adb_error.dart';
 
 class AdbResultParser {
+  Future<AdbVersionInfoResult> parseVersionInfoResult(Future<ProcessResult> process) async {
+    try {
+      final result = await process;
+      if (result.exitCode == 0) {
+        return AdbVersionInfoResult.right(result.stdout);
+      } else {
+        return AdbVersionInfoResult.left(UnknownAdbError());
+      }
+    } on ProcessException catch (e) {
+      if (e.message.toLowerCase().contains("failed to find")) {
+        return AdbVersionInfoResult.left(AdbNotFoundError());
+      } else {
+        return AdbVersionInfoResult.left(UnknownAdbError(exception: e));
+      }
+    } catch (e) {
+      return AdbVersionInfoResult.left(UnknownAdbError(exception: e));
+    }
+  }
+
   Future<AdbInitResult> parseInitResult(Future<ProcessResult> process) async {
     try {
       final result = await process;
