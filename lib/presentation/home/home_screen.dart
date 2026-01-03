@@ -192,6 +192,7 @@ class _HomeScreenState extends AppModuleState<HomeScreen> with WindowListener, T
   ];
 
   List<NavigationPaneItem> _getFooterItems(BuildContext context) => [
+    PaneItemSeparator(),
     PaneItem(
       key: _profilesKey,
       icon: const WindowsIcon(WindowsIcons.guest_user),
@@ -304,7 +305,8 @@ class _HomeScreenState extends AppModuleState<HomeScreen> with WindowListener, T
           footerItems: footerItems,
         ),
         appBar: NavigationAppBar(
-          title: Text('scrcpy buddy', style: typography.bodyStrong),
+          automaticallyImplyLeading: false,
+          title: Text(context.translatedText(key: 'appName'), style: typography.bodyStrong),
           actions: Padding(
             padding: const EdgeInsets.only(top: 12, right: 16),
             child: Row(
