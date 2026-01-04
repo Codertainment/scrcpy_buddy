@@ -36,7 +36,11 @@ class _StartAppConfigState extends AppModuleState<StartAppConfig> {
 
   Future<void> _loadApps(String deviceSerial) async {
     setState(() => _appsListLoading = true);
-    final result = await context.read<ScrcpyService>().listApps(deviceSerial, _appSettings.scrcpyExecutable.getValue());
+    final result = await context.read<ScrcpyService>().listApps(
+      deviceSerial,
+      _appSettings.adbExecutable.getValue(),
+      _appSettings.scrcpyExecutable.getValue(),
+    );
     result.mapLeft(
       (error) => showInfoBar(
         title: translatedText(key: 'listAppsError'),

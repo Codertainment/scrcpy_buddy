@@ -12,9 +12,16 @@ class ScrcpyService {
 
   ScrcpyService(this._processManager);
 
-  Future<ScrcpyResult> start(String deviceSerial, String path, List<String> args) async {
+  Future<ScrcpyResult> start(String deviceSerial, String adbPath, String path, List<String> args) async {
     try {
-      return ScrcpyResult.right(await _processManager.start([_getExecutable(path), '-s', deviceSerial, ...args]));
+      return ScrcpyResult.right(
+        await _processManager.start([
+          _getExecutable(path),
+          '-s',
+          deviceSerial,
+          ...args,
+        ], environment: _getEnvironment(adbPath)),
+      );
     } on ProcessException catch (e) {
       if (e.message.toLowerCase().contains("failed to find")) {
         return ScrcpyResult.left(ScrcpyNotFoundError());
@@ -41,9 +48,14 @@ class ScrcpyService {
     }
   }
 
-  Future<Either<ScrcpyError, List<DeviceApp>>> listApps(String deviceSerial, String path) async {
+  Future<Either<ScrcpyError, List<DeviceApp>>> listApps(String deviceSerial, String adbPath, String path) async {
     try {
-      final processResult = await _processManager.run([_getExecutable(path), '-s', deviceSerial, '--list-apps']);
+      final processResult = await _processManager.run([
+        _getExecutable(path),
+        '-s',
+        deviceSerial,
+        '--list-apps',
+      ], environment: _getEnvironment(adbPath));
       if (processResult.exitCode == 0) {
         final stdout = processResult.stdout.toString();
         final parts = stdout.split("List of apps:${Platform.lineTerminator}");
@@ -75,6 +87,8 @@ class ScrcpyService {
       return Either.left(UnknownScrcpyError(exception: e));
     }
   }
+
+  Map<String, String>? _getEnvironment(String adbPath) => adbPath.isNotEmpty ? {'ADB': adbPath} : null;
 
   String _getExecutable(String path) => path.isEmpty ? 'scrcpy' : path;
 }
