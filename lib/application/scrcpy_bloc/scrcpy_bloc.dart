@@ -28,7 +28,12 @@ class ScrcpyBloc extends Bloc<ScrcpyEvent, ScrcpyState> {
   Set<String> get _runningDevices => _processManager.keys;
 
   Future<void> _start(StartScrcpyEvent event, _Emitter emit) async {
-    final result = await _service.start(event.deviceSerial, _settings.scrcpyExecutable.getValue(), event.args);
+    final result = await _service.start(
+      event.deviceSerial,
+      _settings.adbExecutable.getValue(),
+      _settings.scrcpyExecutable.getValue(),
+      event.args,
+    );
     result.mapLeft(
       (left) => emit(ScrcpyStartFailedState(deviceSerial: event.deviceSerial, error: left, devices: _runningDevices)),
     );
