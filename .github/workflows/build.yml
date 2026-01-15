@@ -15,6 +15,60 @@ on:
   workflow_dispatch:
 
 jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: |
+          # For FastForge
+          sudo apt install locate
+          wget -O appimagetool "https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage"
+          chmod +x appimagetool
+          mv appimagetool /usr/local/bin/
+          
+          # For snap
+          sudo snap install snapcraft --classic
+          sudo snap install lxd
+          
+          # install fastforge
+          dart pub global activate fastforge
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Run build_runner
+        run: dart run build_runner build --delete-conflicting-outputs
+
+      - name: Build snap
+        run: snapcraft pack --use-lxd
+
+      - name: Upload snap
+        uses: actions/upload-artifact@v4
+        with:
+          name: scrcpy_buddy_snap
+          path: "*.snap"
+          if-no-files-found: error
+
+      - name: Build AppImage
+        run: fastforge package --platform linux --targets appimage
+
+      - name: Upload AppImage
+        uses: actions/upload-artifact@v4
+        with:
+          name: scrcpy_buddy_appimage
+          path: "dist/**/*.AppImage"
+          if-no-files-found: error
+
   build-windows:
     runs-on: windows-latest
 
