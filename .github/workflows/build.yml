@@ -28,6 +28,9 @@ jobs:
           channel: stable
           cache: true
 
+      - name: Setup LXD
+        uses: canonical/setup-lxd@v1
+
       - name: Install dependencies
         run: |
           # For FastForge
@@ -38,12 +41,14 @@ jobs:
           
           # For snap
           sudo snap install snapcraft --classic
-          sudo snap install lxd
           
           # install fastforge
           dart pub global activate fastforge
+          
+          # For tray_manager
+          sudo apt-get install libayatana-appindicator3-dev
 
-      - name: Get dependencies
+      - name: flutter pub get
         run: flutter pub get
 
       - name: Run build_runner
