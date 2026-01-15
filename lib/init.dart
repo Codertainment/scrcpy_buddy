@@ -30,7 +30,17 @@ Future<void> init() async {
   // load system accent color
   await SystemTheme.accentColor.load();
 
-  // tray icon
-  await trayManager.setIcon(Platform.isWindows ? 'assets/tray/icon.ico' : 'assets/tray/icon.png');
-  await trayManager.setToolTip(_appName);
+  // tray icon init
+  try {
+    await trayManager.setIcon('assets/tray/icon.png');
+    await trayManager.setTitle(_appName);
+    if (!Platform.isLinux) {
+      // tray_manager doesn't support this on linux
+      await trayManager.setToolTip(_appName);
+    }
+  } catch (e, stack) {
+    debugPrint(e.toString());
+    debugPrintStack(stackTrace: stack);
+  }
+
 }
