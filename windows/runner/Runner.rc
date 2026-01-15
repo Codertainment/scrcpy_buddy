@@ -89,11 +89,11 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "com.codertainment" "\0"
+            VALUE "CompanyName", "dev.codertainment" "\0"
             VALUE "FileDescription", "scrcpy_buddy" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "scrcpy_buddy" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2025 com.codertainment. All rights reserved." "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2025 dev.codertainment. All rights reserved." "\0"
             VALUE "OriginalFilename", "scrcpy_buddy.exe" "\0"
             VALUE "ProductName", "scrcpy_buddy" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
