@@ -128,9 +128,9 @@ jobs:
       - name: Run build_runner
         run: dart run build_runner build --delete-conflicting-outputs
 
-      - name: Update CocoaPods repo
+      - name: Run pod install
         working-directory: macos
-        run: pod repo update
+        run: pod install --repo-update
 
       - name: Build macOS app
         run: flutter build macos --release
