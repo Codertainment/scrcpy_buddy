@@ -23,10 +23,18 @@ static void my_application_activate(GApplication* application) {
   GtkWindow* window =
       GTK_WINDOW(gtk_application_window_new(GTK_APPLICATION(application)));
 
-  const string iconFilename = "assets/icon_light_1024.png";
-  path execDir = canonical(read_symlink("/proc/self/exe")).parent_path();
-  path iconPath = execDir / "data/flutter_assets" / iconFilename;
-  gtk_window_set_icon_from_file(GTK_WINDOW(window), iconPath.c_str(), NULL);
+//  const string iconFilename = "assets/icon_light_256.png";
+//  printf("%s", iconFilename.c_str());
+//
+//  if (g_file_test("assets", G_FILE_TEST_IS_DIR)) {
+//    printf("if case");
+//    gtk_window_set_icon_from_file(GTK_WINDOW(window), iconFilename.c_str(), NULL);
+//  } else {
+//    printf("else case");
+//    path execDir = canonical(read_symlink("/proc/self/exe")).parent_path();
+//    path iconPath = execDir / "data/flutter_assets" / iconFilename;
+//    gtk_window_set_icon_from_file(GTK_WINDOW(window), iconPath.c_str(), NULL);
+//  }
 
   // Use a header bar when running in GNOME as this is the common style used
   // by applications and is the setup most users will be using (e.g. Ubuntu
@@ -48,11 +56,11 @@ static void my_application_activate(GApplication* application) {
   if (use_header_bar) {
     GtkHeaderBar* header_bar = GTK_HEADER_BAR(gtk_header_bar_new());
     gtk_widget_show(GTK_WIDGET(header_bar));
-    gtk_header_bar_set_title(header_bar, "scrcpy_buddy");
+    gtk_header_bar_set_title(header_bar, "scrcpy buddy");
     gtk_header_bar_set_show_close_button(header_bar, TRUE);
     gtk_window_set_titlebar(window, GTK_WIDGET(header_bar));
   } else {
-    gtk_window_set_title(window, "scrcpy_buddy");
+    gtk_window_set_title(window, "scrcpy buddy");
   }
 
   gtk_window_set_default_size(window, 1280, 720);
