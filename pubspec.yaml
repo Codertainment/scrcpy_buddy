@@ -51,8 +51,8 @@ dependencies:
 
   # Storage
   streaming_shared_preferences: ^2.0.0
-  objectbox: ^5.0.2
-  objectbox_flutter_libs: ^5.0.2
+  objectbox: ^5.1.0
+  objectbox_flutter_libs: ^5.1.0
 
   # Misc
   rxdart: ^0.28.0
@@ -79,7 +79,7 @@ dev_dependencies:
   flutter_launcher_icons: ^0.14.4
   # Testing
   mockito: ^5.4.5
-  objectbox_generator: ^5.0.2
+  objectbox_generator: ^5.1.0
   msix: any
 
 flutter:
