@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=scrcpy buddy
+Comment=GUI wrapper for scrcpy
+Exec=scrcpy-buddy
+Icon=${SNAP}/meta/gui/icon_light.png
+Terminal=false
+Type=Application
+Categories=Utility;
+StartupWMClass=dev.codertainment.scrcpy_buddy
+DBusActivatable=true
+SingleMainWindow=true
