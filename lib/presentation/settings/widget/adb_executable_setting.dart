@@ -2,10 +2,10 @@ import 'dart:io';
 
 import 'package:file_selector/file_selector.dart';
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
 import 'package:scrcpy_buddy/application/app_settings.dart';
 import 'package:scrcpy_buddy/application/extension/adb_error_extension.dart';
-import 'package:scrcpy_buddy/application/extension/scrcpy_error_extension.dart';
 import 'package:scrcpy_buddy/presentation/extension/translation_extension.dart';
 import 'package:scrcpy_buddy/presentation/widgets/app_widgets.dart';
 import 'package:scrcpy_buddy/service/adb_service.dart';
@@ -57,13 +57,16 @@ class _AdbExecutableSettingState extends AppModuleState<AdbExecutableSetting> {
   Future<void> _checkVersionInfo() async {
     setState(() => _isCheckingVersionInfo = true);
     final result = await _adbService.getVersionInfo(_textController.text);
-    result.mapLeft(
-      (left) => showInfoBar(
+    result.mapLeft((left) {
+      if (kDebugMode) {
+        print(left.toString());
+      }
+      showInfoBar(
         title: context.translatedText(key: 'common.somethingWentWrong'),
         content: left.message,
         severity: InfoBarSeverity.error,
-      ),
-    );
+      );
+    });
     result.map((info) {
       _infoFlyoutController.showFlyout(
         builder: (context) {

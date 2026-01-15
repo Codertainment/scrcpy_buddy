@@ -15,6 +15,60 @@ on:
   workflow_dispatch:
 
 jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: |
+          # For FastForge
+          sudo apt install locate
+          wget -O appimagetool "https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage"
+          chmod +x appimagetool
+          mv appimagetool /usr/local/bin/
+
+          # install fastforge
+          dart pub global activate fastforge
+
+          # For tray_manager
+          sudo apt-get install libayatana-appindicator3-dev
+
+      - name: flutter pub get
+        run: flutter pub get
+
+      - name: Run build_runner
+        run: dart run build_runner build --delete-conflicting-outputs
+
+      - name: Build snap
+        uses: snapcore/action-build@v1
+        id: snapcraft
+
+      - name: Upload snap
+        uses: actions/upload-artifact@v4
+        with:
+          name: scrcpy_buddy_snap
+          path: ${{ steps.snapcraft.outputs.snap }}
+          if-no-files-found: error
+
+      - name: Build AppImage
+        run: fastforge package --platform linux --targets appimage
+
+      - name: Upload AppImage
+        uses: actions/upload-artifact@v4
+        with:
+          name: scrcpy_buddy_appimage
+          path: "dist/**/*.AppImage"
+          if-no-files-found: error
+
   build-windows:
     runs-on: windows-latest
 
@@ -73,6 +127,10 @@ jobs:
 
       - name: Run build_runner
         run: dart run build_runner build --delete-conflicting-outputs
+
+      - name: Run pod install
+        working-directory: macos
+        run: pod install --repo-update
 
       - name: Build macOS app
         run: flutter build macos --release

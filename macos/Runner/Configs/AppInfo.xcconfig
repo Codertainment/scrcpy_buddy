@@ -8,7 +8,7 @@
 PRODUCT_NAME = scrcpy buddy
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.codertainment.scrcpyBuddy
+PRODUCT_BUNDLE_IDENTIFIER = dev.codertainment.scrcpyBuddy
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2025 com.codertainment. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2025 dev.codertainment. All rights reserved.

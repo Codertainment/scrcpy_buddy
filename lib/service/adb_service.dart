@@ -23,8 +23,9 @@ class AdbService {
   Future<AdbConnectResult> connect(String ip, String path) =>
       _resultParser.parseConnectResult(_processManager.run([_getExecutable(path), 'connect', ip]));
 
-  Future<AdbDeviceIpResult> getDeviceIp(String serial, String path) =>
-      _resultParser.parseDeviceIpResult(_processManager.run([_getExecutable(path), '-s', serial, 'shell', 'ip', 'route', 'show']));
+  Future<AdbDeviceIpResult> getDeviceIp(String serial, String path) => _resultParser.parseDeviceIpResult(
+    _processManager.run([_getExecutable(path), '-s', serial, 'shell', 'ip', 'route', 'show']),
+  );
 
   Future<void> tcpIp(String serial, String path, [String port = "5555"]) =>
       _resultParser.parseTcpIpResult(_processManager.run([_getExecutable(path), '-s', serial, 'tcpip', port]));

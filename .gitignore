@@ -50,5 +50,9 @@ test/**/*.mocks.dart
 **/*.reflectable.dart
 !lib/objectbox.g.dart
 
+# Dist files
+dist/
 # MacOS DMG
 *.dmg
+# Snap package
+*.snap
