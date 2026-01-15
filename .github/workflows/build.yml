@@ -28,9 +28,6 @@ jobs:
           channel: stable
           cache: true
 
-      - name: Setup LXD
-        uses: canonical/setup-lxd@v1
-
       - name: Install dependencies
         run: |
           # For FastForge
@@ -38,13 +35,10 @@ jobs:
           wget -O appimagetool "https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage"
           chmod +x appimagetool
           mv appimagetool /usr/local/bin/
-          
-          # For snap
-          sudo snap install snapcraft --classic
-          
+
           # install fastforge
           dart pub global activate fastforge
-          
+
           # For tray_manager
           sudo apt-get install libayatana-appindicator3-dev
 
@@ -55,13 +49,14 @@ jobs:
         run: dart run build_runner build --delete-conflicting-outputs
 
       - name: Build snap
-        run: snapcraft pack --use-lxd
+        uses: snapcore/action-build@v1
+        id: snapcraft
 
       - name: Upload snap
         uses: actions/upload-artifact@v4
         with:
           name: scrcpy_buddy_snap
-          path: "*.snap"
+          path: ${{ steps.snapcraft.outputs.snap }}
           if-no-files-found: error
 
       - name: Build AppImage
@@ -132,6 +127,10 @@ jobs:
 
       - name: Run build_runner
         run: dart run build_runner build --delete-conflicting-outputs
+
+      - name: Update CocoaPods repo
+        working-directory: macos
+        run: pod repo update
 
       - name: Build macOS app
         run: flutter build macos --release
