@@ -43,8 +43,8 @@ class ObjectBox {
       return path.join(snapUserData, 'scrcpy_buddy');
     } else {
       // Not running as snap, use default location
-      final docsDir = await getApplicationDocumentsDirectory();
-      return path.join(docsDir.path, "scrcpy_buddy");
+      final dir = await getApplicationSupportDirectory();
+      return path.join(dir.path, "scrcpy_buddy_db");
     }
   }
 }
