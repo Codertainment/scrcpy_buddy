@@ -41,6 +41,7 @@ class _ConsoleViewWidgetState extends State<ConsoleViewWidget> {
 
   void _scrollToBottom() {
     try {
+      if (!_scrollController.hasClients) return;
       _scrollController.animateTo(
         _scrollController.position.maxScrollExtent,
         duration: context.theme.fasterAnimationDuration,
