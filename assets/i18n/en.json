@@ -27,8 +27,8 @@
     "error": {
       "scrcpy": {
         "notFound": {
-          "title": "Scrcpy not found",
-          "message": "Scrcpy not found in path. Please make sure if it's installed. If already installed, please configure the path in settings."
+          "title": "Scrcpy could not be found",
+          "message": "Please make sure if it's installed. If already installed, please configure the path in settings."
         },
         "failedToStart": "Failed to start scrcpy",
         "unexpectedStop": {
@@ -40,7 +40,7 @@
         }
       }
     },
-    "goToSettings": "Go to settings",
+    "openSettings": "Open settings",
     "profile": {
       "default": "Default",
       "manage": "Manage profiles",
@@ -83,6 +83,12 @@
       "serial": "Serial",
       "actions": "Actions"
     },
+    "adbNotFound": {
+      "title": "ADB could not be found",
+      "hint": "What is ADB?",
+      "description": "Please make sure if it's installed. If already installed, please configure the path in ",
+      "settings": "settings"
+    },
     "copy": "Copy",
     "stop": "Stop",
     "toNetwork": "To Network",
@@ -100,14 +106,14 @@
     "adbExecutable": {
       "title": "adb executable",
       "dialogTitle": "adb scrcpy executable",
-      "description": "Explicitly set adb executable path.\nSet this in case the executable is not added to $PATH or, the tool can't find it.",
+      "description": "Explicitly set adb executable path.\nSet this in case the executable is not added to $PATH, or the app can't find it.",
       "invalidPath": "Invalid path provided",
       "check": "Check"
     },
     "scrcpyExecutable": {
       "title": "scrcpy executable",
       "dialogTitle": "Select scrcpy executable",
-      "description": "Explicitly set scrcpy executable path.\nSet this in case the executable is not added to $PATH or, the tool can't find it.",
+      "description": "Explicitly set scrcpy executable path.\nSet this in case the executable is not added to $PATH, or the app can't find it.",
       "invalidPath": "Invalid path provided",
       "check": "Check"
     },

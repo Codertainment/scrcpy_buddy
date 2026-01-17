@@ -258,8 +258,9 @@ class _HomeScreenState extends AppModuleState<HomeScreen> with WindowListener, T
       title: translatedText(key: 'error.scrcpy.notFound.title'),
       content: translatedText(key: 'error.scrcpy.notFound.message'),
       severity: InfoBarSeverity.error,
+      isLong: true,
       action: HyperlinkButton(
-        child: Text(translatedText(key: 'goToSettings')),
+        child: Text(translatedText(key: 'openSettings')),
         onPressed: () => router.push(AppRoute.settings),
       ),
     );

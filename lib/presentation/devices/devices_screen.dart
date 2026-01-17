@@ -1,9 +1,11 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scrcpy_buddy/application/extension/adb_error_extension.dart';
+import 'package:scrcpy_buddy/application/model/adb/adb_error.dart';
 import 'package:scrcpy_buddy/application/scrcpy_bloc/scrcpy_bloc.dart';
 import 'package:scrcpy_buddy/presentation/devices/bloc/devices_bloc.dart';
 import 'package:scrcpy_buddy/presentation/devices/device_row.dart';
+import 'package:scrcpy_buddy/presentation/devices/widget/adb_not_found_widget.dart';
 import 'package:scrcpy_buddy/presentation/devices/widget/devices_header.dart';
 import 'package:scrcpy_buddy/presentation/extension/context_extension.dart';
 import 'package:scrcpy_buddy/presentation/extension/translation_extension.dart';
@@ -54,11 +56,14 @@ class _DevicesScreenState extends AppModuleState<DevicesScreen> {
                     const Center(child: ProgressBar()),
                   ],
                   if (devicesState is DevicesUpdateError) ...[
-                    Center(
-                      child: Text(
-                        devicesState.adbError?.message ?? context.translatedText(key: 'common.somethingWentWrong'),
+                    if (devicesState.adbError is AdbNotFoundError)
+                      AdbNotFoundWidget()
+                    else
+                      Center(
+                        child: Text(
+                          devicesState.adbError?.message ?? context.translatedText(key: 'common.somethingWentWrong'),
+                        ),
                       ),
-                    ),
                   ],
                   if (devicesState is DevicesUpdateSuccess) ...[
                     if (devicesState.devices.isEmpty) ...[
