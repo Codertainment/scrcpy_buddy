@@ -20,7 +20,9 @@ Future<void> init() async {
     await flutter_acrylic.Window.setEffect(effect: flutter_acrylic.WindowEffect.acrylic);
   }
   await WindowManager.instance.ensureInitialized();
-  windowManager.setPreventClose(true);
+  if (kReleaseMode) {
+    windowManager.setPreventClose(true);
+  }
   windowManager.waitUntilReadyToShow().then((_) async {
     await windowManager.setMinimumSize(const Size(500, 600));
     await windowManager.setTitle(_appName);
@@ -42,5 +44,4 @@ Future<void> init() async {
     debugPrint(e.toString());
     debugPrintStack(stackTrace: stack);
   }
-
 }
