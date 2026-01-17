@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:scrcpy_buddy/application/model/scrcpy/scrcpy_error.dart';
@@ -77,7 +78,11 @@ class _HomeScreenState extends AppModuleState<HomeScreen> with WindowListener, T
 
   @override
   void onWindowClose() async {
-    windowManager.hide();
+    if (kReleaseMode) {
+      windowManager.hide();
+    } else {
+      _exitApp();
+    }
   }
 
   @override
