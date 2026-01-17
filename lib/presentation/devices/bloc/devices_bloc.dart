@@ -61,13 +61,13 @@ class DevicesBloc extends Bloc<DevicesEvent, DevicesState> {
               .where((device) => device.status == AdbDeviceStatus.device)
               .map((d) => d.serial)
               .toSet();
-          final newSelectedDeviceSerials = _selectedDeviceSerials.where((serial) => currentSerials.contains(serial));
+          final newSelectedDeviceSerials = _selectedDeviceSerials.intersection(currentSerials);
           _selectedDeviceSerials.clear();
           _selectedDeviceSerials.addAll(newSelectedDeviceSerials);
           _emitSuccess(emit);
         },
       );
-    } on ProcessException catch (e) {
+    } on ProcessException catch (_) {
       emit(
         DevicesUpdateError(
           devices: _devices,
