@@ -32,9 +32,14 @@ Future<void> init() async {
   // load system accent color
   await SystemTheme.accentColor.load();
 
+  initTrayIcon();
+}
+
+Future<void> initTrayIcon([Brightness platformBrightness = Brightness.light]) async {
   // tray icon init
   try {
-    await trayManager.setIcon(Platform.isWindows ? 'assets/tray/icon.ico' : 'assets/tray/icon.png');
+    final iconName = platformBrightness.isDark ? 'icon_light' : 'icon_dark';
+    await trayManager.setIcon(Platform.isWindows ? 'assets/tray/$iconName.ico' : 'assets/tray/$iconName.png');
     if (Platform.isLinux) {
       // Don't show title on macOS (takes up more space in menu bar)
       // Not supported on Windows
