@@ -16,7 +16,7 @@
     </a>
     <a title="Latest supported scrcpy version" href="https://github.com/Genymobile/scrcpy/releases">
       <img
-        src="https://img.shields.io/badge/scrcpy-v3.3.3-green?style=flat-square"
+        src="https://img.shields.io/badge/scrcpy-v3.3.4-green?style=flat-square"
       />
     </a>
 </p>
