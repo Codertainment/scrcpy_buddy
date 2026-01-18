@@ -12,11 +12,9 @@ extension AdbDeviceExtension on AdbDevice {
 
   String? get codename => metadata?["device"];
 
-  bool get isUsb {
-    return !_ipRegex.hasMatch(serial);
-  }
+  bool get isUsb => !isNetwork;
 
-  bool get isNetwork => !isUsb;
+  bool get isNetwork => _ipRegex.hasMatch(serial) || serial.contains("_adb-tls-connect._tcp");
 
   IconData get statusIcon {
     switch (status) {
