@@ -202,7 +202,7 @@ class _DeviceRowState extends AppModuleState<DeviceRow> with SingleTickerProvide
                     children: [
                       DropDownButton(
                         items: [
-                          if (widget.device.isUsb) ...[
+                          if (widget.device.isUsb && widget.device.isReady) ...[
                             MenuFlyoutItem(
                               onPressed: _switchToNetwork,
                               leading: const Icon(WindowsIcons.wifi),
