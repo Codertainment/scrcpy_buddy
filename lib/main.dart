@@ -48,6 +48,15 @@ class _MyAppState extends State<MyApp> {
   late final _argsMap = {for (final instance in _argsInstances) instance.label: instance};
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final platformBrightness = MediaQuery.of(context).platformBrightness;
+      initTrayIcon(platformBrightness);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return FutureBuilder(
       future: WindowManager.instance.getSize(),
