@@ -34,12 +34,12 @@ Future<void> init() async {
 
   // tray icon init
   try {
-    await trayManager.setIcon('assets/tray/icon.png');
-    if (!Platform.isMacOS) {
+    await trayManager.setIcon(Platform.isWindows ? 'assets/tray/icon.ico' : 'assets/tray/icon.png');
+    if (Platform.isLinux) {
       // Don't show title on macOS (takes up more space in menu bar)
+      // Not supported on Windows
       await trayManager.setTitle(_appName);
-    }
-    if (!Platform.isLinux) {
+    } else {
       // tray_manager doesn't support this on linux
       await trayManager.setToolTip(_appName);
     }
