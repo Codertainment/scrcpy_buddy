@@ -250,4 +250,4 @@ Apache-2.0: See [LICENSE](LICENSE)
 > The Android robot is reproduced or modified from work created and shared by Google and used according to terms
 > described in the Creative Commons 3.0 Attribution License (https://creativecommons.org/licenses/by/3.0/).
 
-Thanks to my friend, @SudipRajbanshi for creating the beautiful logo, banner and tray icon ❤️
+Thanks to my friend, [@SudipRajbanshi](https://github.com/SudipRajbanshi) for creating the beautiful logo, banner and tray icon ❤️
