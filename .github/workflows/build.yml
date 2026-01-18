@@ -90,17 +90,27 @@ jobs:
       - name: Run build_runner
         run: dart run build_runner build --delete-conflicting-outputs
 
-      - name: Build Windows app
-        run: flutter build windows --release
+      - name: Install fastforge
+        run: dart pub global activate fastforge
 
       - name: Create MSIX package
-        run: dart run msix:create
+        run: fastforge package --platform windows --targets msix
 
       - name: Upload MSIX artifact
         uses: actions/upload-artifact@v4
         with:
           name: scrcpy_buddy_msix
-          path: build\windows\x64\runner\Release\scrcpy_buddy.msix
+          path: dist\**\*.msix
+          if-no-files-found: error
+
+      - name: Create Inno Setup EXE
+        run: fastforge package --platform windows --targets exe
+
+      - name: Upload Inno Setup EXE artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: scrcpy_buddy_exe
+          path: dist\**\*.exe
           if-no-files-found: error
 
   build-macos:
