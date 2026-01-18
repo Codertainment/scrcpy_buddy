@@ -19,33 +19,33 @@ Fluent UI design principles, it brings a polished, native desktop experience to 
 Windows, Linux, and macOS.
 
 <!-- TOC -->
-
 * [scrcpy buddy 🤝](#scrcpy-buddy-)
-    * [Requirements](#requirements)
-    * [Features](#features)
-        * [Coming next](#coming-next)
-    * [Screenshots](#screenshots)
-    * [Download & Installation](#download--installation)
-        * [Supported and tested platforms](#supported-and-tested-platforms)
-        * [Installation](#installation)
-            * [MacOS](#macos)
-            * [Opening the app on MacOS](#opening-the-app-on-macos)
-            * [Linux](#linux)
-            * [Windows](#windows)
-    * [Usage instructions](#usage-instructions)
-        * [Running scrcpy](#running-scrcpy)
-        * [Customizing scrcpy options](#customizing-scrcpy-options)
-        * [Profile management](#profile-management)
-        * [Configuring a default profile](#configuring-a-default-profile)
-    * [Troubleshooting](#troubleshooting)
-        * [ADB / scrcpy not found](#adb--scrcpy-not-found)
-        * [Setting executable path manually in settings](#setting-executable-path-manually-in-settings)
-    * [License](#license)
-    * [How it works](#how-it-works)
-        * [List of commands used by the app](#list-of-commands-used-by-the-app)
-            * [ADB Commands](#adb-commands)
-            * [scrcpy Commands](#scrcpy-commands)
-
+  * [Requirements](#requirements)
+  * [Features](#features)
+    * [Coming next](#coming-next)
+  * [Supported languages](#supported-languages)
+  * [Screenshots](#screenshots)
+  * [Download & Installation](#download--installation)
+    * [Supported and tested platforms](#supported-and-tested-platforms)
+    * [Installation](#installation)
+      * [MacOS](#macos)
+      * [Opening the app on MacOS](#opening-the-app-on-macos)
+      * [Linux](#linux)
+      * [Windows](#windows)
+  * [Usage instructions](#usage-instructions)
+    * [Running scrcpy](#running-scrcpy)
+    * [Customizing scrcpy options](#customizing-scrcpy-options)
+    * [Profile management](#profile-management)
+    * [Configuring a default profile](#configuring-a-default-profile)
+  * [Troubleshooting](#troubleshooting)
+    * [ADB / scrcpy not found](#adb--scrcpy-not-found)
+    * [Setting executable path manually in settings](#setting-executable-path-manually-in-settings)
+  * [How it works](#how-it-works)
+    * [List of commands used by the app](#list-of-commands-used-by-the-app)
+      * [ADB Commands](#adb-commands)
+      * [scrcpy Commands](#scrcpy-commands)
+  * [License](#license)
+  * [Artworks credits](#artworks-credits)
 <!-- TOC -->
 
 ## Requirements
@@ -72,6 +72,11 @@ To use this app, you need the following:
 ### Coming next
 
 See [milestones](https://github.com/Codertainment/scrcpy_buddy/milestones)
+
+## Supported languages
+- Only English for now
+
+But the app is built with i18n in mind. So, support for more languages can be added gradually.
 
 ## Screenshots
 
