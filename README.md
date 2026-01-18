@@ -36,6 +36,11 @@ scrcpy buddy is a clean, minimalist Flutter-based desktop application that provi
   * [Troubleshooting](#troubleshooting)
     * [ADB / scrcpy not found](#adb--scrcpy-not-found)
     * [Setting executable path manually in settings](#setting-executable-path-manually-in-settings)
+  * [License](#license)
+  * [How it works](#how-it-works)
+    * [List of commands used by the app](#list-of-commands-used-by-the-app)
+      * [ADB Commands](#adb-commands)
+      * [scrcpy Commands](#scrcpy-commands)
 <!-- TOC -->
 
 ## Requirements
@@ -202,11 +207,11 @@ It should show the adb or scrcpy version.
 ## License
 Apache-2.0: See [LICENSE](LICENSE)
 
-### How it works
+## How it works
 scrcpy buddy functions as a graphical user interface (GUI) wrapper for command-line tools. The application does not communicate directly with Android devices or access device data itself. Instead, it exclusively interacts with adb and scrcpy.
 All device communication and data processing occur through these external tools, which operate under their own respective privacy policies and security models.
-#### List of commands used by the app
-ADB Commands
+### List of commands used by the app
+#### ADB Commands
 -	`adb --version` - Retrieves the installed adb version
 -	`adb devices -l` - Lists connected Android devices
 -	`adb start-server` - Starts the ADB server process
@@ -215,7 +220,7 @@ ADB Commands
 -	`adb shell ip route show` - Retrieves network routing information from connected devices
 -	`adb tcpip` - Switches device connection mode to TCP/IP
 
-- scrcpy Commands
+#### scrcpy Commands
 -	`scrcpy` - Launches screen mirroring with user-configured options from the application UI
 -	`scrcpy --version` - Retrieves the installed scrcpy version
 -	`scrcpy --list-apps` - Lists applications installed on connected devices
