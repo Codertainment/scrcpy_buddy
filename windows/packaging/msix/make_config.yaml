@@ -1,0 +1,7 @@
+display_name: scrcpy buddy
+publisher_display_name: Codertainment
+publisher: CN=5EFFC3AA-14FC-4D47-AABD-2F91F482F2F7
+identity_name: Codertainment.scrcpybuddy
+store: 'true'
+logo_path: assets/icon_light_1024.png
+capabilities: privateNetworkClientServer, usb
