@@ -11,36 +11,41 @@
 
 # scrcpy buddy 🤝
 
-![](/assets/icon_light_1024.png "scrcpy buddy logo")
+![](/media/banner.png "banner")
 
-scrcpy buddy is a clean, minimalist Flutter-based desktop application that provides an intuitive graphical interface for [scrcpy](https://github.com/Genymobile/scrcpy), the popular Android screen mirroring and control tool. Built with Fluent UI design principles, it brings a polished, native desktop experience to managing your Android devices across Windows, Linux, and macOS.
+scrcpy buddy is a clean, minimalist Flutter-based desktop application that provides an intuitive graphical interface
+for [scrcpy](https://github.com/Genymobile/scrcpy), the popular Android screen mirroring and control tool. Built with
+Fluent UI design principles, it brings a polished, native desktop experience to managing your Android devices across
+Windows, Linux, and macOS.
 
 <!-- TOC -->
+
 * [scrcpy buddy 🤝](#scrcpy-buddy-)
-  * [Requirements](#requirements)
-  * [Features](#features)
-    * [Coming next](#coming-next)
-  * [Screenshots](#screenshots)
-  * [Download & Installation](#download--installation)
-    * [Supported and tested platforms](#supported-and-tested-platforms)
-    * [Installation](#installation)
-      * [MacOS](#macos)
-      * [Opening the app on MacOS](#opening-the-app-on-macos)
-      * [Linux](#linux)
-      * [Windows](#windows)
-  * [Usage instructions](#usage-instructions)
-    * [Running scrcpy](#running-scrcpy)
-    * [Customizing scrcpy options](#customizing-scrcpy-options)
-    * [Profile management](#profile-management)
-    * [Configuring a default profile](#configuring-a-default-profile)
-  * [Troubleshooting](#troubleshooting)
-    * [ADB / scrcpy not found](#adb--scrcpy-not-found)
-    * [Setting executable path manually in settings](#setting-executable-path-manually-in-settings)
-  * [License](#license)
-  * [How it works](#how-it-works)
-    * [List of commands used by the app](#list-of-commands-used-by-the-app)
-      * [ADB Commands](#adb-commands)
-      * [scrcpy Commands](#scrcpy-commands)
+    * [Requirements](#requirements)
+    * [Features](#features)
+        * [Coming next](#coming-next)
+    * [Screenshots](#screenshots)
+    * [Download & Installation](#download--installation)
+        * [Supported and tested platforms](#supported-and-tested-platforms)
+        * [Installation](#installation)
+            * [MacOS](#macos)
+            * [Opening the app on MacOS](#opening-the-app-on-macos)
+            * [Linux](#linux)
+            * [Windows](#windows)
+    * [Usage instructions](#usage-instructions)
+        * [Running scrcpy](#running-scrcpy)
+        * [Customizing scrcpy options](#customizing-scrcpy-options)
+        * [Profile management](#profile-management)
+        * [Configuring a default profile](#configuring-a-default-profile)
+    * [Troubleshooting](#troubleshooting)
+        * [ADB / scrcpy not found](#adb--scrcpy-not-found)
+        * [Setting executable path manually in settings](#setting-executable-path-manually-in-settings)
+    * [License](#license)
+    * [How it works](#how-it-works)
+        * [List of commands used by the app](#list-of-commands-used-by-the-app)
+            * [ADB Commands](#adb-commands)
+            * [scrcpy Commands](#scrcpy-commands)
+
 <!-- TOC -->
 
 ## Requirements
@@ -65,6 +70,7 @@ To use this app, you need the following:
 - Close app to tray
 
 ### Coming next
+
 See [milestones](https://github.com/Codertainment/scrcpy_buddy/milestones)
 
 ## Screenshots
@@ -191,8 +197,8 @@ If you have ADB and/or scrcpy setup and installed in your path:
   can [set the executable in settings manually](#setting-executable-path-manually-in-settings).
 - To find out the installation path, run this command in the terminal:
 - e.g.
-  - For Windows: `where adb`
-  - For MacOS/Linux: `which adb`
+    - For Windows: `where adb`
+    - For MacOS/Linux: `which adb`
 
 ### Setting executable path manually in settings
 
@@ -204,23 +210,39 @@ Verify that the app is able to access the executables by clicking on "Check".
 
 It should show the adb or scrcpy version.
 
-## License
-Apache-2.0: See [LICENSE](LICENSE)
-
 ## How it works
-scrcpy buddy functions as a graphical user interface (GUI) wrapper for command-line tools. The application does not communicate directly with Android devices or access device data itself. Instead, it exclusively interacts with adb and scrcpy.
-All device communication and data processing occur through these external tools, which operate under their own respective privacy policies and security models.
+
+scrcpy buddy functions as a graphical user interface (GUI) wrapper for command-line tools. The application does not
+communicate directly with Android devices or access device data itself. Instead, it exclusively interacts with adb and
+scrcpy.
+All device communication and data processing occur through these external tools, which operate under their own
+respective privacy policies and security models.
+
 ### List of commands used by the app
+
 #### ADB Commands
--	`adb --version` - Retrieves the installed adb version
--	`adb devices -l` - Lists connected Android devices
--	`adb start-server` - Starts the ADB server process
--	`adb connect` - Connects to Android devices over network
--	`adb disconnect` - Disconnects from network-connected devices
--	`adb shell ip route show` - Retrieves network routing information from connected devices
--	`adb tcpip` - Switches device connection mode to TCP/IP
+
+- `adb --version` - Retrieves the installed adb version
+- `adb devices -l` - Lists connected Android devices
+- `adb start-server` - Starts the ADB server process
+- `adb connect` - Connects to Android devices over network
+- `adb disconnect` - Disconnects from network-connected devices
+- `adb shell ip route show` - Retrieves network routing information from connected devices
+- `adb tcpip` - Switches device connection mode to TCP/IP
 
 #### scrcpy Commands
--	`scrcpy` - Launches screen mirroring with user-configured options from the application UI
--	`scrcpy --version` - Retrieves the installed scrcpy version
--	`scrcpy --list-apps` - Lists applications installed on connected devices
+
+- `scrcpy` - Launches screen mirroring with user-configured options from the application UI
+- `scrcpy --version` - Retrieves the installed scrcpy version
+- `scrcpy --list-apps` - Lists applications installed on connected devices
+
+## License
+
+Apache-2.0: See [LICENSE](LICENSE)
+
+## Artworks credits
+
+> The Android robot is reproduced or modified from work created and shared by Google and used according to terms
+> described in the Creative Commons 3.0 Attribution License (https://creativecommons.org/licenses/by/3.0/).
+
+Thanks to my friend, @SudipRajbanshi for creating the beautiful logo, banner and tray icon ❤️
