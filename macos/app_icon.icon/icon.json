@@ -1,0 +1,90 @@
+{
+  "fill" : "automatic",
+  "groups" : [
+    {
+      "layers" : [
+        {
+          "fill" : "none",
+          "glass" : false,
+          "image-name" : "robot.png",
+          "name" : "robot",
+          "position" : {
+            "scale" : 1,
+            "translation-in-points" : [
+              -0.5,
+              260.5390625
+            ]
+          }
+        },
+        {
+          "glass" : false,
+          "image-name" : "wifi.png",
+          "name" : "wifi",
+          "position" : {
+            "scale" : 1,
+            "translation-in-points" : [
+              0.5,
+              0
+            ]
+          }
+        },
+        {
+          "image-name" : "notch.png",
+          "name" : "notch",
+          "position" : {
+            "scale" : 1,
+            "translation-in-points" : [
+              0,
+              -267.203125
+            ]
+          }
+        },
+        {
+          "blend-mode-specializations" : [
+            {
+              "appearance" : "dark",
+              "value" : "normal"
+            }
+          ],
+          "fill-specializations" : [
+            {
+              "value" : "automatic"
+            },
+            {
+              "appearance" : "dark",
+              "value" : {
+                "solid" : "extended-gray:1.00000,1.00000"
+              }
+            }
+          ],
+          "glass" : true,
+          "image-name" : "bg.png",
+          "name" : "bg",
+          "position" : {
+            "scale" : 1,
+            "translation-in-points" : [
+              0,
+              93.5
+            ]
+          }
+        }
+      ],
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0.5
+      },
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.5
+      }
+    }
+  ],
+  "supported-platforms" : {
+    "circles" : [
+      "watchOS"
+    ],
+    "squares" : [
+      "macOS"
+    ]
+  }
+}
