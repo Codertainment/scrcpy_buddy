@@ -27,18 +27,18 @@ class AdbResultParser {
     }
   }
 
-  Future<AdbInitResult> parseInitResult(Future<ProcessResult> process) async {
+  Future<AdbTrackDevicesResult> parseTrackResult(Future<Process> Function() processSupplier) async {
     try {
-      final result = await process;
-      return AdbInitResult.right(result.exitCode);
+      final result = await processSupplier();
+      return AdbTrackDevicesResult.right(result);
     } on ProcessException catch (e) {
       if (e.message.toLowerCase().contains("failed to find")) {
-        return AdbInitResult.left(AdbNotFoundError());
+        return AdbTrackDevicesResult.left(AdbNotFoundError());
       } else {
-        return AdbInitResult.left(UnknownAdbError(exception: e));
+        return AdbTrackDevicesResult.left(UnknownAdbError(exception: e));
       }
     } catch (e) {
-      return AdbInitResult.left(UnknownAdbError(exception: e));
+      return AdbTrackDevicesResult.left(UnknownAdbError(exception: e));
     }
   }
 

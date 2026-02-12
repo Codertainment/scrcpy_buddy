@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
 import 'package:scrcpy_buddy/application/app_settings.dart';
 import 'package:scrcpy_buddy/application/extension/adb_error_extension.dart';
+import 'package:scrcpy_buddy/presentation/devices/bloc/devices_bloc.dart';
 import 'package:scrcpy_buddy/presentation/extension/translation_extension.dart';
 import 'package:scrcpy_buddy/presentation/widgets/app_widgets.dart';
 import 'package:scrcpy_buddy/service/adb_service.dart';
@@ -23,6 +24,7 @@ class _AdbExecutableSettingState extends AppModuleState<AdbExecutableSetting> {
 
   late final _executablePreference = context.read<AppSettings>().adbExecutable;
   late final _adbService = context.read<AdbService>();
+  late final _devicesBloc = context.read<DevicesBloc>();
 
   final _infoFlyoutController = FlyoutController();
   final _textController = TextEditingController();
@@ -38,13 +40,13 @@ class _AdbExecutableSettingState extends AppModuleState<AdbExecutableSetting> {
   Future<void> _validateAndSave(String? path) async {
     if (path == null) return;
     if (path.isEmpty) {
-      await _executablePreference.setValue(path);
+      _setExecutablePath(path);
       return;
     }
     setState(() => _isSaving = true);
     final file = File(path);
     if (await file.exists()) {
-      await _executablePreference.setValue(path);
+      _setExecutablePath(path);
     } else {
       showInfoBar(
         title: translatedText(key: 'invalidPath'),
@@ -52,6 +54,11 @@ class _AdbExecutableSettingState extends AppModuleState<AdbExecutableSetting> {
       );
     }
     setState(() => _isSaving = false);
+  }
+
+  Future<void> _setExecutablePath(String path) async {
+    await _executablePreference.setValue(path);
+    _devicesBloc.add(RestartTracking());
   }
 
   Future<void> _checkVersionInfo() async {

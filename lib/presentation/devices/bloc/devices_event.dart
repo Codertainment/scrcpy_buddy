@@ -7,6 +7,10 @@ sealed class DevicesEvent extends Equatable {
   List<Object> get props => [];
 }
 
+final class InitDeviceTracking extends DevicesEvent {}
+
+final class RestartTracking extends DevicesEvent {}
+
 final class LoadDevices extends DevicesEvent {}
 
 final class ToggleDeviceSelection extends DevicesEvent {

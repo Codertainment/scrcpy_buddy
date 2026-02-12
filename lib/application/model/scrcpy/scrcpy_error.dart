@@ -10,10 +10,10 @@ class UnknownScrcpyError extends ScrcpyError {
 
 class ScrcpyNotFoundError extends ScrcpyError {}
 
-class ScrcpyKillError extends ScrcpyError {
+class ScrcpyStopError extends ScrcpyError {
   final Object? exception;
 
-  const ScrcpyKillError({this.exception});
+  const ScrcpyStopError([this.exception]);
 }
 
 class ScrcpyListAppsError extends ScrcpyError {

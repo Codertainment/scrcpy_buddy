@@ -8,8 +8,8 @@ extension ScrcpyErrorExtension on ScrcpyError {
         return (this as UnknownScrcpyError).exception?.toString() ?? 'Unknown error';
       case const (ScrcpyNotFoundError):
         return 'Scrcpy not found';
-      case const (ScrcpyKillError):
-        return "Failed to stop scrcpy: ${(this as ScrcpyKillError).message}";
+      case const (ScrcpyStopError):
+        return "Failed to stop scrcpy: ${(this as ScrcpyStopError).exception}";
       default:
         return "Unknown error";
     }
