@@ -83,7 +83,13 @@ class ScrcpyBloc extends Bloc<ScrcpyEvent, ScrcpyState> {
   void _stop(StopScrcpyEvent event, _Emitter emit) {
     final result = _processManager.stop(event.deviceSerial);
     result.mapLeft(
-      (left) => emit(ScrcpyStopFailedState(deviceSerial: event.deviceSerial, error: left, devices: _runningDevices)),
+      (left) => emit(
+        ScrcpyStopFailedState(
+          deviceSerial: event.deviceSerial,
+          error: ScrcpyStopError(left.exception),
+          devices: _runningDevices,
+        ),
+      ),
     );
     result.map((_) => emit(ScrcpyStopSuccessState(deviceSerial: event.deviceSerial, devices: _runningDevices)));
   }

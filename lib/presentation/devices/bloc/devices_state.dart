@@ -11,6 +11,23 @@ final class DevicesInitial extends DevicesState {
   List<Object> get props => [];
 }
 
+final class InitDeviceTrackingSuccess extends DevicesState {
+  const InitDeviceTrackingSuccess();
+
+  @override
+  List<Object?> get props => [];
+}
+
+final class InitDeviceTrackingFailed extends DevicesState {
+  final AdbError? adbError;
+  final String? message;
+
+  const InitDeviceTrackingFailed({this.adbError, this.message});
+
+  @override
+  List<Object?> get props => [adbError, message];
+}
+
 final class DevicesLoading extends DevicesState {
   const DevicesLoading();
 
@@ -31,7 +48,6 @@ final class DevicesUpdateSuccess extends DevicesBaseUpdateState {
 
   @override
   List<Object?> get props => [devices, selectedDeviceSerials];
-
 }
 
 final class DevicesUpdateError extends DevicesBaseUpdateState {

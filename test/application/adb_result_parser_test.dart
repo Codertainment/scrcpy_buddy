@@ -46,7 +46,7 @@ void main() {
       ],
     ],
     (_, _ProcessResultSupplier processResultSupplier, Either<AdbError, int> expectedResult, expectedErrorType) async {
-      final result = await parser.parseInitResult(processResultSupplier());
+      final result = await parser.parseTrackResult(processResultSupplier());
       expect(result.isRight(), expectedResult.isRight());
       if (expectedResult.isRight()) {
         expect(

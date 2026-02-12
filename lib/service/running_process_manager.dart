@@ -5,8 +5,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:scrcpy_buddy/application/model/scrcpy/scrcpy_error.dart';
-import 'package:scrcpy_buddy/application/model/scrcpy/scrcpy_result.dart';
+import 'package:scrcpy_buddy/application/model/process/stop_result.dart';
 import 'package:scrcpy_buddy/application/model/scrcpy/std_line.dart';
 
 class RunningProcessManager {
@@ -50,24 +49,31 @@ class RunningProcessManager {
   }
 
   void remove(String key) {
-    _processMap.remove(key);
-    _stdBehaviorSubjects[key]?.close();
-    _stdBehaviorSubjects.remove(key);
+    try {
+      _processMap.remove(key);
+      _stdBehaviorSubjects[key]?.close();
+      _stdBehaviorSubjects.remove(key);
+    } on StateError catch (e) {
+      // Ignore bad state exceptions
+      if (kDebugMode) {
+        debugPrint("StateError: $e");
+      }
+    }
   }
 
-  ScrcpyStopResult stop(String key) {
+  ProcessStopResult stop(String key) {
     final process = _processMap[key];
     try {
       if (process != null) {
         if (process.kill()) {
           remove(key);
-          return ScrcpyStopResult.right(true);
+          return ProcessStopResult.right(true);
         } else {
-          return ScrcpyStopResult.left(ScrcpyKillError());
+          return ProcessStopResult.left(ProcessStopError());
         }
       }
     } catch (e) {
-      return ScrcpyStopResult.left(UnknownScrcpyError(exception: e));
+      return ProcessStopResult.left(ProcessStopError(e));
     }
     return const Right(true);
   }

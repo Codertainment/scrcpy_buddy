@@ -25,6 +25,9 @@
     "start": "Start",
     "stop": "Stop",
     "error": {
+      "adb": {
+        "trackingFailed": "Failed to auto-refresh devices"
+      },
       "scrcpy": {
         "notFound": {
           "title": "Scrcpy could not be found",

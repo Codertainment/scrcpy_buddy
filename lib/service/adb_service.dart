@@ -14,8 +14,8 @@ class AdbService {
   Future<AdbVersionInfoResult> getVersionInfo(String path) =>
       _resultParser.parseVersionInfoResult(_processManager.run([_getExecutable(path), '--version']));
 
-  Future<AdbInitResult> init(String path) =>
-      _resultParser.parseInitResult(_processManager.run([_getExecutable(path), 'start-server']));
+  Future<AdbTrackDevicesResult> startTrackDevices(String path) =>
+      _resultParser.parseTrackResult(() => _processManager.start([_getExecutable(path), 'track-devices']));
 
   Future<AdbDevicesResult> devices(String path) =>
       _resultParser.parseDevicesResult(_processManager.run([_getExecutable(path), 'devices', '-l']));
