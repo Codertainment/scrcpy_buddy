@@ -41,6 +41,7 @@ class _HomeScreenState extends AppModuleState<HomeScreen> with WindowListener, T
   StreamSubscription? _trackDevicesUpdateSubscription;
   List<NavigationPaneItem> _filteredFooterItems = [];
   List<NavigationPaneItem> _filteredMainItems = [];
+  List<AutoSuggestBoxItem<String>> _allItems = [];
 
   @override
   String get module => 'home';
@@ -71,6 +72,25 @@ class _HomeScreenState extends AppModuleState<HomeScreen> with WindowListener, T
         ),
       ),
     );
+    
+    // Initialize all items for search
+    _initializeAllItems();
+  }
+
+  void _initializeAllItems() {
+    final mainItems = _navigationService.getMainItems(context);
+    final footerItems = _navigationService.getFooterItems(context);
+    
+    _allItems = [
+      ...mainItems.map((item) => AutoSuggestBoxItem<String>(
+        value: item.label ?? '',
+        display: item.label ?? '',
+      )),
+      ...footerItems.map((item) => AutoSuggestBoxItem<String>(
+        value: item.label ?? '',
+        display: item.label ?? '',
+      )),
+    ];
   }
 
   @override
@@ -146,30 +166,56 @@ class _HomeScreenState extends AppModuleState<HomeScreen> with WindowListener, T
   }
 
   void _filterItems(String query) {
-    final mainItems = _navigationService.getMainItems(context);
-    final footerItems = _navigationService.getFooterItems(context);
-    
     if (query.isEmpty) {
-      _filteredMainItems = mainItems;
-      _filteredFooterItems = footerItems;
+      _filteredMainItems = _navigationService.getMainItems(context);
+      _filteredFooterItems = _navigationService.getFooterItems(context);
     } else {
       final lowerQuery = query.toLowerCase();
+      final filteredItems = _allItems
+          .where((item) => 
+            item.display.toLowerCase().contains(lowerQuery)
+          )
+          .toList();
+      
+      // Reconstruct main and footer items based on filtered results
+      final mainItems = _navigationService.getMainItems(context);
+      final footerItems = _navigationService.getFooterItems(context);
+      
       _filteredMainItems = mainItems
           .where((item) => 
-            (item.label?.toLowerCase().contains(lowerQuery) ?? false) ||
-            (item.tooltip?.toLowerCase().contains(lowerQuery) ?? false)
+            filteredItems.any((filteredItem) => 
+              filteredItem.display == (item.label ?? '')
+            )
           )
           .toList();
       
       _filteredFooterItems = footerItems
           .where((item) => 
-            (item.label?.toLowerCase().contains(lowerQuery) ?? false) ||
-            (item.tooltip?.toLowerCase().contains(lowerQuery) ?? false)
+            filteredItems.any((filteredItem) => 
+              filteredItem.display == (item.label ?? '')
+            )
           )
           .toList();
     }
     
     setState(() {});
+  }
+
+  void _onItemSelected(AutoSuggestBoxItem<String> item) {
+    // Find the corresponding navigation item and navigate to it
+    final mainItems = _navigationService.getMainItems(context);
+    final footerItems = _navigationService.getFooterItems(context);
+    
+    final foundItem = [...mainItems, ...footerItems]
+        .firstWhereOrNull((navItem) => navItem.label == item.value);
+    
+    if (foundItem != null) {
+      // Navigate to the selected item
+      // This would typically involve calling a navigation method
+      // For now, we'll just clear the search
+      _searchController.clear();
+      _filterItems('');
+    }
   }
 
   @override
@@ -252,12 +298,9 @@ class _HomeScreenState extends AppModuleState<HomeScreen> with WindowListener, T
                       width: 200,
                       child: AutoSuggestBox<String>(
                         controller: _searchController,
-                        items: [
-                          ..._navigationService.getMainItems(context).map((item) => item.label ?? ''),
-                          ..._navigationService.getFooterItems(context).map((item) => item.label ?? ''),
-                        ],
+                        items: _allItems,
                         onChanged: (value) => _filterItems(value ?? ''),
-                        onSubmitted: (value) => _filterItems(value ?? ''),
+                        onSelected: _onItemSelected,
                         placeholder: translatedText(key: 'search'),
                         clearOnSubmit: true,
                       ),
