@@ -36,8 +36,11 @@ class _HomeScreenState extends AppModuleState<HomeScreen> with WindowListener, T
   late final _devicesBloc = context.read<DevicesBloc>();
   late final _runningProcessManager = context.read<RunningProcessManager>();
   final _navigationService = NavigationService();
+  final _searchController = TextEditingController();
 
   StreamSubscription? _trackDevicesUpdateSubscription;
+  List<NavigationPaneItem> _filteredFooterItems = [];
+  List<NavigationPaneItem> _filteredMainItems = [];
 
   @override
   String get module => 'home';
@@ -105,6 +108,7 @@ class _HomeScreenState extends AppModuleState<HomeScreen> with WindowListener, T
     windowManager.removeListener(this);
     trayManager.removeListener(this);
     _trackDevicesUpdateSubscription?.cancel();
+    _searchController.dispose();
     super.dispose();
   }
 
@@ -141,15 +145,43 @@ class _HomeScreenState extends AppModuleState<HomeScreen> with WindowListener, T
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
+  void _filterItems(String query) {
     final mainItems = _navigationService.getMainItems(context);
     final footerItems = _navigationService.getFooterItems(context);
+    
+    if (query.isEmpty) {
+      _filteredMainItems = mainItems;
+      _filteredFooterItems = footerItems;
+    } else {
+      final lowerQuery = query.toLowerCase();
+      _filteredMainItems = mainItems
+          .where((item) => 
+            (item.label?.toLowerCase().contains(lowerQuery) ?? false) ||
+            (item.tooltip?.toLowerCase().contains(lowerQuery) ?? false)
+          )
+          .toList();
+      
+      _filteredFooterItems = footerItems
+          .where((item) => 
+            (item.label?.toLowerCase().contains(lowerQuery) ?? false) ||
+            (item.tooltip?.toLowerCase().contains(lowerQuery) ?? false)
+          )
+          .toList();
+    }
+    
+    setState(() {});
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final mainItems = _filteredMainItems.isEmpty ? _navigationService.getMainItems(context) : _filteredMainItems;
+    final footerItems = _filteredFooterItems.isEmpty ? _navigationService.getFooterItems(context) : _filteredFooterItems;
     final selectedIndex = _navigationService.calculateSelectedIndex(
       context,
       mainItems: mainItems,
       footerItems: footerItems,
     );
+    
     return BlocListener<ScrcpyBloc, ScrcpyState>(
       listener: (context, state) {
         if (state is ScrcpyStartFailedState) {
@@ -215,6 +247,22 @@ class _HomeScreenState extends AppModuleState<HomeScreen> with WindowListener, T
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    // Search field
+                    SizedBox(
+                      width: 200,
+                      child: AutoSuggestBox<String>(
+                        controller: _searchController,
+                        items: [
+                          ..._navigationService.getMainItems(context).map((item) => item.label ?? ''),
+                          ..._navigationService.getFooterItems(context).map((item) => item.label ?? ''),
+                        ],
+                        onChanged: (value) => _filterItems(value ?? ''),
+                        onSubmitted: (value) => _filterItems(value ?? ''),
+                        placeholder: translatedText(key: 'search'),
+                        clearOnSubmit: true,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
                     ProfileButton(),
                     const SizedBox(width: 8),
                     StartButton(),
