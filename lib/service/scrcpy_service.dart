@@ -90,5 +90,18 @@ class ScrcpyService {
 
   Map<String, String>? _getEnvironment(String adbPath) => adbPath.isNotEmpty ? {'ADB': adbPath} : null;
 
-  String _getExecutable(String path) => path.isEmpty ? 'scrcpy' : path;
+  String _getExecutable(String path) => path.isEmpty ? getScrcpyPath() : path;
+
+  String getScrcpyPath() {
+    final snapPath = Platform.environment['SNAP'];
+    if (snapPath != null) {
+      print("SNAP_PATH: $snapPath");
+      final scrcpyPath = '$snapPath/scrcpy-runtime/usr/local/bin/scrcpy';
+      if (File(scrcpyPath).existsSync()) {
+        return scrcpyPath;
+      }
+    }
+
+    return 'scrcpy';
+  }
 }

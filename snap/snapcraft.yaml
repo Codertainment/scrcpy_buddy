@@ -1,3 +1,5 @@
+# This one doesn't work x_x
+
 name: scrcpy-buddy
 version: '1.0.0'
 summary: GUI wrapper for scrcpy
@@ -5,16 +7,57 @@ description: |
   A simple, clean, minimalist GUI wrapper for scrcpy (https://github.com/Genymobile/scrcpy).
 grade: stable
 base: core24
-confinement: classic
+confinement: strict
 
 apps:
+  adb:
+    command: usr/bin/adb
+    environment:
+      LD_LIBRARY_PATH: ${SNAP}/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}/android:${LD_LIBRARY_PATH}
+    plugs:
+      - adb-support
+      - network
+      - network-bind
+      - raw-usb
+
   scrcpy-buddy:
     command: scrcpy_buddy
+    extensions: [gnome]
     environment:
-      PATH: /usr/local/bin:/usr/bin:/bin:$PATH
-      # GTK/GNOME settings for Flutter
-      GTK_USE_PORTAL: 1
-      XDG_DATA_DIRS: $SNAP/usr/share:$XDG_DATA_DIRS
+      LD_LIBRARY_PATH: ${SNAP}/scrcpy-runtime/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}:${SNAP}/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}/android:${LD_LIBRARY_PATH}
+      PATH: ${SNAP}/scrcpy-runtime/usr/local/bin:${PATH}
+
+    plugs:
+      # For running the Android Debug Bridge (adb) and
+      # connecting the Android devices over USB or TCP/IP.
+      # https://github.com/Genymobile/scrcpy/blob/master/doc/connection.md
+      - adb-support
+      - network
+      - network-bind
+      - raw-usb
+
+      # For scrcpy audio forwarding functionality.
+      # https://github.com/Genymobile/scrcpy/blob/master/doc/audio.md
+      - alsa
+      - audio-playback
+      - pulseaudio
+
+      # For scrcpy v4l2 emulation support.
+      # https://github.com/Genymobile/scrcpy/blob/master/doc/v4l2.md
+      - camera
+
+      # For scrcpy video & audio recording support.
+      # https://github.com/Genymobile/scrcpy/blob/master/doc/recording.md
+      - home
+      - removable-media
+
+      # For scrcpy gamepad simulation support.
+      # https://github.com/Genymobile/scrcpy/blob/master/doc/gamepad.md
+      - joystick
+
+      # Legacy desktop support.
+      # https://github.com/canonical/snapd/blob/master/interfaces/builtin/unity7.go
+      - unity7
     slots:
       - dbus-scrcpy-buddy
 
@@ -24,27 +67,37 @@ slots:
     bus: session
     name: dev.codertainment.scrcpy_buddy
 
+plugs:
+  scrcpy-runtime-2404:
+    interface: content
+    target: scrcpy-runtime
+    default-provider: scrcpy-runtime-2404
+
 parts:
+  adb:
+    plugin: nil
+    stage-packages:
+      - adb
+      - android-libbase
+      - android-libboringssl
+      - android-libcutils
+      - android-liblog
+      - android-libziparchive
+      - libbrotli1
+      - libcap2
+      - liblz4-1
+      - libprotobuf32t64
+      - libudev1
+      - libusb-1.0-0
+      - libzstd1
+
   scrcpy-buddy:
     source: .
     plugin: flutter
     flutter-target: lib/main.dart
     build-packages:
-      - pkg-config
-      - libgtk-3-dev
-      - libglib2.0-dev
-      - libgdk-pixbuf2.0-dev
-      - libcairo2-dev
-      - libpango1.0-dev
       - libayatana-appindicator3-dev  # For tray_manager
     stage-packages:
-      # Add GTK dependencies since we removed gnome extension
-      - libgtk-3-0
-      - libgdk-pixbuf2.0-0
-      - libglib2.0-0
-      - libcairo2
-      - libpango-1.0-0
-      - libatk1.0-0
       - libayatana-appindicator3-1    # For tray_manager
     organize:
       assets/icon_light_256.png: meta/gui/icon_light.png
