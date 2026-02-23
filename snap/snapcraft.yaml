@@ -28,6 +28,7 @@ apps:
       PATH: ${SNAP}/scrcpy-runtime/usr/local/bin:${PATH}
 
     plugs:
+      - scrcpy-runtime-2404
       # For running the Android Debug Bridge (adb) and
       # connecting the Android devices over USB or TCP/IP.
       # https://github.com/Genymobile/scrcpy/blob/master/doc/connection.md
@@ -70,7 +71,8 @@ slots:
 plugs:
   scrcpy-runtime-2404:
     interface: content
-    target: scrcpy-runtime
+    content: scrcpy-runtime-2404
+    target: $SNAP/scrcpy-runtime
     default-provider: scrcpy-runtime-2404
 
 parts:
@@ -90,6 +92,12 @@ parts:
       - libudev1
       - libusb-1.0-0
       - libzstd1
+
+  lp-bug-2016358-workaround:
+    plugin: nil
+    override-prime: |
+      craftctl default
+      mkdir -p "${CRAFT_PRIME}/scrcpy-runtime"
 
   scrcpy-buddy:
     source: .
