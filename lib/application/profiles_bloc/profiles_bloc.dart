@@ -8,7 +8,6 @@ import 'package:scrcpy_buddy/objectbox.g.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 
 part 'profiles_event.dart';
-
 part 'profiles_state.dart';
 
 typedef _Emitter = Emitter<ProfilesState>;

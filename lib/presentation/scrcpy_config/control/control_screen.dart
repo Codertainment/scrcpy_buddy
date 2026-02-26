@@ -1,5 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:scrcpy_buddy/application/model/scrcpy/scrcpy_arg.dart';
 import 'package:scrcpy_buddy/application/profiles_bloc/profiles_bloc.dart';
 import 'package:scrcpy_buddy/presentation/extension/context_extension.dart';
 import 'package:scrcpy_buddy/presentation/scrcpy_config/control/widgets/modes_info_bar.dart';
@@ -9,8 +10,6 @@ import 'package:scrcpy_buddy/presentation/scrcpy_config/widgets/config_item.dart
 import 'package:scrcpy_buddy/presentation/scrcpy_config/widgets/config_text_box.dart';
 import 'package:scrcpy_buddy/presentation/scrcpy_config/widgets/config_toggle.dart';
 import 'package:scrcpy_buddy/presentation/widgets/app_widgets.dart';
-
-import 'package:scrcpy_buddy/application/model/scrcpy/scrcpy_arg.dart';
 
 class ControlScreen extends StatefulWidget {
   const ControlScreen({super.key});

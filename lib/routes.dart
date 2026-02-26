@@ -11,6 +11,7 @@ import 'package:scrcpy_buddy/presentation/scrcpy_config/recording_screen.dart';
 import 'package:scrcpy_buddy/presentation/scrcpy_config/v4l2/v4l2_screen.dart';
 import 'package:scrcpy_buddy/presentation/scrcpy_config/video/video_screen.dart';
 import 'package:scrcpy_buddy/presentation/scrcpy_config/virtualDisplay/virtual_display_screen.dart';
+import 'package:scrcpy_buddy/presentation/scrcpy_config/widgets/highlight_provider.dart';
 import 'package:scrcpy_buddy/presentation/scrcpy_config/window/window_screen.dart';
 import 'package:scrcpy_buddy/presentation/settings/settings_screen.dart';
 
@@ -50,15 +51,45 @@ final router = GoRouter(
       routes: [
         GoRoute(path: AppRoute.devices, builder: (_, _) => const DevicesScreen()),
 
-        GoRoute(path: AppRoute.audio, builder: (_, _) => const AudioScreen()),
-        GoRoute(path: AppRoute.camera, builder: (_, _) => const CameraScreen()),
-        GoRoute(path: AppRoute.control, builder: (_, _) => const ControlScreen()),
-        GoRoute(path: AppRoute.device, builder: (_, _) => const DeviceScreen()),
-        GoRoute(path: AppRoute.recording, builder: (_, _) => const RecordingScreen()),
-        GoRoute(path: AppRoute.v4l2, builder: (_, _) => const V4l2Screen()),
-        GoRoute(path: AppRoute.video, builder: (_, _) => const VideoScreen()),
-        GoRoute(path: AppRoute.virtualDisplay, builder: (_, _) => const VirtualDisplayScreen()),
-        GoRoute(path: AppRoute.window, builder: (_, _) => const WindowScreen()),
+        GoRoute(
+          path: AppRoute.audio,
+          builder: (_, state) => HighlightProvider(highlightLabel: state.extra as String?, child: const AudioScreen()),
+        ),
+        GoRoute(
+          path: AppRoute.camera,
+          builder: (_, state) => HighlightProvider(highlightLabel: state.extra as String?, child: const CameraScreen()),
+        ),
+        GoRoute(
+          path: AppRoute.control,
+          builder: (_, state) =>
+              HighlightProvider(highlightLabel: state.extra as String?, child: const ControlScreen()),
+        ),
+        GoRoute(
+          path: AppRoute.device,
+          builder: (_, state) => HighlightProvider(highlightLabel: state.extra as String?, child: const DeviceScreen()),
+        ),
+        GoRoute(
+          path: AppRoute.recording,
+          builder: (_, state) =>
+              HighlightProvider(highlightLabel: state.extra as String?, child: const RecordingScreen()),
+        ),
+        GoRoute(
+          path: AppRoute.v4l2,
+          builder: (_, state) => HighlightProvider(highlightLabel: state.extra as String?, child: const V4l2Screen()),
+        ),
+        GoRoute(
+          path: AppRoute.video,
+          builder: (_, state) => HighlightProvider(highlightLabel: state.extra as String?, child: const VideoScreen()),
+        ),
+        GoRoute(
+          path: AppRoute.virtualDisplay,
+          builder: (_, state) =>
+              HighlightProvider(highlightLabel: state.extra as String?, child: const VirtualDisplayScreen()),
+        ),
+        GoRoute(
+          path: AppRoute.window,
+          builder: (_, state) => HighlightProvider(highlightLabel: state.extra as String?, child: const WindowScreen()),
+        ),
 
         GoRoute(path: AppRoute.profiles, builder: (_, _) => const ProfilesScreen()),
         GoRoute(path: AppRoute.settings, builder: (_, _) => const SettingsScreen()),

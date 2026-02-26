@@ -1,5 +1,9 @@
 {
   "appName": "scrcpy buddy 🤝",
+  "search": {
+    "placeholder": "Search options...",
+    "noResults": "No results found"
+  },
   "home": {
     "tray": {
       "showApp": "Show app",

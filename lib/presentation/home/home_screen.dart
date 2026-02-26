@@ -15,6 +15,7 @@ import 'package:scrcpy_buddy/presentation/home/widgets/console_dialog.dart';
 import 'package:scrcpy_buddy/presentation/home/widgets/profile_button.dart';
 import 'package:scrcpy_buddy/presentation/home/widgets/start_button.dart';
 import 'package:scrcpy_buddy/presentation/home/widgets/stop_button.dart';
+import 'package:scrcpy_buddy/presentation/search/search_widget.dart';
 import 'package:scrcpy_buddy/presentation/widgets/app_widgets.dart';
 import 'package:scrcpy_buddy/routes.dart';
 import 'package:scrcpy_buddy/service/navigation_service.dart';
@@ -215,6 +216,8 @@ class _HomeScreenState extends AppModuleState<HomeScreen> with WindowListener, T
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    SearchWidget(),
+                    const SizedBox(width: 8),
                     ProfileButton(),
                     const SizedBox(width: 8),
                     StartButton(),

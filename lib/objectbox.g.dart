@@ -9,8 +9,7 @@
 import 'dart:typed_data';
 
 import 'package:flat_buffers/flat_buffers.dart' as fb;
-import 'package:objectbox/internal.dart'
-    as obx_int; // generated code can access "internal" functionality
+import 'package:objectbox/internal.dart' as obx_int; // generated code can access "internal" functionality
 import 'package:objectbox/objectbox.dart' as obx;
 import 'package:objectbox_flutter_libs/objectbox_flutter_libs.dart';
 
@@ -25,24 +24,9 @@ final _entities = <obx_int.ModelEntity>[
     lastPropertyId: const obx_int.IdUid(3, 5841936062529600271),
     flags: 0,
     properties: <obx_int.ModelProperty>[
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(1, 6938377658329922369),
-        name: 'id',
-        type: 6,
-        flags: 1,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(2, 5064544623462811653),
-        name: 'name',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(3, 5841936062529600271),
-        name: 'dbArgs',
-        type: 9,
-        flags: 0,
-      ),
+      obx_int.ModelProperty(id: const obx_int.IdUid(1, 6938377658329922369), name: 'id', type: 6, flags: 1),
+      obx_int.ModelProperty(id: const obx_int.IdUid(2, 5064544623462811653), name: 'name', type: 9, flags: 0),
+      obx_int.ModelProperty(id: const obx_int.IdUid(3, 5841936062529600271), name: 'dbArgs', type: 9, flags: 0),
     ],
     relations: <obx_int.ModelRelation>[],
     backlinks: <obx_int.ModelBacklink>[],
@@ -115,9 +99,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
         object.id = id;
       },
       objectToFB: (Profile object, fb.Builder fbb) {
-        final nameOffset = object.name == null
-            ? null
-            : fbb.writeString(object.name!);
+        final nameOffset = object.name == null ? null : fbb.writeString(object.name!);
         final dbArgsOffset = fbb.writeString(object.dbArgs);
         fbb.startTable(4);
         fbb.addInt64(0, object.id);
@@ -132,12 +114,8 @@ obx_int.ModelDefinition getObjectBoxModel() {
 
         final object = Profile()
           ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0)
-          ..name = const fb.StringReader(
-            asciiOptimization: true,
-          ).vTableGetNullable(buffer, rootOffset, 6)
-          ..dbArgs = const fb.StringReader(
-            asciiOptimization: true,
-          ).vTableGet(buffer, rootOffset, 8, '');
+          ..name = const fb.StringReader(asciiOptimization: true).vTableGetNullable(buffer, rootOffset, 6)
+          ..dbArgs = const fb.StringReader(asciiOptimization: true).vTableGet(buffer, rootOffset, 8, '');
 
         return object;
       },
@@ -150,17 +128,11 @@ obx_int.ModelDefinition getObjectBoxModel() {
 /// [Profile] entity fields to define ObjectBox queries.
 class Profile_ {
   /// See [Profile.id].
-  static final id = obx.QueryIntegerProperty<Profile>(
-    _entities[0].properties[0],
-  );
+  static final id = obx.QueryIntegerProperty<Profile>(_entities[0].properties[0]);
 
   /// See [Profile.name].
-  static final name = obx.QueryStringProperty<Profile>(
-    _entities[0].properties[1],
-  );
+  static final name = obx.QueryStringProperty<Profile>(_entities[0].properties[1]);
 
   /// See [Profile.dbArgs].
-  static final dbArgs = obx.QueryStringProperty<Profile>(
-    _entities[0].properties[2],
-  );
+  static final dbArgs = obx.QueryStringProperty<Profile>(_entities[0].properties[2]);
 }
