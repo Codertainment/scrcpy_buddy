@@ -56,3 +56,4 @@ dist/
 *.dmg
 # Snap package
 *.snap
+.aider*
