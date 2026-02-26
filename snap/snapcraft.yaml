@@ -9,6 +9,17 @@ grade: stable
 base: core24
 confinement: strict
 
+plugs:
+  ffmpeg-2404:
+    interface: content
+    target: $SNAP/ffmpeg-platform
+    default-provider: ffmpeg-2404
+
+  scrcpy-runtime-2404:
+    interface: content
+    target: $SNAP/scrcpy-runtime
+    default-provider: scrcpy-runtime-2404
+
 apps:
   adb:
     command: usr/bin/adb
@@ -24,11 +35,10 @@ apps:
     command: scrcpy_buddy
     extensions: [gnome]
     environment:
-      LD_LIBRARY_PATH: ${SNAP}/scrcpy-runtime/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}:${SNAP}/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}/android:${LD_LIBRARY_PATH}
+      LD_LIBRARY_PATH: ${SNAP}/scrcpy-runtime/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}:${SNAP}/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}/android:${LD_LIBRARY_PATH}:${SNAP}/ffmpeg-platform/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}
       PATH: ${SNAP}/scrcpy-runtime/usr/local/bin:${PATH}
 
     plugs:
-      - scrcpy-runtime-2404
       # For running the Android Debug Bridge (adb) and
       # connecting the Android devices over USB or TCP/IP.
       # https://github.com/Genymobile/scrcpy/blob/master/doc/connection.md
@@ -68,13 +78,6 @@ slots:
     bus: session
     name: dev.codertainment.scrcpy_buddy
 
-plugs:
-  scrcpy-runtime-2404:
-    interface: content
-    content: scrcpy-runtime-2404
-    target: $SNAP/scrcpy-runtime
-    default-provider: scrcpy-runtime-2404
-
 parts:
   adb:
     plugin: nil
@@ -97,7 +100,7 @@ parts:
     plugin: nil
     override-prime: |
       craftctl default
-      mkdir -p "${CRAFT_PRIME}/scrcpy-runtime"
+      mkdir -p "${CRAFT_PRIME}/"{ffmpeg-2404,scrcpy-runtime}
 
   scrcpy-buddy:
     source: .
