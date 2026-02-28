@@ -38,7 +38,7 @@ Future<void> init() async {
 Future<void> initTrayIcon([Brightness platformBrightness = Brightness.light]) async {
   // tray icon init
   try {
-    final iconName = platformBrightness.isDark ? 'icon_light' : 'icon_dark';
+    final iconName = platformBrightness == Brightness.dark ? 'icon_light' : 'icon_dark';
     await trayManager.setIcon(Platform.isWindows ? 'assets/tray/$iconName.ico' : 'assets/tray/$iconName.png');
     if (Platform.isLinux) {
       // Don't show title on macOS (takes up more space in menu bar)

@@ -80,7 +80,7 @@ class _MyAppState extends State<MyApp> {
               title: 'scrcpy buddy 🤝',
               themeMode: brightness.data == null
                   ? ThemeMode.system
-                  : (brightness.data!.isDark ? ThemeMode.dark : ThemeMode.light),
+                  : (brightness.data! == Brightness.dark ? ThemeMode.dark : ThemeMode.light),
               theme: FluentThemeData(accentColor: SystemTheme.accentColor.accent.toAccentColor()),
               darkTheme: FluentThemeData(
                 brightness: Brightness.dark,
