@@ -12,34 +12,45 @@ class ThemeBrightnessSetting extends AppStatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        ...Brightness.values.map(
-          (brightness) => Padding(
-            padding: const EdgeInsets.only(bottom: 8),
-            child: RadioButton(
-              checked: brightnessPreference.getValue() == brightness,
-              onChanged: (checked) {
-                if (checked) {
-                  brightnessPreference.setValue(brightness);
-                }
-              },
-              content: Text(translatedText(context, key: brightness.name)),
-            ),
-          ),
+    return StreamBuilder<Brightness?>(
+      stream: brightnessPreference,
+      builder: (context, brightness) => RadioGroup<AppThemeBrightness>(
+        groupValue: AppThemeBrightness.fromBrightness(brightness.data),
+        onChanged: (newValue) => brightnessPreference.setValue(newValue?.toBrightness()),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: AppThemeBrightness.values
+              .map(
+                (brightness) => Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: RadioButton(
+                    value: brightness,
+                    content: Text(translatedText(context, key: brightness.name)),
+                  ),
+                ),
+              )
+              .toList(),
         ),
-        RadioButton(
-          checked: brightnessPreference.getValue() == null,
-          onChanged: (checked) {
-            if (checked) {
-              brightnessPreference.setValue(null);
-            }
-          },
-          content: Text(translatedText(context, key: 'system')),
-        ),
-      ],
+      ),
     );
   }
+}
+
+enum AppThemeBrightness {
+  light,
+  dark,
+  system;
+
+  Brightness? toBrightness() => switch (this) {
+    dark => Brightness.dark,
+    system => null,
+    light => Brightness.light,
+  };
+
+  static AppThemeBrightness fromBrightness(Brightness? brightness) => switch (brightness) {
+    Brightness.dark => dark,
+    null => system,
+    Brightness.light => light,
+  };
 }
