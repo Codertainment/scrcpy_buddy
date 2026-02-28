@@ -287,10 +287,8 @@
         "button": "'Device' section"
       },
       "newDisplay": {
-        "toggle": {
-          "title": "Create virtual display",
-          "description": "Create and mirror a virtual display instead of the main device screen"
-        },
+        "title": "Create virtual display",
+        "description": "Create and mirror a virtual display instead of the main device screen",
         "resolution": {
           "title": "Resolution",
           "description": "Explicitly set the resolution for virtual display",
