@@ -209,19 +209,16 @@ class _HomeScreenState extends AppModuleState<HomeScreen> with WindowListener, T
             titleBar: TitleBar(
               isBackButtonVisible: false,
               title: Text(context.translatedText(key: 'appName'), style: typography.bodyStrong),
-              endHeader: Padding(
-                padding: const EdgeInsets.only(right: 0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    ProfileButton(),
-                    const SizedBox(width: 8),
-                    StartButton(),
-                    const SizedBox(width: 8),
-                    StopButton(),
-                  ],
-                ),
+              endHeader: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  ProfileButton(),
+                  const SizedBox(width: 8),
+                  StartButton(),
+                  const SizedBox(width: 8),
+                  StopButton(),
+                ],
               ),
             ),
           );
