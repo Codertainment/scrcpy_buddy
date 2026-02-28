@@ -206,11 +206,11 @@ class _HomeScreenState extends AppModuleState<HomeScreen> with WindowListener, T
               selected: selectedIndex,
               footerItems: footerItems,
             ),
-            appBar: NavigationAppBar(
-              automaticallyImplyLeading: false,
+            titleBar: TitleBar(
+              isBackButtonVisible: false,
               title: Text(context.translatedText(key: 'appName'), style: typography.bodyStrong),
-              actions: Padding(
-                padding: const EdgeInsets.only(top: 12, right: 16),
+              endHeader: Padding(
+                padding: const EdgeInsets.only(right: 0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.center,
