@@ -10,7 +10,7 @@ extension ContextExtension on BuildContext {
 
   Size get windowSize => read<Size>();
 
-  Color get errorColor => theme.brightness.isDark ? Colors.red.lighter : Colors.errorPrimaryColor;
+  Color get errorColor => theme.brightness == Brightness.dark ? Colors.red.lighter : Colors.errorPrimaryColor;
 
   Future<T?> openDialog<T>(Widget child) =>
       showDialog<T>(context: this, barrierDismissible: true, builder: (_) => child);
