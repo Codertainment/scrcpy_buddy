@@ -57,7 +57,7 @@ jobs:
       - name: Upload snap
         uses: actions/upload-artifact@v4
         with:
-          name: scrcpy_buddy_snap
+          name: snap
           path: ${{ steps.snapcraft.outputs.snap }}
           if-no-files-found: error
 
@@ -67,7 +67,7 @@ jobs:
       - name: Upload AppImage
         uses: actions/upload-artifact@v4
         with:
-          name: scrcpy_buddy_appimage
+          name: appimage
           path: "dist/**/*.AppImage"
           if-no-files-found: error
 
@@ -99,7 +99,7 @@ jobs:
       - name: Upload MSIX artifact
         uses: actions/upload-artifact@v4
         with:
-          name: scrcpy_buddy_msix
+          name: msix
           path: dist\**\*.msix
           if-no-files-found: error
 
@@ -109,7 +109,7 @@ jobs:
       - name: Upload Inno Setup EXE artifact
         uses: actions/upload-artifact@v4
         with:
-          name: scrcpy_buddy_exe
+          name: exe
           path: dist\**\*.exe
           if-no-files-found: error
 
@@ -151,12 +151,11 @@ jobs:
         run: |
           create-dmg \
             'build/macos/Build/Products/Release/scrcpy buddy.app' \
-            --no-code-sign \
-            --no-version-in-filename
+            --no-code-sign
 
       - name: Upload DMG artifact
         uses: actions/upload-artifact@v4
         with:
-          name: scrcpy_buddy_dmg
-          path: 'scrcpy buddy.dmg'
+          name: dmg
+          path: '*.dmg'
           if-no-files-found: error
