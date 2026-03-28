@@ -1,6 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:scrcpy_buddy/presentation/extension/context_extension.dart';
 import 'package:scrcpy_buddy/presentation/extension/translation_extension.dart';
+import 'package:scrcpy_buddy/presentation/widgets/app_widgets.dart';
 
 class ConfigItemBase extends StatefulWidget {
   final IconData? icon;
@@ -26,10 +27,13 @@ class ConfigItemBase extends StatefulWidget {
   State<ConfigItemBase> createState() => _ConfigItemBaseState();
 }
 
-class _ConfigItemBaseState extends State<ConfigItemBase> with SingleTickerProviderStateMixin {
+class _ConfigItemBaseState extends AppModuleState<ConfigItemBase> with SingleTickerProviderStateMixin {
   late final AnimationController _highlightController;
   late final Animation<double> _highlightAnimation;
   final _itemKey = GlobalKey();
+
+  @override
+  String get module => 'config';
 
   @override
   void initState() {
@@ -81,20 +85,16 @@ class _ConfigItemBaseState extends State<ConfigItemBase> with SingleTickerProvid
     super.dispose();
   }
 
-  String _translatedText(String key, {Map<String, String>? translationParams}) {
-    return context.translatedText(module: 'config', key: key, translationParams: translationParams);
-  }
-
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: _highlightAnimation,
       builder: (context, child) {
-        final highlightOpacity = _highlightAnimation.value * 0.12;
+        final highlightAlpha = _highlightAnimation.value * 0.12 * 255;
         return Container(
           key: _itemKey,
           decoration: BoxDecoration(
-            color: highlightOpacity > 0 ? context.theme.accentColor.withOpacity(highlightOpacity) : null,
+            color: highlightAlpha > 0 ? context.theme.accentColor.withAlpha(highlightAlpha.toInt()) : null,
             borderRadius: BorderRadius.circular(4),
           ),
           child: child,
@@ -112,7 +112,7 @@ class _ConfigItemBaseState extends State<ConfigItemBase> with SingleTickerProvid
                 children: [
                   Row(
                     children: [
-                      Text(_translatedText(widget.titleKey), style: context.typography.bodyStrong),
+                      Text(translatedText(key: widget.titleKey), style: context.typography.bodyStrong),
                       const SizedBox(width: 8),
                       Tooltip(
                         richMessage: TextSpan(
@@ -124,7 +124,7 @@ class _ConfigItemBaseState extends State<ConfigItemBase> with SingleTickerProvid
                             if (widget.defaultValueKey != null)
                               TextSpan(
                                 text:
-                                    '\n${context.translatedText(key: 'config.defaultValue', translationParams: {'value': _translatedText(widget.defaultValueKey!)})}',
+                                    '\n${context.translatedText(key: 'config.defaultValue', translationParams: {'value': translatedText(key: widget.defaultValueKey!)})}',
                               ),
                           ],
                         ),
@@ -138,7 +138,7 @@ class _ConfigItemBaseState extends State<ConfigItemBase> with SingleTickerProvid
                     ],
                   ),
                   const SizedBox(height: 8),
-                  Text(_translatedText(widget.descriptionKey), style: context.typography.body),
+                  Text(translatedText(key:widget.descriptionKey), style: context.typography.body),
                 ],
               ),
             ),
