@@ -22,8 +22,6 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     _allSearchItems = _allArgs
         .map((arg) {
           final category = arg.label.split('.').first;
-          final route = SearchResult.routeForCategory(category);
-          if (route == null) return null;
 
           final title = event.translate('config.${arg.label}.title');
           final description = event.translate('config.${arg.label}.description');
@@ -34,10 +32,8 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
             description: description,
             argument: arg.argument,
             category: category,
-            route: route,
           );
         })
-        .whereType<SearchResult>()
         .toList(growable: false);
 
     emit(SearchLoaded(query: '', results: const []));

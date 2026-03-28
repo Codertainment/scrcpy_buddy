@@ -1,13 +1,13 @@
 {
   "appName": "scrcpy buddy 🤝",
-  "search": {
-    "placeholder": "Search options...",
-    "noResults": "No results found"
-  },
   "home": {
     "tray": {
       "showApp": "Show app",
       "quit": "Quit"
+    },
+    "search": {
+      "placeholder": "Search options...",
+      "noResults": "No results found"
     },
     "navigation": {
       "devices": "Devices",
