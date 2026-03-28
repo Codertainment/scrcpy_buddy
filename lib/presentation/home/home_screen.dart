@@ -207,6 +207,7 @@ class _HomeScreenState extends AppModuleState<HomeScreen> with WindowListener, T
               footerItems: footerItems,
             ),
             titleBar: TitleBar(
+              height: 56,
               isBackButtonVisible: false,
               title: Text(context.translatedText(key: 'appName'), style: typography.bodyStrong),
               captionControls: Padding(
