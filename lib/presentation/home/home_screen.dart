@@ -211,14 +211,14 @@ class _HomeScreenState extends AppModuleState<HomeScreen> with WindowListener, T
               height: 56,
               isBackButtonVisible: false,
               title: Text(context.translatedText(key: 'appName'), style: typography.bodyStrong),
+              content: SearchWidget(),
               captionControls: Padding(
                 padding: const EdgeInsets.only(right: 16),
                 child: Row(
+                  mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SearchWidget(),
-                    const SizedBox(width: 8),
                     ProfileButton(),
                     const SizedBox(width: 8),
                     StartButton(),
