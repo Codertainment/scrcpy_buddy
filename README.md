@@ -15,35 +15,6 @@ for [scrcpy](https://github.com/Genymobile/scrcpy), the popular Android screen m
 Fluent UI design principles, it brings a polished, native desktop experience to managing your Android devices across
 Windows, Linux, and macOS.
 
-<!-- TOC -->
-* [Requirements](#requirements)
-* [Features](#features)
-  * [Coming next](#coming-next)
-* [Supported languages](#supported-languages)
-* [Screenshots](#screenshots)
-* [Download & Installation](#download--installation)
-  * [Supported and tested platforms](#supported-and-tested-platforms)
-  * [Installation](#installation)
-    * [MacOS](#macos)
-    * [Opening the app on MacOS](#opening-the-app-on-macos)
-    * [Linux](#linux)
-    * [Windows](#windows)
-* [Usage instructions](#usage-instructions)
-  * [Running scrcpy](#running-scrcpy)
-  * [Customizing scrcpy options](#customizing-scrcpy-options)
-  * [Profile management](#profile-management)
-  * [Configuring a default profile](#configuring-a-default-profile)
-* [Troubleshooting](#troubleshooting)
-  * [ADB / scrcpy not found](#adb--scrcpy-not-found)
-  * [Setting executable path manually in settings](#setting-executable-path-manually-in-settings)
-* [How it works](#how-it-works)
-  * [List of commands used by the app](#list-of-commands-used-by-the-app)
-    * [ADB Commands](#adb-commands)
-    * [scrcpy Commands](#scrcpy-commands)
-* [License](#license)
-* [Artworks credits](#artworks-credits)
-<!-- TOC -->
-
 # Requirements
 
 To use this app, you need the following:
@@ -102,13 +73,21 @@ All downloads can be found on the [latest release](https://github.com/Codertainm
 
 ### MacOS
 
+#### 🍺 Homebrew
+
+- `brew tap Codertainment/scrcpy_buddy`
+  - The tap source is available [here](https://github.com/Codertainment/homebrew-scrcpy_buddy/)
+- `brew install scrcpy_buddy`
+
+#### Installing from DMG
+
 - Download and open the DMG File
 - Make sure you have administrator privileges
 - Drag and drop the app icon to "Applications" folder
 - Open the app by searching for it (<kbd>⌘</kbd> <kbd>Space</kbd>)
 - See [the next section](#opening-the-app-on-macos) to understand how to open the app
 
-### Opening the app on MacOS
+#### Opening the app on MacOS
 
 For macOS apps to be verified, a developer account is required, which has a membership fee of $99/year. As this is my
 personal project, I cannot afford this.
@@ -225,6 +204,7 @@ respective privacy policies and security models.
 ### ADB Commands
 
 - `adb --version` - Retrieves the installed adb version
+- `adb track-devices` - To auto-refresh list of connected Android devices
 - `adb devices -l` - Lists connected Android devices
 - `adb start-server` - Starts the ADB server process
 - `adb connect` - Connects to Android devices over network
