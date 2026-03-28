@@ -24,7 +24,7 @@ Future<void> init() async {
     windowManager.setPreventClose(true);
   }
   windowManager.waitUntilReadyToShow().then((_) async {
-    await windowManager.setMinimumSize(const Size(500, 600));
+    await windowManager.setMinimumSize(const Size(700, 700));
     await windowManager.setTitle(_appName);
     await windowManager.show();
   });
