@@ -1,6 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:scrcpy_buddy/application/model/scrcpy/scrcpy_cli_argument.dart';
 import 'package:scrcpy_buddy/presentation/scrcpy_config/widgets/config_item_base.dart';
+import 'package:scrcpy_buddy/presentation/scrcpy_config/widgets/highlight_provider.dart';
 import 'package:scrcpy_buddy/presentation/widgets/app_widgets.dart';
 
 class ConfigItem extends AppStatelessWidget {
@@ -16,12 +17,14 @@ class ConfigItem extends AppStatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final highlightLabel = HighlightProvider.of(context);
     return ConfigItemBase(
       icon: icon,
       defaultValueKey: hasDefault ? '${cliArgument.label}.default' : null,
       titleKey: '${cliArgument.label}.title',
       descriptionKey: '${cliArgument.label}.description',
       arg: cliArgument.argument,
+      isHighlighted: highlightLabel == cliArgument.label,
       child: child,
     );
   }
