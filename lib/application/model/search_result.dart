@@ -1,5 +1,3 @@
-
-
 class SearchResult {
   final String label;
   final String title;
