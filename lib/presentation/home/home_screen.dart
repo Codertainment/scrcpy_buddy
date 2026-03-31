@@ -15,6 +15,7 @@ import 'package:scrcpy_buddy/presentation/home/widgets/console_dialog.dart';
 import 'package:scrcpy_buddy/presentation/home/widgets/profile_button.dart';
 import 'package:scrcpy_buddy/presentation/home/widgets/start_button.dart';
 import 'package:scrcpy_buddy/presentation/home/widgets/stop_button.dart';
+import 'package:scrcpy_buddy/presentation/search/search_widget.dart';
 import 'package:scrcpy_buddy/presentation/widgets/app_widgets.dart';
 import 'package:scrcpy_buddy/routes.dart';
 import 'package:scrcpy_buddy/service/navigation_service.dart';
@@ -206,12 +207,15 @@ class _HomeScreenState extends AppModuleState<HomeScreen> with WindowListener, T
               selected: selectedIndex,
               footerItems: footerItems,
             ),
-            appBar: NavigationAppBar(
-              automaticallyImplyLeading: false,
+            titleBar: TitleBar(
+              height: 56,
+              isBackButtonVisible: false,
               title: Text(context.translatedText(key: 'appName'), style: typography.bodyStrong),
-              actions: Padding(
-                padding: const EdgeInsets.only(top: 12, right: 16),
+              content: SearchWidget(),
+              captionControls: Padding(
+                padding: const EdgeInsets.only(right: 16),
                 child: Row(
+                  mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [

@@ -1,7 +1,7 @@
 # This one doesn't work x_x
 
 name: scrcpy-buddy
-version: '1.0.0'
+version: '1.0.5'
 summary: GUI wrapper for scrcpy
 description: |
   A simple, clean, minimalist GUI wrapper for scrcpy (https://github.com/Genymobile/scrcpy).

@@ -10,7 +10,6 @@ import 'package:scrcpy_buddy/service/running_process_manager.dart';
 import 'package:scrcpy_buddy/service/scrcpy_service.dart';
 
 part 'scrcpy_event.dart';
-
 part 'scrcpy_state.dart';
 
 typedef _Emitter = Emitter<ScrcpyState>;

@@ -1,6 +1,5 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:scrcpy_buddy/application/model/scrcpy/arguments/video/video_source.dart';
 import 'package:scrcpy_buddy/application/model/scrcpy/scrcpy_arg.dart';
 import 'package:scrcpy_buddy/application/profiles_bloc/profiles_bloc.dart';
 import 'package:scrcpy_buddy/presentation/scrcpy_config/video/bit_rate_config.dart';

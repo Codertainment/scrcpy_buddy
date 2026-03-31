@@ -12,6 +12,7 @@ import 'package:scrcpy_buddy/application/scrcpy_bloc/scrcpy_bloc.dart';
 import 'package:scrcpy_buddy/application/shared_prefs.dart';
 import 'package:scrcpy_buddy/init.dart';
 import 'package:scrcpy_buddy/presentation/devices/bloc/devices_bloc.dart';
+import 'package:scrcpy_buddy/presentation/search/bloc/search_bloc.dart';
 import 'package:scrcpy_buddy/routes.dart';
 import 'package:system_theme/system_theme.dart';
 import 'package:window_manager/window_manager.dart';
@@ -80,7 +81,7 @@ class _MyAppState extends State<MyApp> {
               title: 'scrcpy buddy 🤝',
               themeMode: brightness.data == null
                   ? ThemeMode.system
-                  : (brightness.data!.isDark ? ThemeMode.dark : ThemeMode.light),
+                  : (brightness.data! == Brightness.dark ? ThemeMode.dark : ThemeMode.light),
               theme: FluentThemeData(accentColor: SystemTheme.accentColor.accent.toAccentColor()),
               darkTheme: FluentThemeData(
                 brightness: Brightness.dark,
@@ -91,7 +92,10 @@ class _MyAppState extends State<MyApp> {
                   providers: [
                     BlocProvider(create: (_) => ProfilesBloc(_settings, _objectBox.profileBox, _argsMap)),
                     BlocProvider(create: (context) => ScrcpyBloc(context.read(), context.read(), context.read())),
-                    BlocProvider(create: (context) => DevicesBloc(context.read(), context.read(), _settings.adbExecutable)),
+                    BlocProvider(
+                      create: (context) => DevicesBloc(context.read(), context.read(), _settings.adbExecutable),
+                    ),
+                    BlocProvider(create: (_) => SearchBloc(_argsInstances)),
                   ],
                   child: child!,
                 );

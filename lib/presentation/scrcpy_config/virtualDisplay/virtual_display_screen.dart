@@ -169,8 +169,8 @@ class _VirtualDisplayScreenState extends AppModuleState<VirtualDisplayScreen> {
                     children: [
                       ConfigItemBase(
                         icon: WindowsIcons.explore_content,
-                        titleKey: '${_newDisplay.label}.toggle.title',
-                        descriptionKey: '${_newDisplay.label}.toggle.description',
+                        titleKey: '${_newDisplay.label}.title',
+                        descriptionKey: '${_newDisplay.label}.description',
                         arg: _newDisplay.argument,
                         child: ToggleSwitch(checked: isEnabled, onChanged: (checked) => _toggleEnabled(checked)),
                       ),
