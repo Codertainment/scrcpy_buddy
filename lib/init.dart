@@ -17,7 +17,9 @@ Future<void> init() async {
   // window init
   await flutter_acrylic.Window.initialize();
   if (defaultTargetPlatform == TargetPlatform.windows) {
-    await flutter_acrylic.Window.setEffect(effect: flutter_acrylic.WindowEffect.acrylic);
+    await flutter_acrylic.Window.setEffect(
+      effect: flutter_acrylic.WindowEffect.acrylic,
+    );
   }
   await WindowManager.instance.ensureInitialized();
   if (kReleaseMode) {
@@ -35,11 +37,21 @@ Future<void> init() async {
   initTrayIcon();
 }
 
-Future<void> initTrayIcon([Brightness platformBrightness = Brightness.light]) async {
+Future<void> initTrayIcon([
+  Brightness platformBrightness = Brightness.light,
+]) async {
   // tray icon init
   try {
-    final iconName = platformBrightness == Brightness.dark ? 'icon_light' : 'icon_dark';
-    await trayManager.setIcon(Platform.isWindows ? 'assets/tray/$iconName.ico' : 'assets/tray/$iconName.png');
+    final iconName = platformBrightness == Brightness.dark
+        ? 'icon_light'
+        : 'icon_dark';
+    final snapDir = Platform.environment['SNAP'];
+    final iconPath = snapDir != null
+        ? '$snapDir/data/flutter_assets/assets/tray/$iconName.png'
+        : Platform.isWindows
+        ? 'assets/tray/$iconName.ico'
+        : 'assets/tray/$iconName.png'; // fallback for non-snap
+    await trayManager.setIcon(iconPath);
     if (Platform.isLinux) {
       // Don't show title on macOS (takes up more space in menu bar)
       // Not supported on Windows

@@ -78,6 +78,25 @@ slots:
     bus: session
     name: dev.codertainment.scrcpy_buddy
 
+layout:
+  # WORKAROUND:
+  # libproxy.so.1 (from gnome-46-2404) has a hardcoded RUNPATH of
+  # /usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}/libproxy for loading
+  # libpxbackend-1.0.so.  Map it so the dynamic linker can resolve it.
+  # https://github.com/canonical/snapcraft/issues/6054
+  /usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}/libproxy:
+    symlink: $SNAP/gnome-platform/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}/libproxy
+  # This fixes the "ERROR: Could not open icon image: /usr/local/share/icons/hicolor/256x256/apps/scrcpy.png"
+  # error at runtime.
+  /usr/local/share/icons:
+    symlink: $SNAP/scrcpy-runtime/usr/local/share/icons
+  # This allows scrcpy to locate the scrcpy-server binary.
+  # "ERROR: '/usr/local/share/scrcpy/scrcpy-server' does not exist or is not a regular file"
+  /usr/local/share/scrcpy:
+    symlink: $SNAP/scrcpy-runtime/usr/local/share/scrcpy
+  /usr/share/alsa:
+    bind: $SNAP/usr/share/alsa
+
 parts:
   adb:
     plugin: nil
@@ -102,6 +121,35 @@ parts:
       craftctl default
       mkdir -p "${CRAFT_PRIME}/"{ffmpeg-2404,scrcpy-runtime}
 
+  # Avoid buggy mount namespace handling in snapd, which can prevent
+  # manually connected content interfaces from appearing in the snap
+  # runtime.
+  # https://bugs.launchpad.net/snapd/+bug/2144666
+  lp-bug-2144666-workaround:
+    plugin: nil
+    override-prime: |
+      set -eu
+      craftctl default
+
+      content_interface_mount_target_dirs=(
+        # From the "gnome" extension
+        "${CRAFT_PRIME}/gpu-2404"
+        "${CRAFT_PRIME}/gpu-2404-2" # mesa-2404 content in spool mode
+        "${CRAFT_PRIME}/data-dir/icons"
+        "${CRAFT_PRIME}/data-dir/sounds"
+        "${CRAFT_PRIME}/data-dir/themes"
+        "${CRAFT_PRIME}/gnome-platform"
+
+        # From the "scrcpy-runtime-2404" content interface
+        "${CRAFT_PRIME}/scrcpy-runtime"
+
+        # From the "ffmpeg-2404" content interface
+        "${CRAFT_PRIME}/ffmpeg-platform"
+      )
+      for dir in "${content_interface_mount_target_dirs[@]}"; do
+        mkdir -p "${dir}"
+      done
+
   scrcpy-buddy:
     source: .
     plugin: flutter
@@ -110,5 +158,7 @@ parts:
       - libayatana-appindicator3-dev  # For tray_manager
     stage-packages:
       - libayatana-appindicator3-1    # For tray_manager
+      - libdbusmenu-gtk3-4        # Missing transitive dep
+      - libayatana-ido3-0.4-0     # Missing transitive dep
     organize:
-      assets/icon_light_256.png: meta/gui/icon_light.png
+      data/flutter_assets/assets/icon_light_256.png: meta/gui/icon.png
