@@ -28,9 +28,11 @@ To use this app, you need the following:
 
 - Run scrcpy on multiple connected devices
 - ADB Device management (Switch USB Device to network / disconnect device)
+  - Auto-refresh devices list
 - Profile management (name, customized scrcpy options, default profile)
 - Light / Dark theme support
 - View console output for devices which are running scrcpy
+- Search through all scrcpy options
 - Convenient app selection
   for [starting an app with scrcpy](https://github.com/Genymobile/scrcpy/blob/master/doc/device.md#start-android-app)
   from a connected device
@@ -102,7 +104,7 @@ the signing and check and open the app.
 Possible installation options:
 
 - Install from Snap Store (coming soon)
-- Download and install the snap manually (`$ sudo snap install <file_name>.snap --classic --dangerous`)
+- Download and install the snap manually (`$ sudo snap install <file_name>.snap --dangerous`)
 - Download and open the AppImage
 
 ### Windows
@@ -182,6 +184,10 @@ If you have ADB and/or scrcpy setup and installed in your path:
   - For MacOS/Linux: `which adb`
 
 ## Setting executable path manually in settings
+
+> [!NOTE]
+> Changing the path is not supported when running in snap. The snap app comes bundled with in-built adb and scrcpy
+
 
 ![](/media/screenshots/macos/settings.png "app settings")
 
