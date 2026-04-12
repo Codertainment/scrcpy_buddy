@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:scrcpy_buddy/service/adb_service.dart';
 import 'package:scrcpy_buddy/service/running_process_manager.dart';
 import 'package:scrcpy_buddy/service/scrcpy_service.dart';
+import 'package:scrcpy_buddy/service/snap_environment.dart';
 
 import 'application/adb_result_parser.dart';
 
@@ -16,7 +17,11 @@ List<Provider> get providers => [
     create: (context) => AdbService(context.read<ProcessManager>(), context.read<AdbResultParser>()),
   ),
 
-  Provider<ScrcpyService>(create: (context) => ScrcpyService(context.read<ProcessManager>())),
+  Provider<SnapEnvironment>(create: (_) => SnapEnvironment()),
+
+  Provider<ScrcpyService>(
+    create: (context) => ScrcpyService(context.read<ProcessManager>(), context.read<SnapEnvironment>()),
+  ),
 
   Provider<RunningProcessManager>(create: (_) => RunningProcessManager()),
 ];
