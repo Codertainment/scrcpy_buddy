@@ -56,3 +56,5 @@ dist/
 *.dmg
 # Snap package
 *.snap
+# Snap debugging
+squashfs-root/

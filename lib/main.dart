@@ -14,6 +14,7 @@ import 'package:scrcpy_buddy/init.dart';
 import 'package:scrcpy_buddy/presentation/devices/bloc/devices_bloc.dart';
 import 'package:scrcpy_buddy/presentation/search/bloc/search_bloc.dart';
 import 'package:scrcpy_buddy/routes.dart';
+import 'package:scrcpy_buddy/service/snap_environment.dart';
 import 'package:system_theme/system_theme.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -30,7 +31,7 @@ late ObjectBox _objectBox;
 void main() async {
   await init();
   await _prefs.initialize();
-  _objectBox = await ObjectBox.create();
+  _objectBox = await ObjectBox.create(SnapEnvironment());
   runApp(const MyApp());
 }
 

@@ -8,6 +8,7 @@ import 'package:scrcpy_buddy/application/extension/scrcpy_error_extension.dart';
 import 'package:scrcpy_buddy/presentation/extension/translation_extension.dart';
 import 'package:scrcpy_buddy/presentation/widgets/app_widgets.dart';
 import 'package:scrcpy_buddy/service/scrcpy_service.dart';
+import 'package:scrcpy_buddy/service/snap_environment.dart';
 
 class ScrcpyExecutableSetting extends StatefulWidget {
   const ScrcpyExecutableSetting({super.key});
@@ -22,6 +23,7 @@ class _ScrcpyExecutableSettingState extends AppModuleState<ScrcpyExecutableSetti
 
   late final _executablePreference = context.read<AppSettings>().scrcpyExecutable;
   late final _scrcpyService = context.read<ScrcpyService>();
+  late final _snapEnvironment = context.read<SnapEnvironment>();
 
   final _infoFlyoutController = FlyoutController();
   final _textController = TextEditingController();
@@ -85,26 +87,30 @@ class _ScrcpyExecutableSettingState extends AppModuleState<ScrcpyExecutableSetti
 
   @override
   Widget build(BuildContext context) {
+    final isSnap = _snapEnvironment.isRunningInSnap;
     return Row(
       children: [
         Expanded(
           child: TextBox(
             controller: _textController,
-            enabled: !_isSaving,
+            enabled: !_isSaving && !isSnap,
             textInputAction: TextInputAction.done,
+            placeholder: isSnap ? context.translatedText(key: 'settings.snapEnvironmentHint') : null,
             onSubmitted: (value) => _validateAndSave(value),
             onTapOutside: (_) => _validateAndSave(_textController.text),
             suffix: _isSaving
                 ? ProgressRing()
                 : IconButton(
                     icon: Icon(WindowsIcons.file_explorer),
-                    onPressed: () async {
-                      final result = await openFile();
+                    onPressed: isSnap
+                        ? null
+                        : () async {
+                            final result = await openFile();
 
-                      if (result != null) {
-                        _validateAndSave(result.path);
-                      }
-                    },
+                            if (result != null) {
+                              _validateAndSave(result.path);
+                            }
+                          },
                   ),
           ),
         ),

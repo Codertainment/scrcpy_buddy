@@ -6,11 +6,13 @@ import 'package:process/process.dart';
 import 'package:scrcpy_buddy/application/model/scrcpy/device_app.dart';
 import 'package:scrcpy_buddy/application/model/scrcpy/scrcpy_error.dart';
 import 'package:scrcpy_buddy/application/model/scrcpy/scrcpy_result.dart';
+import 'package:scrcpy_buddy/service/snap_environment.dart';
 
 class ScrcpyService {
   final ProcessManager _processManager;
+  final SnapEnvironment _snapEnvironment;
 
-  ScrcpyService(this._processManager);
+  ScrcpyService(this._processManager, this._snapEnvironment);
 
   Future<ScrcpyResult> start(String deviceSerial, String adbPath, String path, List<String> args) async {
     try {
@@ -90,5 +92,9 @@ class ScrcpyService {
 
   Map<String, String>? _getEnvironment(String adbPath) => adbPath.isNotEmpty ? {'ADB': adbPath} : null;
 
-  String _getExecutable(String path) => path.isEmpty ? 'scrcpy' : path;
+  String _getExecutable(String path) => path.isEmpty ? getScrcpyPath() : path;
+
+  /// Returns the resolved scrcpy binary path, preferring the Snap bundle
+  /// when running inside a Snap package.
+  String getScrcpyPath() => _snapEnvironment.getSnapScrcpyPath() ?? 'scrcpy';
 }

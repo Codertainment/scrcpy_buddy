@@ -1,20 +1,93 @@
 name: scrcpy-buddy
-version: '1.0.5'
-summary: GUI wrapper for scrcpy
-description: |
-  A simple, clean, minimalist GUI wrapper for scrcpy (https://github.com/Genymobile/scrcpy).
+version: "1.0.5"
+title: scrcpy buddy
 grade: stable
 base: core24
-confinement: classic
+confinement: strict
+summary: GUI for scrcpy
+description: |
+  A simple, clean, minimalist GUI for scrcpy (https://github.com/Genymobile/scrcpy).
+license: Apache-2.0
+contact: https://github.com/Codertainment/scrcpy_buddy/issues
+issues: https://github.com/Codertainment/scrcpy_buddy/issues
+source-code: https://github.com/Codertainment/scrcpy_buddy
+website: https://github.com/Codertainment/scrcpy_buddy
+donation: https://github.com/Codertainment/scrcpy_buddy
+
+# Suppress lint warnings for libraries that are either dynamically loaded
+# at runtime (libobjectbox.so) or pulled in as transitive dependencies.
+lint:
+  ignore:
+    - library:
+        - lib/libobjectbox.so
+        - usr/lib/*/libcolordprivate.so.2*
+        - usr/lib/*/libdconf.so.1*
+        - usr/lib/*/libicuio.so.74*
+        - usr/lib/*/libicutest.so.74*
+        - usr/lib/*/libpsx.so.2*
+        - usr/lib/*/libicutu.so.74*
+        - usr/lib/*/libicui18n.so.74*
+
+plugs:
+  ffmpeg-2404:
+    interface: content
+    target: $SNAP/ffmpeg-platform
+    default-provider: ffmpeg-2404
+
+  scrcpy-runtime-2404:
+    interface: content
+    target: $SNAP/scrcpy-runtime
+    default-provider: scrcpy-runtime-2404
 
 apps:
+  adb:
+    command: usr/bin/adb
+    environment:
+      LD_LIBRARY_PATH: ${SNAP}/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}/android:${LD_LIBRARY_PATH}
+    plugs:
+      - adb-support
+      - network
+      - network-bind
+      - raw-usb
+
   scrcpy-buddy:
     command: scrcpy_buddy
+    extensions: [ gnome ]
     environment:
-      PATH: /usr/local/bin:/usr/bin:/bin:$PATH
-      # GTK/GNOME settings for Flutter
-      GTK_USE_PORTAL: 1
-      XDG_DATA_DIRS: $SNAP/usr/share:$XDG_DATA_DIRS
+      LD_LIBRARY_PATH: ${SNAP}/scrcpy-runtime/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}:${SNAP}/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}/android:${LD_LIBRARY_PATH}:${SNAP}/ffmpeg-platform/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}
+      PATH: ${SNAP}/scrcpy-runtime/usr/local/bin:${PATH}
+
+    plugs:
+      # For running the Android Debug Bridge (adb) and
+      # connecting the Android devices over USB or TCP/IP.
+      # https://github.com/Genymobile/scrcpy/blob/master/doc/connection.md
+      - adb-support
+      - network
+      - network-bind
+      - raw-usb
+
+      # For scrcpy audio forwarding functionality.
+      # https://github.com/Genymobile/scrcpy/blob/master/doc/audio.md
+      - alsa
+      - audio-playback
+      - pulseaudio
+
+      # For scrcpy v4l2 emulation support.
+      # https://github.com/Genymobile/scrcpy/blob/master/doc/v4l2.md
+      - camera
+
+      # For scrcpy video & audio recording support.
+      # https://github.com/Genymobile/scrcpy/blob/master/doc/recording.md
+      - home
+      - removable-media
+
+      # For scrcpy gamepad simulation support.
+      # https://github.com/Genymobile/scrcpy/blob/master/doc/gamepad.md
+      - joystick
+
+      # Legacy desktop support.
+      # https://github.com/canonical/snapd/blob/master/interfaces/builtin/unity7.go
+      - unity7
     slots:
       - dbus-scrcpy-buddy
 
@@ -24,27 +97,87 @@ slots:
     bus: session
     name: dev.codertainment.scrcpy_buddy
 
+layout:
+  # WORKAROUND:
+  # libproxy.so.1 (from gnome-46-2404) has a hardcoded RUNPATH of
+  # /usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}/libproxy for loading
+  # libpxbackend-1.0.so.  Map it so the dynamic linker can resolve it.
+  # https://github.com/canonical/snapcraft/issues/6054
+  /usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}/libproxy:
+    symlink: $SNAP/gnome-platform/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}/libproxy
+  # This fixes the "ERROR: Could not open icon image: /usr/local/share/icons/hicolor/256x256/apps/scrcpy.png"
+  # error at runtime.
+  /usr/local/share/icons:
+    symlink: $SNAP/scrcpy-runtime/usr/local/share/icons
+  # This allows scrcpy to locate the scrcpy-server binary.
+  # "ERROR: '/usr/local/share/scrcpy/scrcpy-server' does not exist or is not a regular file"
+  /usr/local/share/scrcpy:
+    symlink: $SNAP/scrcpy-runtime/usr/local/share/scrcpy
+  /usr/share/alsa:
+    bind: $SNAP/usr/share/alsa
+
 parts:
+  adb:
+    plugin: nil
+    stage-packages:
+      - adb
+      - android-libbase
+      - android-libboringssl
+      - android-libcutils
+      - android-liblog
+      - android-libziparchive
+      - libbrotli1
+      - libcap2
+      - liblz4-1
+      - libprotobuf32t64
+      - libudev1
+      - libusb-1.0-0
+      - libzstd1
+
+  lp-bug-2016358-workaround:
+    plugin: nil
+    override-prime: |
+      craftctl default
+      mkdir -p "${CRAFT_PRIME}/"{ffmpeg-2404,scrcpy-runtime}
+
+  # Avoid buggy mount namespace handling in snapd, which can prevent
+  # manually connected content interfaces from appearing in the snap
+  # runtime.
+  # https://bugs.launchpad.net/snapd/+bug/2144666
+  lp-bug-2144666-workaround:
+    plugin: nil
+    override-prime: |
+      set -eu
+      craftctl default
+
+      content_interface_mount_target_dirs=(
+        # From the "gnome" extension
+        "${CRAFT_PRIME}/gpu-2404"
+        "${CRAFT_PRIME}/gpu-2404-2" # mesa-2404 content in spool mode
+        "${CRAFT_PRIME}/data-dir/icons"
+        "${CRAFT_PRIME}/data-dir/sounds"
+        "${CRAFT_PRIME}/data-dir/themes"
+        "${CRAFT_PRIME}/gnome-platform"
+
+        # From the "scrcpy-runtime-2404" content interface
+        "${CRAFT_PRIME}/scrcpy-runtime"
+
+        # From the "ffmpeg-2404" content interface
+        "${CRAFT_PRIME}/ffmpeg-platform"
+      )
+      for dir in "${content_interface_mount_target_dirs[@]}"; do
+        mkdir -p "${dir}"
+      done
+
   scrcpy-buddy:
     source: .
     plugin: flutter
     flutter-target: lib/main.dart
     build-packages:
-      - pkg-config
-      - libgtk-3-dev
-      - libglib2.0-dev
-      - libgdk-pixbuf2.0-dev
-      - libcairo2-dev
-      - libpango1.0-dev
-      - libayatana-appindicator3-dev  # For tray_manager
+      - libayatana-appindicator3-dev # For tray_manager
     stage-packages:
-      # Add GTK dependencies since we removed gnome extension
-      - libgtk-3-0
-      - libgdk-pixbuf2.0-0
-      - libglib2.0-0
-      - libcairo2
-      - libpango-1.0-0
-      - libatk1.0-0
-      - libayatana-appindicator3-1    # For tray_manager
+      - libayatana-appindicator3-1 # For tray_manager
+      - libdbusmenu-gtk3-4 # Missing transitive dep
+      - libayatana-ido3-0.4-0 # Missing transitive dep
     organize:
-      assets/icon_light_256.png: meta/gui/icon_light.png
+      data/flutter_assets/assets/icon_light_256.png: meta/gui/icon.png

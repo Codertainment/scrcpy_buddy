@@ -110,6 +110,7 @@
     "serialCopied": "Device serial copied to clipboard"
   },
   "settings": {
+    "snapEnvironmentHint": "Executable paths are preset when running in snap",
     "adbExecutable": {
       "title": "adb executable",
       "dialogTitle": "adb scrcpy executable",

@@ -4,6 +4,7 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart' as flutter_acrylic;
 import 'package:scrcpy_buddy/main.reflectable.dart';
+import 'package:scrcpy_buddy/service/snap_environment.dart';
 import 'package:system_theme/system_theme.dart';
 import 'package:tray_manager/tray_manager.dart';
 import 'package:window_manager/window_manager.dart';
@@ -39,7 +40,11 @@ Future<void> initTrayIcon([Brightness platformBrightness = Brightness.light]) as
   // tray icon init
   try {
     final iconName = platformBrightness == Brightness.dark ? 'icon_light' : 'icon_dark';
-    await trayManager.setIcon(Platform.isWindows ? 'assets/tray/$iconName.ico' : 'assets/tray/$iconName.png');
+    final snapIconPath = SnapEnvironment().getSnapTrayIconPath(iconName);
+    final iconPath =
+        snapIconPath ??
+        (Platform.isWindows ? 'assets/tray/$iconName.ico' : 'assets/tray/$iconName.png'); // fallback for non-snap
+    await trayManager.setIcon(iconPath);
     if (Platform.isLinux) {
       // Don't show title on macOS (takes up more space in menu bar)
       // Not supported on Windows
