@@ -1,0 +1,76 @@
+name: Prepare Release
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  prepare_release:
+    name: Prepare Release PR
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get version from pubspec.yaml
+        id: get_version
+        run: |
+          VERSION=$(grep '^version: ' pubspec.yaml | awk '{print $2}' | cut -d '+' -f 1)
+          if [ -z "$VERSION" ]; then
+            echo "Failed to extract version from pubspec.yaml"
+            exit 1
+          fi
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Update snapcraft.yaml
+        run: |
+          sed -i "s/^version: .*/version: \"${{ env.VERSION }}\"/" snap/snapcraft.yaml
+
+      - name: Generate Notes Since Last Tag
+        id: notes
+        run: |
+          LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          if [ -n "$LATEST_TAG" ]; then
+            # Get date of latest tag
+            LAST_DATE=$(git log -1 --format=%cI "$LATEST_TAG")
+            CHANGES=$(gh pr list --state merged --search "merged:>$LAST_DATE" --limit 100 --json title,number,author | jq -r '.[] | "- \(.title) (#\(.number)) by @\(.author.login)"')
+          else
+            CHANGES=$(gh pr list --state merged --limit 100 --json title,number,author | jq -r '.[] | "- \(.title) (#\(.number)) by @\(.author.login)"')
+          fi
+
+          if [ -z "$CHANGES" ]; then
+            CHANGES="- No new pull requests merged."
+          fi
+
+          echo "$CHANGES" > changes.txt
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update CHANGELOG.md
+        run: |
+          DATE=$(date +'%d-%m-%Y')
+          TEMP_CHANGELOG=$(mktemp)
+          echo "# v${{ env.VERSION }}: $DATE" > "$TEMP_CHANGELOG"
+          cat changes.txt >> "$TEMP_CHANGELOG"
+          echo "" >> "$TEMP_CHANGELOG"
+          if [ -f CHANGELOG.md ]; then
+            cat CHANGELOG.md >> "$TEMP_CHANGELOG"
+          fi
+          mv "$TEMP_CHANGELOG" CHANGELOG.md
+          rm changes.txt
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore: Release v${{ env.VERSION }}"
+          title: "Release v${{ env.VERSION }}"
+          body: "Automated release preparation for v${{ env.VERSION }}\n\nOnce this PR is approved and merged, the release tag will be created, artifacts built, and the GitHub release published along with the Homebrew Cask update."
+          branch: "release/v${{ env.VERSION }}"
+          base: "main"
