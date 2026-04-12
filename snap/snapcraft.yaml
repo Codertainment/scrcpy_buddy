@@ -1,13 +1,32 @@
-# This one doesn't work x_x
-
 name: scrcpy-buddy
-version: '1.0.5'
-summary: GUI wrapper for scrcpy
-description: |
-  A simple, clean, minimalist GUI wrapper for scrcpy (https://github.com/Genymobile/scrcpy).
+version: "1.0.5"
+title: scrcpy buddy
 grade: stable
 base: core24
 confinement: strict
+summary: GUI for scrcpy
+description: |
+  A simple, clean, minimalist GUI for scrcpy (https://github.com/Genymobile/scrcpy).
+license: Apache-2.0
+contact: https://github.com/Codertainment/scrcpy_buddy/issues
+issues: https://github.com/Codertainment/scrcpy_buddy/issues
+source-code: https://github.com/Codertainment/scrcpy_buddy
+website: https://github.com/Codertainment/scrcpy_buddy
+donation: https://github.com/Codertainment/scrcpy_buddy
+
+# Suppress lint warnings for libraries that are either dynamically loaded
+# at runtime (libobjectbox.so) or pulled in as transitive dependencies.
+lint:
+  ignore:
+    - library:
+        - lib/libobjectbox.so
+        - usr/lib/*/libcolordprivate.so.2*
+        - usr/lib/*/libdconf.so.1*
+        - usr/lib/*/libicuio.so.74*
+        - usr/lib/*/libicutest.so.74*
+        - usr/lib/*/libpsx.so.2*
+        - usr/lib/*/libicutu.so.74*
+        - usr/lib/*/libicui18n.so.74*
 
 plugs:
   ffmpeg-2404:
@@ -33,7 +52,7 @@ apps:
 
   scrcpy-buddy:
     command: scrcpy_buddy
-    extensions: [gnome]
+    extensions: [ gnome ]
     environment:
       LD_LIBRARY_PATH: ${SNAP}/scrcpy-runtime/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}:${SNAP}/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}/android:${LD_LIBRARY_PATH}:${SNAP}/ffmpeg-platform/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}
       PATH: ${SNAP}/scrcpy-runtime/usr/local/bin:${PATH}
@@ -155,10 +174,10 @@ parts:
     plugin: flutter
     flutter-target: lib/main.dart
     build-packages:
-      - libayatana-appindicator3-dev  # For tray_manager
+      - libayatana-appindicator3-dev # For tray_manager
     stage-packages:
-      - libayatana-appindicator3-1    # For tray_manager
-      - libdbusmenu-gtk3-4        # Missing transitive dep
-      - libayatana-ido3-0.4-0     # Missing transitive dep
+      - libayatana-appindicator3-1 # For tray_manager
+      - libdbusmenu-gtk3-4 # Missing transitive dep
+      - libayatana-ido3-0.4-0 # Missing transitive dep
     organize:
       data/flutter_assets/assets/icon_light_256.png: meta/gui/icon.png
