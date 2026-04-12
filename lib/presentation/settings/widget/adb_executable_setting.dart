@@ -10,6 +10,7 @@ import 'package:scrcpy_buddy/presentation/devices/bloc/devices_bloc.dart';
 import 'package:scrcpy_buddy/presentation/extension/translation_extension.dart';
 import 'package:scrcpy_buddy/presentation/widgets/app_widgets.dart';
 import 'package:scrcpy_buddy/service/adb_service.dart';
+import 'package:scrcpy_buddy/service/snap_environment.dart';
 
 class AdbExecutableSetting extends StatefulWidget {
   const AdbExecutableSetting({super.key});
@@ -25,6 +26,7 @@ class _AdbExecutableSettingState extends AppModuleState<AdbExecutableSetting> {
   late final _executablePreference = context.read<AppSettings>().adbExecutable;
   late final _adbService = context.read<AdbService>();
   late final _devicesBloc = context.read<DevicesBloc>();
+  late final _snapEnvironment = context.read<SnapEnvironment>();
 
   final _infoFlyoutController = FlyoutController();
   final _textController = TextEditingController();
@@ -96,26 +98,30 @@ class _AdbExecutableSettingState extends AppModuleState<AdbExecutableSetting> {
 
   @override
   Widget build(BuildContext context) {
+    final isSnap = _snapEnvironment.isRunningInSnap;
     return Row(
       children: [
         Expanded(
           child: TextBox(
             controller: _textController,
-            enabled: !_isSaving,
+            enabled: !_isSaving && !isSnap,
             textInputAction: TextInputAction.done,
+            placeholder: isSnap ? context.translatedText(key: 'settings.snapEnvironmentHint') : null,
             onSubmitted: (value) => _validateAndSave(value),
             onTapOutside: (_) => _validateAndSave(_textController.text),
             suffix: _isSaving
                 ? ProgressRing()
                 : IconButton(
                     icon: Icon(WindowsIcons.file_explorer),
-                    onPressed: () async {
-                      final result = await openFile();
+                    onPressed: isSnap
+                        ? null
+                        : () async {
+                            final result = await openFile();
 
-                      if (result != null) {
-                        _validateAndSave(result.path);
-                      }
-                    },
+                            if (result != null) {
+                              _validateAndSave(result.path);
+                            }
+                          },
                   ),
           ),
         ),
