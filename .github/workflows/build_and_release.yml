@@ -1,4 +1,4 @@
-name: Build Flutter Desktop Apps
+name: Build (and release) Flutter Desktop Apps
 
 on:
   push:
@@ -31,7 +31,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          
+
           # For FastForge
           sudo apt-get install locate
           wget -O appimagetool "https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage"
@@ -123,7 +123,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: "18"
 
       - name: Install create-dmg
         run: npm install --global create-dmg
@@ -157,5 +157,92 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: dmg
-          path: '*.dmg'
+          path: "*.dmg"
           if-no-files-found: error
+
+  publish_release:
+    name: Publish Release & Update Brew
+    needs: [ build-linux, build-windows, build-macos ]
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check if Release is Needed
+        id: check_release
+        run: |
+          VERSION=$(grep '^version: ' pubspec.yaml | awk '{print $2}' | cut -d '+' -f 1)
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+          if git show-ref --tags "v$VERSION" --quiet; then
+            echo "Tag v$VERSION already exists. Skipping release."
+            echo "skip=true" >> $GITHUB_OUTPUT
+          else
+            echo "Tag v$VERSION does not exist. Proceeding with release."
+            echo "skip=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create Git Tag
+        if: steps.check_release.outputs.skip == 'false'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "action@github.com"
+          git tag "v${{ env.VERSION }}"
+          git push origin "v${{ env.VERSION }}"
+
+      - name: Download Artifacts
+        if: steps.check_release.outputs.skip == 'false'
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Extract Release Notes
+        if: steps.check_release.outputs.skip == 'false'
+        run: |
+          awk '/^# v/{if (p) exit; p=1; next} p' CHANGELOG.md > release_notes.txt
+          echo "NOTES_FILE=release_notes.txt" >> $GITHUB_ENV
+
+      - name: Create GitHub Release
+        if: steps.check_release.outputs.skip == 'false'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "v${{ env.VERSION }}" \
+            --title "scrcpy buddy v${{ env.VERSION }}" \
+            --notes-file ${{ env.NOTES_FILE }} \
+            artifacts/*/* || echo "Release already exists"
+
+      - name: Update Homebrew Cask
+        if: steps.check_release.outputs.skip == 'false'
+        env:
+          PAT: ${{ secrets.PAT }}
+        run: |
+          DMG_FILE=$(find artifacts -name "*.dmg" | head -n 1)
+          if [ -z "$DMG_FILE" ]; then
+            echo "DMG file not found!"
+            exit 1
+          fi
+
+          SHA256=$(sha256sum "$DMG_FILE" | awk '{print $1}')
+          echo "SHA256 for DMG: $SHA256"
+
+          if [ -z "$PAT" ]; then
+            echo "PAT secret is missing. Cannot update Homebrew tap."
+            exit 1
+          fi
+
+          git clone https://x-access-token:${PAT}@github.com/Codertainment/homebrew-scrcpy_buddy.git tap
+          cd tap
+
+          sed -i -E "s/version \".*\"/version \"${{ env.VERSION }}\"/" Casks/scrcpy_buddy.rb
+          sed -i -E "s/sha256 \".*\"/sha256 \"$SHA256\"/" Casks/scrcpy_buddy.rb
+
+          git config user.name "github-actions[bot]"
+          git config user.email "action@github.com"
+          git commit -am "chore: update scrcpy_buddy to v${{ env.VERSION }}"
+          git push
