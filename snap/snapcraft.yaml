@@ -1,5 +1,5 @@
 name: scrcpy-buddy
-version: "1.0.5"
+version: "1.0.6"
 title: scrcpy buddy
 grade: stable
 base: core24
