@@ -2,7 +2,7 @@ name: Build (and release) Flutter Desktop Apps
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
 
   pull_request:
     paths:
@@ -162,7 +162,7 @@ jobs:
 
   publish_release:
     name: Publish Release & Update Brew
-    needs: [ build-linux, build-windows, build-macos ]
+    needs: [build-linux, build-windows, build-macos]
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions:
@@ -212,10 +212,11 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          readarray -d '' FILES < <(find artifacts -type f -print0)
           gh release create "v${{ env.VERSION }}" \
             --title "scrcpy buddy v${{ env.VERSION }}" \
             --notes-file ${{ env.NOTES_FILE }} \
-            artifacts/*/* || echo "Release already exists"
+            "${FILES[@]}" || echo "Release already exists"
 
       - name: Update Homebrew Cask
         if: steps.check_release.outputs.skip == 'false'
