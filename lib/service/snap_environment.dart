@@ -37,4 +37,12 @@ class SnapEnvironment {
     final scrcpyPath = '$snapPath/scrcpy-runtime/usr/local/bin/scrcpy';
     return File(scrcpyPath).existsSync() ? scrcpyPath : null;
   }
+
+  /// Returns the path to the tray icon in the Snap bundle, or `null` if the
+  /// bundle path cannot be determined.
+  String? getSnapTrayIconPath(String iconName) {
+    final snapDir = Platform.environment['SNAP'];
+    if (snapDir == null) return null;
+    return '$snapDir/data/flutter_assets/assets/tray/$iconName.png';
+  }
 }
