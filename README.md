@@ -8,6 +8,8 @@
        alt="Flutter"/></a>
     <a title="Latest supported scrcpy version" href="https://github.com/Genymobile/scrcpy/releases"><img src="https://img.shields.io/badge/scrcpy-v3.3.4-green?style=flat-square"
        alt="scrcpy v3.3.4"/></a>
+    <a title="Snap Store" href="https://snapcraft.io/scrcpy-buddy"><img alt="scrcpy-buddy" src="https://snapcraft.io/scrcpy-buddy/badge.svg" /></a>
+    <a title="Trending on snap store" href="https://snapcraft.io/scrcpy-buddy"><img alt="scrcpy-buddy" src="https://snapcraft.io/scrcpy-buddy/trending.svg?name=0" /></a>
 </p>
 
 scrcpy buddy is a clean, minimalist Flutter-based desktop application that provides an intuitive graphical interface
@@ -103,8 +105,26 @@ the signing and check and open the app.
 
 Possible installation options:
 
-- Install from Snap Store (coming soon)
-- Download and install the snap manually (`$ sudo snap install <file_name>.snap --dangerous`)
+#### Snap
+
+<p>
+  <a href="https://snapcraft.io/scrcpy-buddy">
+    <img alt="Get it from the Snap Store" src=https://snapcraft.io/en/dark/install.svg />
+  </a>
+</p>
+
+- Install from the [Snap Store](https://snapcraft.io/scrcpy-buddy) (Recommended for automatic updates)
+
+**Manual installation:**
+
+- Download and install the snap:
+- `$sudo snap install scrcpy-buddy_<version>_amd64.snap --dangerous`
+- Connect the snap to the necessary interfaces:
+- `$sudo snap connect scrcpy-buddy:scrcpy-runtime-2404 scrcpy-runtime:2404:scrcpy-runtime:2404`
+- `$ sudo snap connect scrcpy-buddy:gnome-46-2404 gnome-46-2404:gnome-46-2404`
+
+#### AppImage
+
 - Download and open the AppImage
 
 ### Windows
@@ -186,7 +206,8 @@ If you have ADB and/or scrcpy setup and installed in your path:
 ## Setting executable path manually in settings
 
 > [!NOTE]
-> Changing the path is not supported when running in snap. The snap app comes bundled with in-built adb and scrcpy
+> Changing the path is not supported when running in snap. The snap app comes bundled with bundled adb and
+> scrcpy-runtime plug
 
 
 ![](/media/screenshots/macos/settings.png "app settings")
