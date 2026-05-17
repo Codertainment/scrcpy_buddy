@@ -12,3 +12,4 @@
 | `--window-height`       | Initial window height in pixels.                                                 | Number input (px)                  | Yes       |
 | `--window-borderless`   | Disable window decorations (no border, no title bar).                            | Switch/toggle                      | Yes       |
 | `--disable-screensaver` | Prevent the computer screensaver while scrcpy is running.                        | Switch/toggle                      | Yes       |
+| `--background-color`    | Background color for the scrcpy window                                           | Color picker                       | Yes       |

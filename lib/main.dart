@@ -20,7 +20,7 @@ import 'package:window_manager/window_manager.dart';
 
 import 'injector.dart';
 
-const supportedScrcpyVersion = "3.3.4";
+const supportedScrcpyVersion = "4.0";
 
 const scrcpyArg = ScrcpyArg();
 

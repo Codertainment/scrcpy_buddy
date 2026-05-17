@@ -5,8 +5,10 @@ import 'package:scrcpy_buddy/application/model/scrcpy/scrcpy_arg.dart';
 import 'package:scrcpy_buddy/application/profiles_bloc/profiles_bloc.dart';
 import 'package:scrcpy_buddy/presentation/extension/translation_extension.dart';
 import 'package:scrcpy_buddy/presentation/scrcpy_config/widgets/config_divider.dart';
+import 'package:scrcpy_buddy/presentation/scrcpy_config/widgets/config_item.dart';
 import 'package:scrcpy_buddy/presentation/scrcpy_config/widgets/config_item_base.dart';
 import 'package:scrcpy_buddy/presentation/scrcpy_config/widgets/config_text_box.dart';
+import 'package:scrcpy_buddy/presentation/scrcpy_config/widgets/config_toggle.dart';
 import 'package:scrcpy_buddy/presentation/scrcpy_config/widgets/link_span.dart';
 import 'package:scrcpy_buddy/presentation/widgets/app_widgets.dart';
 import 'package:scrcpy_buddy/routes.dart';
@@ -24,6 +26,7 @@ class _VirtualDisplayScreenState extends AppModuleState<VirtualDisplayScreen> {
 
   late final _profilesBloc = context.read<ProfilesBloc>();
   final _newDisplay = NewDisplay();
+  final _flexDisplay = FlexDisplay();
   bool isEnabled = false;
   String? resolutionWidth;
   String? resolutionHeight;
@@ -62,7 +65,13 @@ class _VirtualDisplayScreenState extends AppModuleState<VirtualDisplayScreen> {
       event = UpdateProfileArgEvent(_newDisplay, "");
     } else {
       event = UpdateProfileArgEvent(_newDisplay, null);
+      _disableFlex();
     }
+    _profilesBloc.add(event);
+  }
+
+  void _disableFlex() {
+    final event = UpdateProfileArgEvent(_flexDisplay, null);
     _profilesBloc.add(event);
   }
 
@@ -204,6 +213,12 @@ class _VirtualDisplayScreenState extends AppModuleState<VirtualDisplayScreen> {
                             ),
                           ],
                         ),
+                      ),
+                      const ConfigDivider(),
+                      ConfigItem(
+                        cliArgument: _flexDisplay,
+                        icon: WindowsIcons.resize_mouse_small_mirrored,
+                        child: ConfigToggle(cliArgument: _flexDisplay, state: state, isEnabled: isEnabled),
                       ),
                       const ConfigDivider(),
                       ConfigItemBase(

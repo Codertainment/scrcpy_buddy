@@ -69,7 +69,7 @@ class _V4l2ScreenState extends AppModuleState<V4l2Screen> {
                     children: [
                       ConfigItem(
                         icon: FluentIcons.funnel_chart,
-                        hasDefault: true,
+                        hasDefault: false,
                         cliArgument: _sink,
                         child: ConfigTextBox(
                           value: state.getFor(_sink),

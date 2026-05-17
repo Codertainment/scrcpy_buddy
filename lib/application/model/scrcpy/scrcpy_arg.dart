@@ -31,6 +31,7 @@ export 'arguments/device/stay_awake.dart';
 export 'arguments/device/turn_screen_off.dart';
 export 'arguments/device/show_touches.dart';
 export 'arguments/device/start_app.dart';
+export 'arguments/device/keep_active.dart';
 
 // Window
 export 'arguments/window/no_window.dart';
@@ -46,6 +47,7 @@ export 'arguments/v4l2/v4l2_sink.dart';
 
 // Virtual Display
 export 'arguments/virtualDisplay/new_display.dart';
+export 'arguments/virtualDisplay/flex_display.dart';
 
 /// All {ScrcpyCliArgument}s must be annotated with this annotation.
 class ScrcpyArg extends Reflectable {
