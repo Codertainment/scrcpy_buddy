@@ -236,6 +236,10 @@
         "title": "Stay awake",
         "description": "Keep device awake while plugged in\nPrevious value gets restored on exit\nHas no effect is the device is connected through network (Android behavior)"
       },
+      "keepActive": {
+        "title": "Keep active",
+        "description": "Prevents the device from turning off or sleeping, by periodically signalling user activity to the system.\nContrary to \"Stay awake\" and \"Screen off timeout\", this does not change any global settings, and it works whether the device is plugged in or not."
+      },
       "turnScreenOff": {
         "title": "Turn screen off",
         "description": "Turn device screen off immediately on start\nCan be toggled when scrcpy is running via shortcut: MOD + O / MOD + Shift + O"

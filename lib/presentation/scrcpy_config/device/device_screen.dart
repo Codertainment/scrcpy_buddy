@@ -20,6 +20,7 @@ class _DeviceScreenState extends AppModuleState<DeviceScreen> {
   String get module => 'config.device';
 
   final _stayAwake = StayAwake();
+  final _keepActive = KeepActive();
   final _turnScreenOff = TurnScreenOff();
   final _showTouches = ShowTouches();
   final _startApp = StartApp();
@@ -41,6 +42,12 @@ class _DeviceScreenState extends AppModuleState<DeviceScreen> {
                     icon: WindowsIcons.red_eye,
                     cliArgument: _stayAwake,
                     child: ConfigToggle(state: state, cliArgument: _stayAwake),
+                  ),
+                  const ConfigDivider(),
+                  ConfigItem(
+                    icon: WindowsIcons.touch_pointer,
+                    cliArgument: _keepActive,
+                    child: ConfigToggle(state: state, cliArgument: _keepActive),
                   ),
                   const ConfigDivider(),
                   ConfigItem(

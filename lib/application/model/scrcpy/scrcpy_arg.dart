@@ -31,6 +31,7 @@ export 'arguments/device/stay_awake.dart';
 export 'arguments/device/turn_screen_off.dart';
 export 'arguments/device/show_touches.dart';
 export 'arguments/device/start_app.dart';
+export 'arguments/device/keep_active.dart';
 
 // Window
 export 'arguments/window/no_window.dart';
