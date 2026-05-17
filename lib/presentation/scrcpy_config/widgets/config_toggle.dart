@@ -6,14 +6,15 @@ import 'package:scrcpy_buddy/application/profiles_bloc/profiles_bloc.dart';
 class ConfigToggle extends StatelessWidget {
   final ScrcpyCliArgument<bool> cliArgument;
   final ProfilesState state;
+  final bool isEnabled;
 
-  const ConfigToggle({super.key, required this.state, required this.cliArgument});
+  const ConfigToggle({super.key, required this.state, required this.cliArgument, this.isEnabled = true});
 
   @override
   Widget build(BuildContext context) {
     return ToggleSwitch(
       checked: state.getFor(cliArgument) ?? false,
-      onChanged: (checked) => _onChanged(context, checked),
+      onChanged: isEnabled ? (checked) => _onChanged(context, checked) : null,
     );
   }
 

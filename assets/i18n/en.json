@@ -287,6 +287,10 @@
         "description": "It is recommended to use virtual display with 'Start app' option available in ",
         "button": "'Device' section"
       },
+      "flex": {
+        "title": "Flexible",
+        "description": "Allows the virtual display to be flexibly resizeable according to scrcpy window size"
+      },
       "newDisplay": {
         "title": "Create virtual display",
         "description": "Create and mirror a virtual display instead of the main device screen",

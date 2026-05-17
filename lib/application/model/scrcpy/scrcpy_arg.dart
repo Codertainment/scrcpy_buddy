@@ -46,6 +46,7 @@ export 'arguments/v4l2/v4l2_sink.dart';
 
 // Virtual Display
 export 'arguments/virtualDisplay/new_display.dart';
+export 'arguments/virtualDisplay/flex_display.dart';
 
 /// All {ScrcpyCliArgument}s must be annotated with this annotation.
 class ScrcpyArg extends Reflectable {
