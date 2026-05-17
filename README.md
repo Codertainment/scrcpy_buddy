@@ -6,8 +6,8 @@
       /></a>
     <a title="Flutter" href="https://flutter.dev/"><img src="https://img.shields.io/badge/Flutter-%2302569B.svg?style=for-the-badge&logo=Flutter&logoColor=white"
        alt="Flutter"/></a>
-    <a title="Latest supported scrcpy version" href="https://github.com/Genymobile/scrcpy/releases"><img src="https://img.shields.io/badge/scrcpy-v3.3.4-green?style=flat-square"
-       alt="scrcpy v3.3.4"/></a>
+    <a title="Latest supported scrcpy version" href="https://github.com/Genymobile/scrcpy/releases"><img src="https://img.shields.io/badge/scrcpy-v4.0-green?style=flat-square"
+       alt="scrcpy v4.0"/></a>
     <a title="Snap Store" href="https://snapcraft.io/scrcpy-buddy"><img alt="scrcpy-buddy" src="https://snapcraft.io/scrcpy-buddy/badge.svg" /></a>
     <a title="Trending on snap store" href="https://snapcraft.io/scrcpy-buddy"><img alt="scrcpy-buddy" src="https://snapcraft.io/scrcpy-buddy/trending.svg?name=0" /></a>
 </p>
@@ -30,7 +30,7 @@ To use this app, you need the following:
 
 - Run scrcpy on multiple connected devices
 - ADB Device management (Switch USB Device to network / disconnect device)
-  - Auto-refresh devices list
+    - Auto-refresh devices list
 - Profile management (name, customized scrcpy options, default profile)
 - Light / Dark theme support
 - View console output for devices which are running scrcpy
@@ -80,7 +80,7 @@ All downloads can be found on the [latest release](https://github.com/Codertainm
 #### 🍺 Homebrew
 
 - `brew tap Codertainment/scrcpy_buddy`
-  - The tap source is available [here](https://github.com/Codertainment/homebrew-scrcpy_buddy/)
+    - The tap source is available [here](https://github.com/Codertainment/homebrew-scrcpy_buddy/)
 - `brew install scrcpy_buddy`
 
 #### Installing from DMG
@@ -200,8 +200,8 @@ If you have ADB and/or scrcpy setup and installed in your path:
   can [set the executable in settings manually](#setting-executable-path-manually-in-settings).
 - To find out the installation path, run this command in the terminal:
 - e.g.
-  - For Windows: `where adb`
-  - For MacOS/Linux: `which adb`
+    - For Windows: `where adb`
+    - For MacOS/Linux: `which adb`
 
 ## Setting executable path manually in settings
 
