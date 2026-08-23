@@ -69,7 +69,7 @@ All downloads can be found on the [latest release](https://github.com/Codertainm
 
 | OS      | Minimum Supported           | Tested ✅      |
 |---------|-----------------------------|---------------|
-| MacOS   | 11 Big Sur                  | 26 Tahoe      |
+| MacOS   | 12 Monterey                 | 26 Tahoe      |
 | Windows | 7 (?)                       | 11            |
 | Linux   | Should work on all versions | KUbuntu 25.10 |
 
