@@ -6,8 +6,8 @@
       /></a>
     <a title="Flutter" href="https://flutter.dev/"><img src="https://img.shields.io/badge/Flutter-%2302569B.svg?style=for-the-badge&logo=Flutter&logoColor=white"
        alt="Flutter"/></a>
-    <a title="Latest supported scrcpy version" href="https://github.com/Genymobile/scrcpy/releases"><img src="https://img.shields.io/badge/scrcpy-v4.0-green?style=flat-square"
-       alt="scrcpy v4.0"/></a>
+    <a title="Latest supported scrcpy version" href="https://github.com/Genymobile/scrcpy/releases"><img src="https://img.shields.io/badge/scrcpy-v4.1-green?style=flat-square"
+       alt="scrcpy v4.1"/></a>
     <a title="Snap Store" href="https://snapcraft.io/scrcpy-buddy"><img alt="scrcpy-buddy" src="https://snapcraft.io/scrcpy-buddy/badge.svg" /></a>
     <a title="Trending on snap store" href="https://snapcraft.io/scrcpy-buddy"><img alt="scrcpy-buddy" src="https://snapcraft.io/scrcpy-buddy/trending.svg?name=0" /></a>
 </p>
